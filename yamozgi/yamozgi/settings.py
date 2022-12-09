@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     "homepage.apps.HomepageConfig",
     "questions.apps.QuestionsConfig",
     "duels.apps.DuelsConfig",
-    "arena.appsArenaConfig",
+    "arena.apps.ArenaConfig",
 ]
 
 MIDDLEWARE = [
