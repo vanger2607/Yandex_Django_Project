@@ -1,5 +1,5 @@
 from django.db import models
-from djjango.utils import timezone
+from django.utils import timezone
 
 
 class Category(models.Model):
