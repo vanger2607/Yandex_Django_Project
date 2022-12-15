@@ -1,26 +1,14 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-
-class Category(models.Model):
-    name = models.CharField(max_length=50)
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        self.modified = timezone.now()
-        super(Category, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name = "категория вопроса"
-        verbose_name_plural = "категории вопросов"
+from arena.models import Category
+from .models import CustomUser
 
 
 class Question(models.Model):
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(CustomUser,
+                               on_delete=models.SET_NULL,
+                               null=True)
     question_text = models.TextField(max_length=250)
 
     question_choice1 = models.TextField(max_length=250)
