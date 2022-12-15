@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from .models import CustomUser
 from django.db import models
 from django.utils import timezone
 from questions.models import Category, Question
@@ -6,10 +6,10 @@ from questions.models import Category, Question
 
 class Battle(models.Model):
     player_1 = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="battle_player1"
+        CustomUser, on_delete=models.CASCADE, related_name="battle_player1"
     )
     player_2 = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="battle_player2"
+        CustomUser, on_delete=models.CASCADE, related_name="battle_player2"
     )
     number_of_rounds = models.PositiveSmallIntegerField()
     is_over = models.BooleanField()
@@ -30,10 +30,10 @@ class Battle(models.Model):
 
 class Round(models.Model):
     player_first = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="first_turn_player"
+        CustomUser, on_delete=models.CASCADE, related_name="first_turn_player"
     )
     player_second = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="second_turn_player"
+        CustomUser, on_delete=models.CASCADE, related_name="second_turn_player"
     )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     questions = models.ManyToManyField(Question)
