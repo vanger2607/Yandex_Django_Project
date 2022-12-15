@@ -26,10 +26,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "homepage.apps.HomepageConfig",
     "questions.apps.QuestionsConfig",
     "duels.apps.DuelsConfig",
     "arena.apps.ArenaConfig",
+    "leaderboard.apps.LeaderboardConfig",
+    "shop.apps.ShopConfig",
 ]
 
 MIDDLEWARE = [
