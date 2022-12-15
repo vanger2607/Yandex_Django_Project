@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from arena.models import Category
-from .models import CustomUser
+from users.models import CustomUser
 
 
 class Question(models.Model):

@@ -1,4 +1,4 @@
-from .models import CustomUser
+from users.models import CustomUser
 from django.db import models
 from django.utils import timezone
 from questions.models import Category, Question
