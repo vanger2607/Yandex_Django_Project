@@ -1,11 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
-from category.models import Category
+from arena.models import Category
 from .managers import CustomUserManager
 
 
-class User(AbstractBaseUser):
+class CustomUser(AbstractBaseUser):
     login = models.CharField('имя пользователя',
                              max_length=100,
                              help_text='Максимальная длина 100 символов')
