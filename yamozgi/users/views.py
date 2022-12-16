@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, render
+from django.contrib.auth.views import LoginView
 
 from . import forms
 from users.models import CustomUser
-from django.contrib.auth import authenticate, login
 
 
 def sign_up(request):
@@ -23,24 +23,10 @@ def sign_up(request):
     return render(request, template_name, context)
 
 
-def sign_in(request):
+class SignIn(LoginView):
+    form_class = forms.SignInForm
     template_name = "users/signin.html"
-    form = forms.SignInForm(request.POST or None)
-    context = {
-        "form": form,
-    }
 
-    if request.method == "POST" and form.is_valid():
-        user = form.save()
-        user.refresh_from_db()
-
-        CustomUser.objects.update_or_create(user=user)
-
-        user.save()
-        raw_password = form.cleaned_data.get("password")
-
-        user = authenticate(username=user.username, password=raw_password)
-        login(request, user)
-
-        return redirect("users:signin")
-    return render(request, template_name, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

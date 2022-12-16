@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 
 from .models import CustomUser
 
@@ -54,15 +55,27 @@ class SignUpForm(forms.ModelForm):
         return cleaned_data
 
 
-class SignInForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(SignInForm, self).__init__(*args, **kwargs)
-        self.fields["login_or_mail"] = forms.CharField(
-            required=True,
-            label="Логин или почта",
-            widget=forms.PasswordInput(attrs={"class": "form-control",
-                                              "required": True}),
-        )
+class SignInForm(AuthenticationForm):
+    username = forms.CharField(
+        label="почта или логин",
+        widget=(
+            forms.EmailInput(
+                attrs={
+                    "class": "form-control form-control-lg",
+                    "autofocus": True,
+                }
+            )
+        ),
+    )
+    password = forms.CharField(
+        label="пароль",
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control form-control-lg",
+                "autocomplete": "current-password",
+            }
+        ),
+    )
 
     class Meta:
         model = CustomUser
@@ -79,15 +92,3 @@ class SignInForm(forms.ModelForm):
                 attrs={"class": "form-control", "required": True}
             ),
         }
-
-    def clean_password_confirm(self):
-        cleaned_data = super(SignInForm, self).clean()
-        password = cleaned_data.get("password")
-        password_confirm = cleaned_data.get("password_confirm")
-
-        if password != password_confirm:
-            raise forms.ValidationError(
-                self.error_messages["password_mismatch"],
-                code="password_mismatch",
-            )
-        return cleaned_data
