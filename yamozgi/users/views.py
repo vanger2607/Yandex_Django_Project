@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 
 def sign_up(request):
     template_name = "users/signup.html"
-    form = forms.SignupForm(request.POST or None)
+    form = forms.SignUpForm(request.POST or None)
     context = {
         "form": form,
     }
@@ -18,7 +18,7 @@ def sign_up(request):
         password = form.cleaned_data["password"]
 
         CustomUser.objects.create_user(mail, login, password)
-        return redirect("users:signup")
+        return redirect("users:signin")
 
     return render(request, template_name, context)
 
@@ -42,5 +42,5 @@ def sign_in(request):
         user = authenticate(username=user.username, password=raw_password)
         login(request, user)
 
-        return redirect("homepage:home-landing")
+        return redirect("users:signin")
     return render(request, template_name, context)
