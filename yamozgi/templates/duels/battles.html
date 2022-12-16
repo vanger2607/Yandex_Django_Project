@@ -1,0 +1,342 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link rel="stylesheet" href="{% static '\duels\css\battles.css' %}" />
+{% endblock %} {% block content %}
+<div class="battle-page">
+  <div class="battle-page__main-block battle-main-block">
+    <div class="battle-container">
+      <div class="battle-main-block__body">
+        <div class="battle-main-block__title battle-title">
+          Хотите начать новую битву?
+        </div>
+        <div class="battle-title__button">
+          <a href="#" class="battle-button">Бросить вызов!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="battle-page__current-battles current-battles">
+    <div class="current-battles__title battle-title">Текущие игры:</div>
+    <div class="current-battles__battle-container battle-container">
+      <div class="current-battles__body">
+        <div class="current-battles__column">
+          <div class="current-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__text">Раунд 0</div>
+              <div class="battle-info__button">
+                <a href="#" class="battle-button mini-button">перейти!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="current-battles__column">
+          <div class="current-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__text">Раунд 0</div>
+              <div class="battle-info__button">
+                <a href="#" class="battle-button mini-button">перейти!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="current-battles__column">
+          <div class="current-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__text">Раунд 0</div>
+              <div class="battle-info__button">
+                <a href="#" class="battle-button mini-button">перейти!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="current-battles__body">
+        <div class="current-battles__column">
+          <div class="current-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__text">Раунд 0</div>
+              <div class="battle-info__button">
+                <a href="#" class="battle-button mini-button">перейти!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="current-battles__column">
+          <div class="current-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__text">Раунд 0</div>
+              <div class="battle-info__button">
+                <a href="#" class="battle-button mini-button">перейти!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="current-battles__column">
+          <div class="current-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__text">Раунд 0</div>
+              <div class="battle-info__button">
+                <a href="#" class="battle-button mini-button">перейти!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="battle-page__abandoned-battles abandoned-battles">
+    <div class="abandoned-battles__title battle-title">Брошенные вызовы:</div>
+    <div class="abandoned-battles__battle-container battle-container">
+      <div class="abandoned-battles__body">
+        <div class="abandoned-battles__column">
+          <div class="abandoned-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="abandoned-battles__button battle-info__button">
+                <a href="#" class="battle-button mini-button orange"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="abandoned-battles__column">
+          <div class="abandoned-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="abandoned-battles__button battle-info__button">
+                <a href="#" class="battle-button mini-button orange"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="abandoned-battles__column">
+          <div class="abandoned-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="abandoned-battles__button battle-info__button">
+                <a href="#" class="battle-button mini-button orange"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="battle-page__to-you-challenges-battles to-you-challenges-battles">
+    <div class="to-you-challenges-battles__title battle-title">
+      Вам бросили вызов!
+    </div>
+    <div class="to-you-challenges-battles__battle-container battle-container">
+      <div class="to-you-challenges-battles__body">
+        <div class="to-you-challenges-battles__column">
+          <div class="to-you-challenges-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo adapt-photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title adapt-title">vanger__2006_20</div>
+              <div
+                class="to-you-challenges-battles__button battle-info__buttons"
+              >
+                <a href="#" class="battle-button mini-button adapt-button">принять</a>
+                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="to-you-challenges-battles__column">
+          <div class="to-you-challenges-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo adapt-photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title adapt-title">vanger__2006_20</div>
+              <div
+                class="to-you-challenges-battles__button battle-info__buttons"
+              >
+                <a href="#" class="battle-button mini-button adapt-button">принять</a>
+                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="to-you-challenges-battles__column">
+          <div class="to-you-challenges-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo adapt-photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title adapt-title">vanger__2006_20</div>
+              <div
+                class="to-you-challenges-battles__button battle-info__buttons"
+              >
+                <a href="#" class="battle-button mini-button adapt-button">принять</a>
+                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><div class="to-you-challenges-battles__body">
+        <div class="to-you-challenges-battles__column">
+          <div class="to-you-challenges-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo adapt-photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title adapt-title">vanger__2006_20</div>
+              <div
+                class="to-you-challenges-battles__button battle-info__buttons"
+              >
+                <a href="#" class="battle-button mini-button adapt-button">принять</a>
+                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="to-you-challenges-battles__column">
+          <div class="to-you-challenges-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo adapt-photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title adapt-title">vanger__2006_20</div>
+              <div
+                class="to-you-challenges-battles__button battle-info__buttons"
+              >
+                <a href="#" class="battle-button mini-button adapt-button">принять</a>
+                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="to-you-challenges-battles__column">
+          <div class="to-you-challenges-battles__item battle-item">
+            <div class="battle-item__pic">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="battle-item__photo adapt-photo adapt-photo"
+              />
+            </div>
+            <div class="battle-item__info battle-info">
+              <div class="battle-info__title adapt-title adapt-title">vanger__2006_20</div>
+              <div
+                class="to-you-challenges-battles__button battle-info__buttons"
+              >
+                <a href="#" class="battle-button mini-button adapt-button">принять</a>
+                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
+                  >отменить</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -6,6 +6,7 @@ from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("homepage.urls")),
+    path("", include("duels.urls")),
 ]
 urlpatterns += static(
     settings.STATIC_URL,

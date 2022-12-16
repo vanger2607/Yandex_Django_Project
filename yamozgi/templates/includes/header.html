@@ -1,4 +1,5 @@
 <header class="header">
+  {% with request.resolver_match.view_name as view_name %}
     <div class="header__container _container">
       <div class="alert">
         Пожалуйста, поверните экран телефона для правильной работы сайта
@@ -6,17 +7,26 @@
       <nav class="header__menu menu">
         <ul class="menu__list">
           <li class="menu__item">
-            <a href="#" class="menu__link active">Главная</a>
+            {%if view_name == 'homepage:home' %}
+              <a href="{% url 'homepage:home' %}" class="menu__link active">Главная</a>
           </li>
+          {% else %}
+            <a href="{% url 'homepage:home' %}" class="menu__link">Главная</a>
+          {% endif %}
           <li class="menu__item">
-            <a href="#" class="menu__link">Битвы</a>
+            {%if view_name == 'duels:battles' %}
+              <a href="{% url 'duels:battles' %}" class="menu__link active">Битвы</a>
           </li>
+          {% else %}
+            <a href="{% url 'duels:battles' %}" class="menu__link">Битвы</a>
+          {% endif %}
           <li class="menu__item">
             <a href="#" class="menu__link">Таблица лидеров</a>
           </li>
           <li class="menu__item">
             <a href="#" class="menu__link">Магазин</a>
           </li>
+  {% endwith %}
         </ul>
         <div class="header__profile profile">
           <a href="#" class="profile__name">Профиль</a>
@@ -29,4 +39,3 @@
       </nav>
     </div>
 </header>
-
