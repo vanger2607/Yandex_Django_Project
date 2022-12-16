@@ -148,9 +148,14 @@ body {
 .menu__item:not(:last-child) {
   margin: 0px 28px 0px 0px;
 }
+.profile__name {
+  color: #e0cfed;
+}
 .active {
   font-weight: 700;
   color: #fff;
+  pointer-events: none;
+  cursor: default; 
 }
 .header__profile {
 }
@@ -170,9 +175,7 @@ body {
   border: 1px solid #737373;
   border-radius: 50%;
 }
-.profile__name {
-  color: #e0cfed;
-}
+
 /*-------HEADER_MEDIA--------*/
 @media (max-width: 841px) {
   .profile :not(:last-child) {
