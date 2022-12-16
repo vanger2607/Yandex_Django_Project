@@ -1,0 +1,351 @@
+.battle-container {
+  max-width: 1300px;
+  margin: 0px auto;
+  padding: 0px 15px;
+  box-sizing: content-box;
+  padding: 5px;
+}
+.battle-main-block {
+  background: linear-gradient(103.37deg, #9324a5 0%, #5524a5 100%);
+}
+.battle-main-block {
+  position: relative;
+  align-items: center;
+}
+.battle-main-block__body {
+  padding: 180px 2px;
+  margin: 0px 140px;
+  position: relative;
+  z-index: 2;
+  width: 1224px;
+  text-align: center;
+  display: flex;
+}
+.battle-main-block__title {
+  font-weight: 700;
+  line-height: 136%;
+  margin: 0 5px;
+  flex: 1 1 50%;
+}
+.battle-title {
+  font-size: 35px;
+  font-weight: 48px;
+  text-align: center;
+  margin-bottom: 45px;
+}
+.battle-title__button {
+  flex: 1 1 50%;
+  margin-top: -15px;
+}
+.battle-button {
+  background-color: #c6e485;
+  border-radius: 75px;
+  max-width: 359px;
+  min-height: 84px;
+  display: flex;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 136%;
+  color: #1d6a1d;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 36px;
+  flex-wrap: nowrap;
+  margin: auto;
+}
+.battle-button:hover {
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff,
+      0 0 40px #c6e485, 0 0 80px #c6e485, 0 0 90px #c6e485, 0 0 100px #c6e485,
+      0 0 150px #c6e485;
+  }
+
+@media (max-width: 1190px) {
+  .battle-main-block__title {
+    font-size: 30px;
+  }
+  .battle-main-block__body {
+    width: 1073px;
+    margin-left: 85px;
+  }
+}
+@media (max-width: 1025px) {
+  .battle-main-block__body {
+    width: 750px;
+    margin-left: 60px;
+  }
+  .battle-button {
+    min-height: 60px;
+    font-size: 25px;
+    max-width: 220px;
+    border-radius: 45px;
+  }
+  .battle-title__button {
+    flex: 1 1 50%;
+    margin-top: 0px;
+  }
+}
+@media (max-width: 769px) {
+  .battle-main-block__body {
+    width: 600px;
+    margin-left: 60px;
+  }
+  .battle-button {
+    min-height: 60px;
+    font-size: 25px;
+    max-width: 220px;
+    border-radius: 45px;
+  }
+  .battle-title__button {
+    flex: 1 1 50%;
+    margin-top: 0px;
+  }
+}
+.battle-page__current-battles {
+  background: linear-gradient(103.37deg, #9324a5 0%, #5524a5 100%);
+}
+.battle-container :not(:last-child) {
+  margin-bottom: 60px;
+}
+.current-battles__title {
+  font-size: 45px;
+}
+.current-battles__body,
+.abandoned-battles__body,
+.to-you-challenges-battles__body {
+  display: flex;
+  margin-left: -218px;
+}
+.current-battles__column,
+.abandoned-battles__column,
+.to-you-challenges-battles__column {
+  flex: 0 1 33.3333333%;
+  margin-left: 109px;
+}
+.current-battles__column :first-child,
+.abandoned-battles__column
+  :first-child.to-you-challenges-battles__column
+  :first-child {
+  margin-left: 0px;
+}
+.battle-item {
+  display: flex;
+}
+.battle-item > * {
+  padding: 0px 5px;
+}
+.battle-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.battle-info > * {
+  max-width: 183px;
+}
+.battle-info :not(:last-child) {
+  margin-bottom: 10px;
+}
+.battle-info__title {
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 136%;
+}
+.battle-info__text {
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 136%;
+}
+.battle-item__photo {
+  height: 120px;
+  width: 120px;
+  object-fit: cover;
+  border: 1px solid #737373;
+  border-radius: 50%;
+}
+.battle-item {
+  margin-right: 39px;
+}
+.mini-button {
+  max-width: 164px;
+  height: 54px;
+  max-height: 54px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 137.5%;
+}
+@media (max-width: 1369px) {
+  .current-battles__body,
+  .abandoned-battles__body,
+  .to-you-challenges-battles__body {
+    max-width: 1100px;
+  }
+  .mini-button {
+    max-width: 154px;
+    font-size: 22px;
+  }
+  .battle-item {
+    margin-right: 30px;
+  }
+  .battle-item__photo {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border: 1px solid #737373;
+    border-radius: 50%;
+  }
+  .battle-info__title {
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 136%;
+  }
+  .battle-info__text {
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 136%;
+  }
+  .current-battles__body,
+  .abandoned-battles__body {
+    margin-left: -89px;
+  }
+}
+@media (max-width: 1190px) {
+  .current-battles__body,
+  .abandoned-battles__body {
+    flex-wrap: wrap;
+    width: 1400px;
+  }
+  .current-battles__column,
+  .abandoned-battles__column {
+    flex: 0 0 25%;
+    width: 400px;
+  }
+}
+@media (max-width: 999px) {
+  .current-battles__column,
+  .abandoned-battles__column {
+    margin-left: 80px;
+    padding: 0 5px;
+  }
+}
+@media (max-width: 769px) {
+  .current-battles__body,
+  .abandoned-battles__body {
+    max-width: 763px;
+  }
+  .mini-button {
+    max-width: 144px;
+    font-size: 18px;
+  }
+  .battle-item {
+    margin-right: 25px;
+  }
+  .battle-item__photo {
+    height: 85px;
+    width: 85px;
+    object-fit: cover;
+    border: 1px solid #737373;
+    border-radius: 50%;
+  }
+  .battle-info__title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 136%;
+  }
+  .battle-info__text {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 136%;
+  }
+  .current-battles__body,
+  .abandoned-battles__body,
+  .to-you-challenges-battles__body {
+    margin-left: -76px;
+  }
+}
+.battle-page__abandoned-battles {
+  background: #9324a5;
+}
+.abandoned-battles__title {
+  padding-top: 30px;
+}
+.orange {
+  background-color: #fc7c61;
+  color: #8e3838;
+}
+.abandoned-battles__button {
+  margin-top: 20px;
+}
+.abandoned-battles__title {
+  font-size: 48px;
+}
+.battle-page__to-you-challenges-battles {
+  background: linear-gradient(285.51deg, #a52489 18.87%, #8e24a5 80.29%);
+}
+.to-you-challenges-battles__title {
+  padding-top: 30px;
+}
+.battle-info__buttons {
+  display: flex;
+  margin: 0 -15px;
+}
+.battle-info__buttons > * {
+  flex: 1 1 50%;
+  margin: 0 15px;
+}
+.mrg-0 {
+  margin: 0px;
+}
+@media (max-width: 1369px) {
+  .to-you-challenges-battles__body {
+    margin-left: -70px;
+    flex-wrap: wrap;
+  }
+  .to-you-challenges-battles__column {
+    flex: 0 0 35%;
+    width: 400px;
+    margin-right: 10px;
+  }
+}
+@media (max-width: 1190px) {
+  .to-you-challenges-battles__body {
+    flex-wrap: wrap;
+    width: 1400px;
+  }
+}
+@media (max-width: 999px) {
+  .to-you-challenges-battles__column {
+    margin-left: 60px;
+    padding: 0 5px;
+  }
+  .to-you-challenges-battles__body {
+    max-width: 763px;
+  }
+  .adapt-photo {
+    width: 80px;
+    height: 80px;
+  }
+  .adapt-title{
+    font-size: 20px;
+  }
+  .adapt-button{
+    font-size: 20px;
+    width: 114px;
+    height: 45px;
+  }
+}
+@media (max-width: 769px) {
+  .to-you-challenges-battles__body {
+    max-width: 763px;
+  }
+  .adapt-photo {
+    width: 60px;
+    height: 60px;
+  }
+  .adapt-title{
+    font-size: 15px;
+  }
+  .adapt-button{
+    font-size: 15px;
+    width: 100px;
+    height: 35px;
+  }
+}
