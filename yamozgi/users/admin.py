@@ -21,7 +21,8 @@ class UserAdmin(BaseUserAdmin):
     )
     list_display_links = ("login",)
     fieldsets = (
-        (("Персональная информация"), {"fields": ("login", "email", "birthday")}),
+        (("Персональная информация"),
+         {"fields": ("login", "email", "birthday")}),
         (
             ("Статус"),
             {
