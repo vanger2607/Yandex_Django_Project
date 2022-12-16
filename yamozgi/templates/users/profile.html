@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link rel="stylesheet" href="{% static '\users\css\profile.css' %}" />
+{% endblock %} {% block content %}
+<div class="profile-page">
+  <div class="profile-page__main-block profile-main-block">
+    <div class="_container">
+      <div class="profile-main-block__body">
+        <div class="profile-main-block__title profile-title">Мой профиль</div>
+        <form method="post" action="{% url 'users:profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+          <div class="form__body">
+            <div class="form__pic left-column">
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="form__photo"
+              />
+              <div class="new-photo-button profile-button form__button">
+                Обновить изображение
+              </div>
+              <div class="left-column__birthday-flex">
+                <div class="left-column__birthday birthday">День рождения:</div>
+                {{form.birthday}}
+              </div>
+            </div>
+            <div class="form__inputs inputs">
+                {{form.login}}
+                {{form.email}}
+            </div>
+          </div>
+          <div class="form__submit-buttons">
+            <input type="submit" value="Сохранить изменения" class="profile-button">
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

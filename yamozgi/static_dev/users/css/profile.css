@@ -1,0 +1,130 @@
+.profile-page {
+  background: linear-gradient(103.37deg, #9324a5 0%, #5524a5 100%);
+}
+.profile-main-block {
+  position: relative;
+  align-items: center;
+}
+.profile-main-block__body {
+  padding: 180px 2px;
+  margin: 0px 140px;
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  text-align: center;
+}
+.profile-title {
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 135%;
+}
+.profile-main-block__title {
+  margin-bottom: 70px;
+}
+.form__body {
+  display: flex;
+  width: 1200px;
+  margin: 0px -171px;
+}
+.form__pic {
+  margin-right: 75px;
+}
+.form__photo {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border: 1px solid #737373;
+  border-radius: 50%;
+  margin-bottom: 50px;
+}
+
+.profile-button {
+  background-color: #c6e485;
+  border-radius: 75px;
+  width: 430px;
+  height: 67px;
+  display: flex;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 137.5%;
+  color: #1d6a1d;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  flex-wrap: nowrap;
+  margin: auto;
+}
+.profile-button:hover {
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff,
+    0 0 40px #c6e485, 0 0 80px #c6e485, 0 0 90px #c6e485, 0 0 100px #c6e485,
+    0 0 150px #c6e485;
+}
+.form__button{
+    margin-bottom: 33px;
+}
+.form__inputs {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+}
+.inputs__input {
+  border: 1px solid #737373;
+  border-radius: 35px;
+  padding: 26px 37px;
+  flex: 0 1 100%;
+  max-height: 106px;
+}
+.inputs :not(:last-child) {
+  margin-bottom: 28px;
+}
+.light-pink-input {
+  background: #e0cfed;
+  color: #972499;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 135%;
+}
+.light-pink-input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #972499;
+  opacity: 1; /* Firefox */
+}
+
+.light-pink-input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #972499;
+}
+
+.light-pink-input::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #972499;
+}
+.medium-input {
+  max-width: 661px;
+  height: 90px;
+}
+.left-column__birthday-flex{
+    display: flex;
+    text-align: center;
+
+}
+.left-column__birthday{
+    margin-top: 7px;
+    margin-right: 10px;
+}
+.birthday{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 135%;
+  flex: 0 1 50%
+}
+.date-input{
+    border: 1px solid #737373;
+    border-radius: 20px;
+    font-size: 24px;
+    max-height: 58px;
+    width: 84px;
+    height: 58;
+    padding: 4px 10px;
+    flex: 0 1 50%;
+}
