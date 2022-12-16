@@ -10,33 +10,99 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('category', '0001_initial'),
+        ("category", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CustomUser',
+            name="CustomUser",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('login', models.CharField(help_text='Максимальная длина 100 символов', max_length=100, verbose_name='имя пользователя')),
-                ('email', models.EmailField(help_text='Максимальная длина 150 символов', max_length=150, unique=True, verbose_name='почта')),
-                ('birthday', models.DateField(blank=True, help_text='Укажите дату рождения', null=True, verbose_name='день рождения')),
-                ('count_of_battles', models.IntegerField(null=True, verbose_name='количество битв')),
-                ('count_of_wins', models.IntegerField(null=True, verbose_name='количество побед')),
-                ('count_of_questions', models.IntegerField(null=True, verbose_name='количество созданных вопросов')),
-                ('is_staff', models.BooleanField(default=False, verbose_name='сотрудник')),
-                ('is_superuser', models.BooleanField(default=False, verbose_name='админ')),
-                ('is_active', models.BooleanField(default=True, verbose_name='активный пользователь')),
-                ('best_category', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='category.category', verbose_name='лучшая категория')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "login",
+                    models.CharField(
+                        help_text="Максимальная длина 100 символов",
+                        max_length=100,
+                        verbose_name="имя пользователя",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        help_text="Максимальная длина 150 символов",
+                        max_length=150,
+                        unique=True,
+                        verbose_name="почта",
+                    ),
+                ),
+                (
+                    "birthday",
+                    models.DateField(
+                        blank=True,
+                        help_text="Укажите дату рождения",
+                        null=True,
+                        verbose_name="день рождения",
+                    ),
+                ),
+                (
+                    "count_of_battles",
+                    models.IntegerField(null=True, verbose_name="количество битв"),
+                ),
+                (
+                    "count_of_wins",
+                    models.IntegerField(null=True, verbose_name="количество побед"),
+                ),
+                (
+                    "count_of_questions",
+                    models.IntegerField(
+                        null=True, verbose_name="количество созданных вопросов"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(default=False, verbose_name="сотрудник"),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(default=False, verbose_name="админ"),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True, verbose_name="активный пользователь"
+                    ),
+                ),
+                (
+                    "best_category",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="category.category",
+                        verbose_name="лучшая категория",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'пользователь',
-                'verbose_name_plural': 'пользователи',
+                "verbose_name": "пользователь",
+                "verbose_name_plural": "пользователи",
             },
             managers=[
-                ('objects', users.managers.CustomUserManager()),
+                ("objects", users.managers.CustomUserManager()),
             ],
         ),
     ]

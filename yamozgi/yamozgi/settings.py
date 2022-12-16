@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", default="not_so_secret")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -26,15 +26,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "homepage.apps.HomepageConfig",
     "questions.apps.QuestionsConfig",
     "duels.apps.DuelsConfig",
     "arena.apps.ArenaConfig",
     "category.apps.CategoryConfig",
-
     "sorl.thumbnail",
-    "debug_toolbar"
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -53,7 +51,7 @@ ROOT_URLCONF = "yamozgi.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -80,7 +78,7 @@ DATABASES = {
 }
 
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = "users.CustomUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -120,9 +118,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

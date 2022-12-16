@@ -7,21 +7,28 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('created', models.DateTimeField(editable=False)),
-                ('modified', models.DateTimeField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("created", models.DateTimeField(editable=False)),
+                ("modified", models.DateTimeField()),
             ],
             options={
-                'verbose_name': 'категория вопроса',
-                'verbose_name_plural': 'категории вопросов',
+                "verbose_name": "категория вопроса",
+                "verbose_name_plural": "категории вопросов",
             },
         ),
     ]

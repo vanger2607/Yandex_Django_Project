@@ -15,37 +15,66 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('created', models.DateTimeField(editable=False)),
-                ('modified', models.DateTimeField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("created", models.DateTimeField(editable=False)),
+                ("modified", models.DateTimeField()),
             ],
             options={
-                'verbose_name': 'категория вопроса',
-                'verbose_name_plural': 'категории вопросов',
+                "verbose_name": "категория вопроса",
+                "verbose_name_plural": "категории вопросов",
             },
         ),
         migrations.CreateModel(
-            name='Question',
+            name="Question",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question_text', models.TextField(max_length=250)),
-                ('question_choice1', models.TextField(max_length=250)),
-                ('question_choice2', models.TextField(max_length=250)),
-                ('question_choice3', models.TextField(max_length=250)),
-                ('question_choice4', models.TextField(max_length=250)),
-                ('time_to_answer', models.PositiveIntegerField()),
-                ('is_approved', models.BooleanField()),
-                ('created', models.DateTimeField(editable=False)),
-                ('modified', models.DateTimeField()),
-                ('author', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='questions.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("question_text", models.TextField(max_length=250)),
+                ("question_choice1", models.TextField(max_length=250)),
+                ("question_choice2", models.TextField(max_length=250)),
+                ("question_choice3", models.TextField(max_length=250)),
+                ("question_choice4", models.TextField(max_length=250)),
+                ("time_to_answer", models.PositiveIntegerField()),
+                ("is_approved", models.BooleanField()),
+                ("created", models.DateTimeField(editable=False)),
+                ("modified", models.DateTimeField()),
+                (
+                    "author",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="questions.category",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'вопрос',
-                'verbose_name_plural': 'вопросы',
+                "verbose_name": "вопрос",
+                "verbose_name_plural": "вопросы",
             },
         ),
     ]

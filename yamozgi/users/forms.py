@@ -6,11 +6,11 @@ from .models import CustomUser
 class SignupForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
-        self.fields['password_confirm'] = forms.CharField(
+        self.fields["password_confirm"] = forms.CharField(
             max_length=128,
             required=True,
-            label='Подтвердите пароль',
-            widget=forms.PasswordInput(attrs={'class': 'form-control'})
+            label="Подтвердите пароль",
+            widget=forms.PasswordInput(attrs={"class": "form-control"}),
         )
 
     class Meta:
@@ -22,25 +22,21 @@ class SignupForm(forms.ModelForm):
         fields = (mail, login, password)
 
         labels = {
-            mail: 'Электронная почта',
-            login: 'Логин',
-            password: 'Пароль',
+            mail: "Электронная почта",
+            login: "Логин",
+            password: "Пароль",
         }
 
         widgets = {
-            mail: forms.EmailInput(
-                attrs={'class': 'form-control',
-                       'required': True}),
-            login: forms.TextInput(
-                attrs={'class': 'form-control',
-                       'required': True}),
+            mail: forms.EmailInput(attrs={"class": "form-control", "required": True}),
+            login: forms.TextInput(attrs={"class": "form-control", "required": True}),
             password: forms.PasswordInput(
-                attrs={'class': 'form-control',
-                       'required': True}),
+                attrs={"class": "form-control", "required": True}
+            ),
         }
 
     error_messages = {
-        'password_mismatch': 'Пароли не совпадают',
+        "password_mismatch": "Пароли не совпадают",
     }
 
     def clean_password_confirm(self):
@@ -50,7 +46,7 @@ class SignupForm(forms.ModelForm):
 
         if password != password_confirm:
             raise forms.ValidationError(
-                self.error_messages['password_mismatch'],
-                code='password_mismatch',
+                self.error_messages["password_mismatch"],
+                code="password_mismatch",
             )
         return cleaned_data

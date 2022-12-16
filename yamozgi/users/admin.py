@@ -11,15 +11,23 @@ class UserChangeForm(BaseUserChangeForm):
 
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ('login', 'email', 'is_active',
-                    'is_superuser', 'is_staff', 'last_login')
-    list_display_links = ('login',)
+    list_display = (
+        "login",
+        "email",
+        "is_active",
+        "is_superuser",
+        "is_staff",
+        "last_login",
+    )
+    list_display_links = ("login",)
     fieldsets = (
-        (('Персональная информация'),
-         {'fields': ('login', 'email', 'birthday')}),
-        (('Статус'), {
-            'fields': ('is_staff', 'is_superuser', 'is_active'),
-        }),
+        (("Персональная информация"), {"fields": ("login", "email", "birthday")}),
+        (
+            ("Статус"),
+            {
+                "fields": ("is_staff", "is_superuser", "is_active"),
+            },
+        ),
     )
 
     list_filter = ()
