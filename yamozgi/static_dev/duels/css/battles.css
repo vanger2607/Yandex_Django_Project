@@ -53,6 +53,11 @@
   flex-wrap: nowrap;
   margin: auto;
 }
+.battle-button:hover {
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff,
+      0 0 40px #c6e485, 0 0 80px #c6e485, 0 0 90px #c6e485, 0 0 100px #c6e485,
+      0 0 150px #c6e485;
+  }
 
 @media (max-width: 1190px) {
   .battle-main-block__title {
