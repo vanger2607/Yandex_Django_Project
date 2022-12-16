@@ -7,7 +7,8 @@ from .managers import CustomUserManager
 
 class CustomUser(AbstractBaseUser):
     login = models.CharField(
-        "имя пользователя", max_length=100, help_text="Максимальная длина 100 символов"
+        "имя пользователя", max_length=100,
+        help_text="Максимальная длина 100 символов"
     )
     email = models.EmailField(
         "почта",
@@ -17,16 +18,19 @@ class CustomUser(AbstractBaseUser):
     )
 
     birthday = models.DateField(
-        "день рождения", blank=True, null=True, help_text="Укажите дату рождения"
+        "день рождения", blank=True, null=True,
+        help_text="Укажите дату рождения"
     )
 
     best_category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, verbose_name="лучшая категория", null=True
+        Category, on_delete=models.CASCADE,
+        verbose_name="лучшая категория", null=True
     )
 
     count_of_battles = models.IntegerField("количество битв", null=True)
     count_of_wins = models.IntegerField("количество побед", null=True)
-    count_of_questions = models.IntegerField("количество созданных вопросов", null=True)
+    count_of_questions = models.IntegerField("количество созданных вопросов",
+                                             null=True)
 
     is_staff = models.BooleanField("сотрудник", default=False)
     is_superuser = models.BooleanField("админ", default=False)
