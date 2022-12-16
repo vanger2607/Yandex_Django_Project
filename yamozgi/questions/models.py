@@ -6,7 +6,9 @@ from users.models import CustomUser
 
 
 class Question(models.Model):
-    author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(CustomUser,
+                               on_delete=models.SET_NULL,
+                               null=True)
     question_text = models.TextField(max_length=250)
 
     question_choice1 = models.TextField(max_length=250)
