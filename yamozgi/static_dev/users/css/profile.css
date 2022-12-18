@@ -99,6 +99,14 @@
   /* Microsoft Edge */
   color: #972499;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-text-fill-color: #972499;
+    
+}
+
 .medium-input {
   max-width: 661px;
   height: 90px;

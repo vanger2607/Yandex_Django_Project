@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static '\users\css\signin.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="signin-page">
+  <div class="signin-page__main-block signin-main-block">
+    <div class="container">
+      <div class="signin-main-block__body">
+        <div class="signin-main-block__title title">Авторизация</div>
+        <form method="post" action="{% url 'users:signin' %}" class="main-block__signin">
+          {% for field in form %}
+          <div class="one-field"><p class="one-field__label">{{field.label_tag}}</p>
+          <div>{{field}}</div></div>{% endfor %}
+          <div class="form__button">
+            <a href="#" class="signin-button">Подтвердить</a>
+          </div>
+          <div class="help-buttons">
+            <div class="help-buttons__body buttons-body">
+              <div class="buttons-body__text">Нет аккаунта?</div>
+              <a href="{% url 'users:signup' %}" class="buttons-body__button signin-button">Создать</a>
+            </div>
+            <div class="help-buttons__body buttons-body">
+              <div class="buttons-body__text">Забыли пароль?</div>
+              <a href="{% url 'users:signup' %}" class="buttons-body__button signin-button big-button">Восстановить</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
