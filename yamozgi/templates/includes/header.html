@@ -1,7 +1,7 @@
 <header class="header">
   {% with request.resolver_match.view_name as view_name %}
     <div class="header__container _container">
-      <div class="alert">
+      <div class="myalert">
         Пожалуйста, поверните экран телефона для правильной работы сайта
       </div>
       <nav class="header__menu menu">
@@ -28,25 +28,40 @@
           </li>
 
         </ul>
-        {% if view_name == 'users:profile' %}
+        {% if request.user.is_authenticated %}
+          {% if view_name == 'users:profile' %}
+            <div class="header__profile profile">
+              <a href="{% url 'users:profile' %}" class="profile__name active">Профиль</a>
+              <img
+                src="..\..\static_dev\homepage\img\me.png"
+                alt="картинка-пользователя"
+                class="profile__photo"
+              />
+            </div>
+          {% else %}
           <div class="header__profile profile">
-            <a href="{% url 'users:profile' %}" class="profile__name active">Профиль</a>
+            <a href="{% url 'users:profile' %}" class="profile__name">Профиль</a>
             <img
               src="..\..\static_dev\homepage\img\me.png"
               alt="картинка-пользователя"
               class="profile__photo"
             />
           </div>
+          {%endif %}
         {% else %}
-        <div class="header__profile profile">
-          <a href="{% url 'users:profile' %}" class="profile__name">Профиль</a>
-          <img
-            src="..\..\static_dev\homepage\img\me.png"
-            alt="картинка-пользователя"
-            class="profile__photo"
-          />
-        </div>
-        {%endif %}
+          <div class="header__reg-und-sig reg-und-sig">
+            {% if view_name == 'users:signup' %}
+              <a href="{% url 'users:signup' %}" class="reg-und-sig__item active">Зарегистрироваться</a>
+            {% else %}
+              <a href="{% url 'users:signup' %}" class="reg-und-sig__item">Зарегистрироваться</a>
+            {% endif %}
+            {% if view_name == 'users:signin' %}
+              <a href="{% url 'users:signin' %}" class="reg-und-sig__item active">Войти</a>
+            {% else %}
+              <a href="{% url 'users:signin' %}" class="reg-und-sig__item">Войти</a>
+            {% endif %}
+          </div>
+        {% endif %}
         {% endwith %}
       </nav>
     </div>

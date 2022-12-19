@@ -1,6 +1,8 @@
 from django import forms
+from django.contrib.auth.forms import PasswordResetForm
+from django.core.exceptions import ValidationError
 from django.forms import SelectDateWidget, TextInput, EmailInput
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 
 from .models import CustomUser
 
@@ -32,67 +34,49 @@ class ProfileForm(forms.ModelForm):
 
 
 class SignUpForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(SignUpForm, self).__init__(*args, **kwargs)
-        self.fields["password_confirm"] = forms.CharField(
-            max_length=128,
-            required=True,
-            label="Подтвердите пароль",
-            widget=forms.PasswordInput(
-                attrs={"class": "form-field light-pink-input"}
-            ),
-        )
+    password1 = forms.CharField(
+        label=("пароль:"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                "class": "form-field light-pink-input",
+            }
+        ),
+    )
+    password2 = forms.CharField(
+        label="повторите пароль",
+        widget=forms.PasswordInput(
+            attrs={"class": "form-field light-pink-input"}
+        ),
+    )
 
     class Meta:
         model = CustomUser
-        login = CustomUser.login.field.name
-        mail = CustomUser.email.field.name
-        password = CustomUser.password.field.name
-
-        fields = (mail, login, password)
-
-        labels = {
-            mail: "Электронная почта",
-            login: "Логин",
-            password: "Пароль",
-        }
-
+        fields = ["email"]
+        CustomUser.login.label_classes = "form-label"
         widgets = {
-            mail: forms.EmailInput(
+            "Никнэйм": TextInput(
                 attrs={
                     "class": "form-field light-pink-input",
-                    "required": True,
+                    "placeholder": "ник",
                 }
             ),
-            login: forms.TextInput(
+            "email": EmailInput(
                 attrs={
                     "class": "form-field light-pink-input",
-                    "required": True,
+                    "placeholder": "example@mail.ru",
                 }
             ),
-            password: forms.PasswordInput(
+            "password2": forms.PasswordInput(
                 attrs={
                     "class": "form-field light-pink-input",
-                    "required": True,
                 }
             ),
         }
 
-    error_messages = {
-        "password_mismatch": "Пароли не совпадают",
-    }
 
-    def clean_password_confirm(self):
-        cleaned_data = super(SignUpForm, self).clean()
-        password = cleaned_data.get("password")
-        password_confirm = cleaned_data.get("password_confirm")
-
-        if password != password_confirm:
-            raise forms.ValidationError(
-                self.error_messages["password_mismatch"],
-                code="password_mismatch",
-            )
-        return cleaned_data
+FIELD_NAME_MAPPING = {"username": "email"}
 
 
 class SignInForm(AuthenticationForm):
@@ -135,3 +119,89 @@ class SignInForm(AuthenticationForm):
                 }
             ),
         }
+
+
+class MySetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label="ведите новый пароль",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "новый пароль",
+                "class": "form-field light-pink-input",
+                "autofocus": True,
+            }
+        ),
+    )
+    new_password2 = forms.CharField(
+        label="повторите новый пароль",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "повторите пароль",
+                "class": "form-field light-pink-input",
+            }
+        ),
+    )
+
+
+class MyPasswordChangeForm(MySetPasswordForm):
+    error_messages = {
+        **SetPasswordForm.error_messages,
+        "password_incorrect": (
+            "Ваш старый пароль был введен неправильно," "попробуйте еще раз"
+        ),
+    }
+    old_password = forms.CharField(
+        label="старый пароль",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "current-password",
+                "autofocus": True,
+                "class": "form-field light-pink-input",
+            }
+        ),
+    )
+
+    field_order = ["old_password", "new_password1", "new_password2"]
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data["old_password"]
+        if not self.user.check_password(old_password):
+            raise ValidationError(
+                self.error_messages["password_incorrect"],
+                code="password_incorrect",
+            )
+        return old_password
+
+
+class MyResetPasswordForm(PasswordResetForm):
+    email = forms.EmailField(
+        label=("Почта"),
+        max_length=254,
+        widget=forms.EmailInput(attrs={'autocomplete': 'email', "class": "form-field light-pink-input",})
+    )
+
+
+class MySetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label="ведите новый пароль",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "новый пароль",
+                "class": "form-field light-pink-input",
+                "autofocus": True,
+            }
+        ),
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label="повторите новый пароль",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "повторите пароль",
+                "class": "form-field light-pink-input",
+            }
+        ),
+    )

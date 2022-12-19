@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+
+from users.models import CustomUser
 
 
 class Category(models.Model):
@@ -20,7 +21,11 @@ class Category(models.Model):
 
 
 class Question(models.Model):
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
     question_text = models.TextField(max_length=250)
 
     question_choice1 = models.TextField(max_length=250)
@@ -28,7 +33,6 @@ class Question(models.Model):
     question_choice3 = models.TextField(max_length=250)
     question_choice4 = models.TextField(max_length=250)
 
-    time_to_answer = models.PositiveIntegerField()
     is_approved = models.BooleanField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created = models.DateTimeField(editable=False)

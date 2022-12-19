@@ -8,8 +8,8 @@ from .managers import CustomUserManager
 class CustomUser(AbstractBaseUser):
     login = models.CharField(
         "имя пользователя",
-        max_length=30,
-        help_text="Максимальная длина 30 символов",
+        max_length=13,
+        help_text="Максимальная длина 13 символов",
     )
     email = models.EmailField(
         "почта",

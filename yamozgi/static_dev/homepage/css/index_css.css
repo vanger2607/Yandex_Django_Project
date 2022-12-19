@@ -111,13 +111,14 @@ body {
   display: flex;
   flex-direction: column;
 }
-.alert {
+.myalert {
   display: none;
 }
 /*-------HEADER-------------*/
 .header {
   position: fixed;
   width: 100%;
+  min-height:65px;
   left: 0;
   top: 0;
   z-index: 20;
@@ -151,12 +152,7 @@ body {
 .profile__name {
   color: #e0cfed;
 }
-.active {
-  font-weight: 700;
-  color: #fff;
-  pointer-events: none;
-  cursor: default; 
-}
+
 .header__profile {
 }
 .profile {
@@ -175,7 +171,20 @@ body {
   border: 1px solid #737373;
   border-radius: 50%;
 }
+.reg-und-sig__item {
+  color: #e0cfed;
 
+}
+.reg-und-sig :not(:last-child) {
+  margin-right: 10px;
+
+}
+.active {
+  font-weight: 700;
+  color: #fff;
+  pointer-events: none;
+  cursor: default; 
+}
 /*-------HEADER_MEDIA--------*/
 @media (max-width: 841px) {
   .profile :not(:last-child) {
@@ -251,6 +260,27 @@ body {
     0 0 40px #c6e485, 0 0 80px #c6e485, 0 0 90px #c6e485, 0 0 100px #c6e485,
     0 0 150px #c6e485;
 }
+.alert-danger {
+  color: #ffffff;
+  background-color: #ff0015;
+  border-color: #ff0019;
+  height: 25px;
+  margin: 10px 0px;
+}
+.closebtn {
+  margin-left: 15px;
+  color: #fff;
+  font-weight: bold;
+  float: right;
+  font-size: 26px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
 @media (max-width: 889px) {
   .title{
     font-size: 30px;
@@ -274,7 +304,7 @@ body {
   }
 }
 @media (max-width: 655px) {
-  .alert {
+  .myalert {
     color: white;
     display: block;
     margin-top: 100px;

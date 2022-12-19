@@ -20,4 +20,34 @@ urlpatterns = [
         views.SignUp.as_view(),
         name="signup",
     ),
+    path(
+        "change_password",
+        views.ChangePassword.as_view(),
+        name="change_password",
+    ),
+    path(
+        "change_password_done",
+        views.ChangePasswordDone.as_view(),
+        name="changed_password_done",
+    ),
+    path(
+        "reset_password",
+        views.ResetPassword.as_view(),
+        name="reset_password",
+    ),
+    path(
+        "reset_password_done",
+        views.ResetPasswordDone.as_view(),
+        name="reset_password_done",
+    ),
+    path(
+        "reset/<uidb64>/<token>/",
+        views.PasswordResetConfirm.as_view(),
+        name="password_reset_confirm",
+    ),
+    path(
+        "password_reset_complete/",
+        views.PasswordResetComplete.as_view(),
+        name="password_reset_complete",
+    ),
 ]

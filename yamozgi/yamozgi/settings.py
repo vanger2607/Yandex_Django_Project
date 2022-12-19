@@ -98,7 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
 
@@ -111,7 +111,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+AUTH_USER_MODEL = "users.CustomUser"
+LOGIN_REDIRECT_URL = "homepage:home"
+LOGIN_REDIRECT_URL = "homepage:home"
 STATIC_URL = "/static_dev/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static_dev"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -119,3 +121,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / "send_mail"
+EMAIL_USE_TLS = True

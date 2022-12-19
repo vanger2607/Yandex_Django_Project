@@ -9,12 +9,23 @@
     <div class="container">
       <div class="signin-main-block__body">
         <div class="signin-main-block__title title">Авторизация</div>
+        {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %} 
+               <div class="alert alert-danger" id="error">
+                    <strong>{{ error|escape }}</strong>
+                    <span class="closebtn" onclick="hide_button()" >×</span>
+               </div>
+            {% endfor %}
+        {% endfor %}
+     {% endif %}
         <form method="post" action="{% url 'users:signin' %}" class="main-block__signin">
+          {% csrf_token %}
           {% for field in form %}
           <div class="one-field"><p class="one-field__label">{{field.label_tag}}</p>
           <div>{{field}}</div></div>{% endfor %}
           <div class="form__button">
-            <a href="#" class="signin-button">Подтвердить</a>
+            <button type="submit" class="signin-button">Подтвердить</button>
           </div>
           <div class="help-buttons">
             <div class="help-buttons__body buttons-body">
@@ -23,7 +34,7 @@
             </div>
             <div class="help-buttons__body buttons-body">
               <div class="buttons-body__text">Забыли пароль?</div>
-              <a href="{% url 'users:signup' %}" class="buttons-body__button signin-button big-button">Восстановить</a>
+              <a href="{% url 'users:reset_password' %}" class="buttons-body__button signin-button big-button">Восстановить</a>
             </div>
           </div>
         </form>
@@ -31,4 +42,5 @@
     </div>
   </div>
 </div>
+<script src="{% static '\includes\js\hide_button.js' %}"></script>
 {% endblock %}
