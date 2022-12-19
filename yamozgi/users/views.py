@@ -1,8 +1,23 @@
 from django.views.generic import TemplateView, FormView, CreateView
-from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordChangeView,
+    PasswordChangeDoneView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 from django.urls import reverse_lazy
 
-from .forms import ProfileForm, SignInForm, SignUpForm, MyPasswordChangeForm, MyResetPasswordForm,MySetPasswordForm
+from .forms import (
+    ProfileForm,
+    SignInForm,
+    SignUpForm,
+    MyPasswordChangeForm,
+    MyResetPasswordForm,
+    MySetPasswordForm,
+)
 
 
 class Profile(TemplateView, FormView):

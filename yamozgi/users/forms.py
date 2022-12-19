@@ -179,7 +179,12 @@ class MyResetPasswordForm(PasswordResetForm):
     email = forms.EmailField(
         label=("Почта"),
         max_length=254,
-        widget=forms.EmailInput(attrs={'autocomplete': 'email', "class": "form-field light-pink-input",})
+        widget=forms.EmailInput(
+            attrs={
+                "autocomplete": "email",
+                "class": "form-field light-pink-input",
+            }
+        ),
     )
 
 
