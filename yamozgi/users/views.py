@@ -1,30 +1,19 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView
-
-from . import forms
+from django.views.generic.edit import CreateView
+from users.forms import SignUpForm, SignInForm
 from users.models import CustomUser
+from django.urls import reverse_lazy
 
 
-def sign_up(request):
+class SignUp(CreateView):
+    form_class = SignUpForm
+    success_url = reverse_lazy("users:signin")
     template_name = "users/signup.html"
-    form = forms.SignUpForm(request.POST or None)
-    context = {
-        "form": form,
-    }
-
-    if request.method == "POST" and form.is_valid():
-        login = form.cleaned_data["login"]
-        mail = form.cleaned_data["email"]
-        password = form.cleaned_data["password"]
-
-        CustomUser.objects.create_user(mail, login, password)
-        return redirect("users:signin")
-
-    return render(request, template_name, context)
 
 
 class SignIn(LoginView):
-    form_class = forms.SignInForm
+    form_class = SignInForm
     template_name = "users/signin.html"
 
     def get_context_data(self, **kwargs):
