@@ -24,9 +24,25 @@ class Profile(TemplateView, FormView):
     template_name = "users/profile.html"
     form_class = ProfileForm
 
+    def form_valid(self, form):
+        user = self.request.user
+        user.login = form.cleaned_data["login"]
+        user.birthday = form.cleaned_data["birthday"]
+
+        user.save()
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
+        userform = self.form_class(self.request.POST or None,
+                                   initial={'login': user.login,
+                                            'email': user.email})
+        context['form'] = userform
         return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("users:profile")
 
 
 class SignIn(LoginView):

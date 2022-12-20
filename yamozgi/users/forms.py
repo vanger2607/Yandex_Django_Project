@@ -11,18 +11,11 @@ from .models import CustomUser
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = {"login", "email", "birthday"}
+        fields = ["login", "birthday"]
         widgets = {
             "login": TextInput(
                 attrs={
                     "class": "light-pink-input inputs__input",
-                    "placeholder": "Nickname",
-                },
-            ),
-            "email": EmailInput(
-                attrs={
-                    "class": "light-pink-input inputs__input  medium-input",
-                    "placeholder": "Email",
                 },
             ),
             "birthday": SelectDateWidget(
@@ -36,7 +29,7 @@ class ProfileForm(forms.ModelForm):
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
-        label=("пароль:"),
+        label=("Пароль:"),
         strip=False,
         widget=forms.PasswordInput(
             attrs={
@@ -46,7 +39,7 @@ class SignUpForm(UserCreationForm):
         ),
     )
     password2 = forms.CharField(
-        label="повторите пароль",
+        label="Повторите пароль",
         widget=forms.PasswordInput(
             attrs={"class": "form-field light-pink-input"}
         ),
@@ -54,7 +47,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ["email"]
+        fields = ["email", "login"]
         CustomUser.login.label_classes = "form-label"
         widgets = {
             "login": TextInput(
@@ -82,7 +75,7 @@ FIELD_NAME_MAPPING = {"username": "email"}
 
 class SignInForm(AuthenticationForm):
     username = forms.CharField(
-        label="почта или логин",
+        label="Почта",
         widget=(
             forms.EmailInput(
                 attrs={
@@ -93,7 +86,7 @@ class SignInForm(AuthenticationForm):
         ),
     )
     password = forms.CharField(
-        label="пароль",
+        label="Пароль",
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-field light-pink-input",
