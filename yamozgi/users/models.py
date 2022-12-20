@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
 from arena.models import Category
+
 from .managers import CustomUserManager
 
 
