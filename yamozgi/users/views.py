@@ -10,19 +10,13 @@ from django.contrib.auth.views import (
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView
 
-from .forms import (
-    MyPasswordChangeForm,
-    MyResetPasswordForm,
-    MySetPasswordForm,
-    ProfileForm,
-    SignInForm,
-    SignUpForm,
-)
-
-from django.core.files.storage import FileSystemStorage
+from .forms import (MyPasswordChangeForm, MyResetPasswordForm,
+                    MySetPasswordForm, ProfileForm, SignInForm, SignUpForm)
+from .models import CustomUser
 
 
 class Profile(TemplateView, FormView):
+    model = CustomUser
     template_name = "users/profile.html"
     form_class = ProfileForm
 
@@ -44,11 +38,10 @@ class Profile(TemplateView, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        userform = self.form_class(
-            self.request.POST or None,
-            initial={"login": user.login, "email": user.email},
-        )
-        context["form"] = userform
+        userform = self.form_class(self.request.POST or None,
+                                   initial={'login': user.login,
+                                            'birthday': user.birthday})
+        context['form'] = userform
         return context
 
     def get_success_url(self, **kwargs):
