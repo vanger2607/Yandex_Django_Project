@@ -1,6 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
-                                       SetPasswordForm, UserCreationForm)
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm,
+    UserCreationForm,
+)
 from django.core.exceptions import ValidationError
 from django.forms import EmailInput, SelectDateWidget, TextInput
 
@@ -10,7 +14,7 @@ from .models import CustomUser
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ["login", "birthday"]
+        fields = ["login", "birthday", "avatar"]
         widgets = {
             "login": TextInput(
                 attrs={

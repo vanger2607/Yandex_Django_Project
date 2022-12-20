@@ -1,14 +1,25 @@
-from django.contrib.auth.views import (LoginView, PasswordChangeDoneView,
-                                       PasswordChangeView,
-                                       PasswordResetCompleteView,
-                                       PasswordResetConfirmView,
-                                       PasswordResetDoneView,
-                                       PasswordResetView)
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordChangeDoneView,
+    PasswordChangeView,
+    PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
+)
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView
 
-from .forms import (MyPasswordChangeForm, MyResetPasswordForm,
-                    MySetPasswordForm, ProfileForm, SignInForm, SignUpForm)
+from .forms import (
+    MyPasswordChangeForm,
+    MyResetPasswordForm,
+    MySetPasswordForm,
+    ProfileForm,
+    SignInForm,
+    SignUpForm,
+)
+
+from django.core.files.storage import FileSystemStorage
 
 
 class Profile(TemplateView, FormView):
@@ -19,6 +30,13 @@ class Profile(TemplateView, FormView):
         user = self.request.user
         user.login = form.cleaned_data["login"]
         user.birthday = form.cleaned_data["birthday"]
+        if self.request.FILES['upload']:
+            # тут не знаю как картинку в профиле поменять
+            upload = self.request.FILES['upload']
+            fss = FileSystemStorage()
+            file = fss.save(upload.name, upload)
+            file_url = fss.url(file)
+            user.avatar.url = file_url
 
         user.save()
         return super().form_valid(form)
@@ -26,10 +44,11 @@ class Profile(TemplateView, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        userform = self.form_class(self.request.POST or None,
-                                   initial={'login': user.login,
-                                            'email': user.email})
-        context['form'] = userform
+        userform = self.form_class(
+            self.request.POST or None,
+            initial={"login": user.login, "email": user.email},
+        )
+        context["form"] = userform
         return context
 
     def get_success_url(self, **kwargs):

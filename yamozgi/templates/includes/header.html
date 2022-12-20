@@ -33,7 +33,7 @@
             <div class="header__profile profile">
               <a href="{% url 'users:profile' %}" class="profile__name active">Профиль</a>
               <img
-                src="..\..\static_dev\homepage\img\me.png"
+                src={{ user.avatar.url }}
                 alt="картинка-пользователя"
                 class="profile__photo"
               />

@@ -4,6 +4,8 @@ from django.db import models
 from arena.models import Category
 
 from .managers import CustomUserManager
+from django.utils.safestring import mark_safe
+from sorl.thumbnail import get_thumbnail
 
 
 class CustomUser(AbstractBaseUser):
@@ -31,12 +33,35 @@ class CustomUser(AbstractBaseUser):
         on_delete=models.CASCADE,
         verbose_name="лучшая категория",
         null=True,
+        blank=True,
     )
 
-    count_of_battles = models.IntegerField("количество битв", null=True)
-    count_of_wins = models.IntegerField("количество побед", null=True)
+    avatar = models.ImageField(
+        default="..\static_dev\homepage\img\me.png",
+        upload_to="uploads/%Y/%m")
+
+    @property
+    def get_img(self):
+        return get_thumbnail(self.avatar, '300x300', crop='center', quality=51)
+
+    def image_tmb(self):
+        if self.upload:
+            return mark_safe(f'<img src="{self.get_img.url}">')
+        return mark_safe('<img src="..\static_dev\homepage\img\me.png">')
+
+    image_tmb.short_description = 'превью'
+    image_tmb.allow_tags = True
+
+    count_of_battles = models.IntegerField(
+        "количество битв", null=True, blank=True
+    )
+    count_of_wins = models.IntegerField(
+        "количество побед", null=True, blank=True
+    )
     count_of_questions = models.IntegerField(
-        "количество созданных вопросов", null=True
+        "количество созданных вопросов",
+        null=True,
+        blank=True,
     )
 
     is_staff = models.BooleanField("сотрудник", default=False)

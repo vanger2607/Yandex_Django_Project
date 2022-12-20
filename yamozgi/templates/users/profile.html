@@ -21,13 +21,11 @@
           <div class="form__body">
             <div class="form__pic left-column">
               <img
-                src="..\..\static_dev\homepage\img\me.png"
+                src={{ user.avatar.url }}
                 alt="картинка-пользователя"
                 class="form__photo"
               />
-              <div class="new-photo-button profile-button form__button">
-                Обновить изображение
-              </div>
+              <input type="file" name="upload" accept="image/*">
               <div class="left-column__birthday-flex">
                 <div class="left-column__birthday birthday">День рождения:</div>
                 {{form.birthday}}
