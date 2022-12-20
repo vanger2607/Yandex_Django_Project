@@ -18,9 +18,11 @@ from .forms import (
     MyResetPasswordForm,
     MySetPasswordForm,
 )
+from .models import CustomUser
 
 
 class Profile(TemplateView, FormView):
+    model = CustomUser
     template_name = "users/profile.html"
     form_class = ProfileForm
 
@@ -37,7 +39,7 @@ class Profile(TemplateView, FormView):
         user = self.request.user
         userform = self.form_class(self.request.POST or None,
                                    initial={'login': user.login,
-                                            'email': user.email})
+                                            'birthday': user.birthday})
         context['form'] = userform
         return context
 
