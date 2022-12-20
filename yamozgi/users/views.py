@@ -24,6 +24,10 @@ class Profile(TemplateView, FormView):
     template_name = "users/profile.html"
     form_class = ProfileForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 
 class SignIn(LoginView):
     form_class = SignInForm
@@ -37,6 +41,11 @@ class SignIn(LoginView):
 class SignUp(CreateView):
     form_class = SignUpForm
     template_name = "users/signup.html"
+    success_url = reverse_lazy("users:signin")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class ChangePassword(PasswordChangeView):

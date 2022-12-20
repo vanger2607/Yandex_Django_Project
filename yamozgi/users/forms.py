@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import PasswordResetForm
 from django.core.exceptions import ValidationError
 from django.forms import SelectDateWidget, TextInput, EmailInput
-from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
+from django.contrib.auth.forms import (AuthenticationForm, SetPasswordForm,
+                                       UserCreationForm)
 
 from .models import CustomUser
 
@@ -33,7 +34,7 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-class SignUpForm(forms.ModelForm):
+class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
         label=("пароль:"),
         strip=False,
@@ -56,10 +57,10 @@ class SignUpForm(forms.ModelForm):
         fields = ["email"]
         CustomUser.login.label_classes = "form-label"
         widgets = {
-            "Никнэйм": TextInput(
+            "login": TextInput(
                 attrs={
                     "class": "form-field light-pink-input",
-                    "placeholder": "ник",
+                    "placeholder": "nickname",
                 }
             ),
             "email": EmailInput(
