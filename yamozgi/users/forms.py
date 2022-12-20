@@ -1,9 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
+                                       SetPasswordForm, UserCreationForm)
 from django.core.exceptions import ValidationError
-from django.forms import SelectDateWidget, TextInput, EmailInput
-from django.contrib.auth.forms import (AuthenticationForm, SetPasswordForm,
-                                       UserCreationForm)
+from django.forms import EmailInput, SelectDateWidget, TextInput
 
 from .models import CustomUser
 

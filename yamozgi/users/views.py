@@ -1,23 +1,14 @@
-from django.views.generic import TemplateView, FormView, CreateView
-from django.contrib.auth.views import (
-    LoginView,
-    PasswordChangeView,
-    PasswordChangeDoneView,
-    PasswordResetView,
-    PasswordResetDoneView,
-    PasswordResetConfirmView,
-    PasswordResetCompleteView,
-)
+from django.contrib.auth.views import (LoginView, PasswordChangeDoneView,
+                                       PasswordChangeView,
+                                       PasswordResetCompleteView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetDoneView,
+                                       PasswordResetView)
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView, TemplateView
 
-from .forms import (
-    ProfileForm,
-    SignInForm,
-    SignUpForm,
-    MyPasswordChangeForm,
-    MyResetPasswordForm,
-    MySetPasswordForm,
-)
+from .forms import (MyPasswordChangeForm, MyResetPasswordForm,
+                    MySetPasswordForm, ProfileForm, SignInForm, SignUpForm)
 from .models import CustomUser
 
 

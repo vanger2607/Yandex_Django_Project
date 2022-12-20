@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
 
+from core.models import CoreSave
 from questions.models import Category, Question
 from users.models import CustomUser
 
 
-class Battle(models.Model):
+class Battle(CoreSave):
     player_1 = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
@@ -18,9 +19,6 @@ class Battle(models.Model):
     )
     number_of_rounds = models.PositiveSmallIntegerField()
     is_over = models.BooleanField()
-
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -48,6 +46,12 @@ class Round(models.Model):
     questions = models.ManyToManyField(Question)
     is_over = models.BooleanField()
     battle = models.ForeignKey(Battle, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        super(Round, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = "раунд"

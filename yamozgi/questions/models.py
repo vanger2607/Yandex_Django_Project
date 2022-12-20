@@ -1,13 +1,12 @@
 from django.db import models
 from django.utils import timezone
 
+from core.models import CoreSave
 from users.models import CustomUser
 
 
-class Category(models.Model):
+class Category(CoreSave):
     name = models.CharField(max_length=50)
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -20,7 +19,7 @@ class Category(models.Model):
         verbose_name_plural = "категории вопросов"
 
 
-class Question(models.Model):
+class Question(CoreSave):
     author = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
@@ -35,8 +34,6 @@ class Question(models.Model):
 
     is_approved = models.BooleanField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         if not self.id:
