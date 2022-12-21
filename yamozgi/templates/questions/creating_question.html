@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          {{ field.errors }}
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.help_text %}
+            <p class="help">{{field.help_text}}</p>
+          {% endif%}
+        {% endfor %}
+        </br>
+        <input type="submit" value="Готово" class = "btn btn-primary">
+      </form>
+    </br>
+    </div>
+  </div>
+</div>
+{% endblock %}
