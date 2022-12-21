@@ -38,8 +38,8 @@ class CustomUser(AbstractBaseUser):
     )
 
     avatar = models.ImageField(
-        default="..\static_dev\homepage\img\me.png",
-        storage=FileSystemStorage(),
+        default='null',
+        storage=FileSystemStorage(location="media/"),
     )
 
     @property
