@@ -1,8 +1,12 @@
 from django import forms
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm,
+    UserCreationForm,
+)
 from django.core.exceptions import ValidationError
-from django.forms import SelectDateWidget, TextInput, EmailInput
-from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
+from django.forms import EmailInput, SelectDateWidget, TextInput
 
 from .models import CustomUser
 
@@ -25,18 +29,11 @@ class ProfileForm(forms.ModelForm):
             'декабрь': 'дек'
         }
         model = CustomUser
-        fields = {"login", "email", "birthday"}
+        fields = ["login", "birthday", "avatar"]
         widgets = {
             "login": TextInput(
                 attrs={
                     "class": "light-pink-input inputs__input",
-                    "placeholder": "Nickname",
-                },
-            ),
-            "email": EmailInput(
-                attrs={
-                    "class": "light-pink-input inputs__input  medium-input",
-                    "placeholder": "Email",
                 },
             ),
             "birthday": SelectDateWidget(
@@ -49,9 +46,9 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-class SignUpForm(forms.ModelForm):
+class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
-        label=("пароль:"),
+        label=("Пароль:"),
         strip=False,
         widget=forms.PasswordInput(
             attrs={
@@ -61,7 +58,7 @@ class SignUpForm(forms.ModelForm):
         ),
     )
     password2 = forms.CharField(
-        label="повторите пароль",
+        label="Повторите пароль",
         widget=forms.PasswordInput(
             attrs={"class": "form-field light-pink-input"}
         ),
@@ -69,13 +66,13 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ["email"]
+        fields = ["email", "login"]
         CustomUser.login.label_classes = "form-label"
         widgets = {
-            "Никнэйм": TextInput(
+            "login": TextInput(
                 attrs={
                     "class": "form-field light-pink-input",
-                    "placeholder": "ник",
+                    "placeholder": "nickname",
                 }
             ),
             "email": EmailInput(
@@ -97,7 +94,7 @@ FIELD_NAME_MAPPING = {"username": "email"}
 
 class SignInForm(AuthenticationForm):
     username = forms.CharField(
-        label="почта или логин",
+        label="Почта",
         widget=(
             forms.EmailInput(
                 attrs={
@@ -108,7 +105,7 @@ class SignInForm(AuthenticationForm):
         ),
     )
     password = forms.CharField(
-        label="пароль",
+        label="Пароль",
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-field light-pink-input",

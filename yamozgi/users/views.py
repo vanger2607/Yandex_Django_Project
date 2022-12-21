@@ -1,29 +1,54 @@
-from django.views.generic import TemplateView, FormView, CreateView
 from django.contrib.auth.views import (
     LoginView,
-    PasswordChangeView,
     PasswordChangeDoneView,
-    PasswordResetView,
-    PasswordResetDoneView,
-    PasswordResetConfirmView,
+    PasswordChangeView,
     PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
     LogoutView
 )
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView, TemplateView
 
-from .forms import (
-    ProfileForm,
-    SignInForm,
-    SignUpForm,
-    MyPasswordChangeForm,
-    MyResetPasswordForm,
-    MySetPasswordForm,
-)
+from .forms import (MyPasswordChangeForm, MyResetPasswordForm,
+                    MySetPasswordForm, ProfileForm, SignInForm, SignUpForm)
+from .models import CustomUser
 
 
 class Profile(TemplateView, FormView):
+    model = CustomUser
     template_name = "users/profile.html"
     form_class = ProfileForm
+
+    def form_valid(self, form):
+        user = self.request.user
+        user.login = form.cleaned_data["login"]
+        user.birthday = form.cleaned_data["birthday"]
+        '''
+        if self.request.FILES['upload']:
+            # тут не знаю как картинку в профиле поменять
+            upload = self.request.FILES['upload']
+            fss = FileSystemStorage()
+            file = fss.save(upload.name, upload)
+            file_url = fss.url(file)
+            user.avatar.url = file_url
+        '''
+
+        user.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        userform = self.form_class(self.request.POST or None,
+                                   initial={'login': user.login,
+                                            'birthday': user.birthday})
+        context['form'] = userform
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("users:profile")
 
 
 class SignIn(LoginView):
@@ -38,10 +63,11 @@ class SignIn(LoginView):
 class SignUp(CreateView):
     form_class = SignUpForm
     template_name = "users/signup.html"
+    success_url = reverse_lazy("users:signin")
 
-
-class LogoutUser(LogoutView):
-    next_page = "users:signin"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class ChangePassword(PasswordChangeView):
