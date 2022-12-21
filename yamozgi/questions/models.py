@@ -1,23 +1,9 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.utils import timezone
 
 from core.models import CoreSave
 from users.models import CustomUser
-
-
-class Category(CoreSave):
-    name = models.CharField(max_length=50)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        self.modified = timezone.now()
-        super(Category, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name = "категория вопроса"
-        verbose_name_plural = "категории вопросов"
+from arena.models import Category
 
 
 class Question(CoreSave):
@@ -43,12 +29,6 @@ class Question(CoreSave):
 
     is_approved = models.BooleanField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        self.modified = timezone.now()
-        super(Question, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = "вопрос"
