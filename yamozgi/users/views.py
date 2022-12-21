@@ -7,6 +7,7 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetConfirmView,
     PasswordResetCompleteView,
+    LogoutView
 )
 from django.urls import reverse_lazy
 
@@ -37,6 +38,10 @@ class SignIn(LoginView):
 class SignUp(CreateView):
     form_class = SignUpForm
     template_name = "users/signup.html"
+
+
+class LogoutUser(LogoutView):
+    next_page = "users:signin"
 
 
 class ChangePassword(PasswordChangeView):

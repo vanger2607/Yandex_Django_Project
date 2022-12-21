@@ -21,6 +21,11 @@ urlpatterns = [
         name="signup",
     ),
     path(
+        "logout",
+        views.LogoutUser.as_view(),
+        name="logout",
+    ),
+    path(
         "change_password",
         views.ChangePassword.as_view(),
         name="change_password",

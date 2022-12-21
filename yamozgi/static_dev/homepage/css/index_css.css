@@ -173,6 +173,7 @@ body {
 }
 .reg-und-sig__item {
   color: #e0cfed;
+  padding: 10px;
 
 }
 .reg-und-sig :not(:last-child) {
@@ -186,13 +187,13 @@ body {
   cursor: default; 
 }
 /*-------HEADER_MEDIA--------*/
-@media (max-width: 841px) {
+@media (max-width: 854px) {
   .profile :not(:last-child) {
     padding-right: 15px;
   }
   .header__menu {
     margin: 0px 0px 0px 15px;
-    line-height: 160%;
+    line-height: 120%;
   }
   .menu__link {
     font-size: 18px;
@@ -203,10 +204,37 @@ body {
     max-width: 195.58px;
   }
 }
+@media(max-width:804px){
+  .menu__list > * {
+    flex: 1 1 165px;
+    max-width: 165.58px;
+  }
+  .menu__link {
+    font-size: 16px;
+  }
+  .reg-und-sig__item{
+    font-size: 16px;
+  }
+}
+@media(max-width:679px){
+  .menu__list > * {
+    flex: 1 1 145px;
+    max-width: 145.58px;
+  }
+  .menu__link {
+    font-size: 16px;
+  }
+  .reg-und-sig__item{
+    font-size: 16px;
+  }
+}
 @media (max-width: 632px) {
   .menu__list > * {
     flex: 1 1 127px;
     max-width: 127px;
+  }
+  .menu__link{
+    line-height: 100%;
   }
 }
 /*---------MAIN-BLOCK-----------*/
