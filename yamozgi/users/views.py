@@ -10,7 +10,7 @@ from django.contrib.auth.views import (
     LogoutView,
 )
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView,UpdateView
 from django.core.files.storage import FileSystemStorage
 
 from .forms import (
@@ -24,31 +24,13 @@ from .forms import (
 from .models import CustomUser
 
 
-class Profile(TemplateView, FormView):
+class Profile(UpdateView):
     model = CustomUser
     template_name = "users/profile.html"
     form_class = ProfileForm
 
-    def form_valid(self, form):
-        user = self.request.user
-        user.login = form.cleaned_data["login"]
-        user.birthday = form.cleaned_data["birthday"]
-        if self.request.FILES and self.request.FILES['avatar']:
-            upload = self.request.FILES["avatar"]
-            fss = FileSystemStorage()
-            file = fss.save(upload.name, upload)
-            file_url = fss.url(file)[1:]
-            old_file = str(user.avatar)
-            user.avatar = str(file_url.replace('%20', ' '))
-            if str(old_file) != 'null':
-                os.remove(str(old_file))
-            user.save()
-        else:
-            user.save()
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        return super().form_invalid(form)
+    def get_object(self):
+        return CustomUser.objects.get(pk=self.request.user.pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -34,7 +34,7 @@
               <a href="{% url 'users:profile' %}" class="profile__name active">Профиль</a>
               {% if user.avatar != 'null' %}
               <img
-                src="{{ user.avatar }}"
+                src="{{ user.avatar.url }}"
                 alt="картинка-пользователя"
                 class="profile__photo"
               />
@@ -47,7 +47,7 @@
             <a href="{% url 'users:profile' %}" class="profile__name">Профиль</a>
             {% if user.avatar != 'null' %}
               <img
-                src="{{ user.avatar }}"
+                src="{{ user.avatar.url }}"
                 alt="картинка-пользователя"
                 class="profile__photo"
               />
