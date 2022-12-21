@@ -37,19 +37,19 @@ class CustomUser(AbstractBaseUser):
     )
 
     avatar = models.ImageField(
-        default="..\static_dev\homepage\img\me.png",
-        upload_to="uploads/%Y/%m")
+        default="..\static_dev\homepage\img\me.png", upload_to="uploads/%Y/%m"
+    )
 
     @property
     def get_img(self):
-        return get_thumbnail(self.avatar, '300x300', crop='center', quality=51)
+        return get_thumbnail(self.avatar, "300x300", crop="center", quality=51)
 
     def image_tmb(self):
         if self.upload:
             return mark_safe(f'<img src="{self.get_img.url}">')
         return mark_safe('<img src="..\static_dev\homepage\img\me.png">')
 
-    image_tmb.short_description = 'превью'
+    image_tmb.short_description = "превью"
     image_tmb.allow_tags = True
 
     count_of_battles = models.IntegerField(
