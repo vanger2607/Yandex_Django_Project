@@ -32,16 +32,19 @@ class Profile(TemplateView, FormView):
     def form_valid(self, form):
         user = self.request.user
         user.login = form.cleaned_data["login"]
-        user.birthday = str(form.cleaned_data["birthday"])
+        user.birthday = form.cleaned_data["birthday"]
         if self.request.FILES and self.request.FILES['avatar']:
             upload = self.request.FILES["avatar"]
             fss = FileSystemStorage()
             file = fss.save(upload.name, upload)
             file_url = fss.url(file)[1:]
-            if user.avatar:
-                os.remove(str(user.avatar))
-            user.avatar = file_url
-        user.save()
+            old_file = str(user.avatar)
+            user.avatar = str(file_url.replace('%20', ' '))
+            if str(old_file) != 'null':
+                os.remove(str(old_file))
+            user.save()
+        else:
+            user.save()
         return super().form_valid(form)
 
     def form_invalid(self, form):

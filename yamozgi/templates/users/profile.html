@@ -20,7 +20,7 @@
           {% csrf_token %}
           <div class="form__body">
             <div class="form__pic left-column">
-              {% if user.avatar %}
+              {% if user.avatar != 'null' %}
               <img
                 src="{{user.avatar}}"
                 alt="картинка-пользователя"
