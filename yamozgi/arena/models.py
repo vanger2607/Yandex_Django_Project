@@ -4,8 +4,6 @@ from django.utils import timezone
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         if not self.id:
