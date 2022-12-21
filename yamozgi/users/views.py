@@ -45,8 +45,6 @@ class Profile(TemplateView, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        print("ok")
-        print(form.errors)
         return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
