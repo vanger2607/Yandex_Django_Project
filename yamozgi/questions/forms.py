@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import TextInput
+from django.forms import TextInput, Select
 
 from .models import Question
 from arena.models import Category
@@ -8,11 +8,11 @@ from arena.models import Category
 class QuestionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["category"] = forms.ModelChoiceField(
-            queryset=Category.objects.all())
 
     class Meta:
         model = Question
+        category = forms.ModelChoiceField(
+            queryset=Category.objects.all())
         fields = ["question_text", "question_choice1", "question_choice2",
                   "question_choice3", "question_choice4",
                   "category", "right_answer"]
@@ -30,21 +30,24 @@ class QuestionForm(forms.ModelForm):
         }
         widgets = {
             "question_text": TextInput(
-                attrs={'class': 'form-control',
+                attrs={'class': 'light-pink-input inputs__input big',
                        'required': True}),
             "question_choice1": TextInput(
-                attrs={'class': 'form-control',
+                attrs={'class': 'light-pink-input inputs__input',
                        'required': True}),
             "question_choice2": TextInput(
-                attrs={'class': 'form-control',
+                attrs={'class': 'light-pink-input inputs__input',
                        'required': True}),
             "question_choice3": TextInput(
-                attrs={'class': 'form-control',
+                attrs={'class': 'light-pink-input inputs__input',
                        'required': True}),
             "question_choice4": TextInput(
-                attrs={'class': 'form-control',
+                attrs={'class': 'light-pink-input inputs__input',
                        'required': True}),
             "right_answer": TextInput(
-                attrs={'class': 'form-control',
+                attrs={'class': 'light-pink-input inputs__input',
+                       'required': True}),
+            "category": Select(
+                attrs={'class': 'light-pink-input inputs__input',
                        'required': True}),
         }

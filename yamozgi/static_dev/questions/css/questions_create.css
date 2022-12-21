@@ -1,0 +1,172 @@
+.container {
+  max-width: 1217px;
+  width: 100%;
+  margin: 0px auto;
+  padding: 0px 15px;
+  box-sizing: content-box;
+  margin: 180px auto;
+}
+.question-page {
+  background: linear-gradient(285.51deg, #a52489 18.87%, #8e24a5 80.29%);
+}
+.first-block {
+  text-align: center;
+}
+.first-block__title {
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 120%;
+  margin-bottom: 40px;
+  text-align: center;
+}
+.first-block__form {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 115%;
+  text-align: start;
+}
+.back-color {
+  width: 100%;
+  background: linear-gradient(285.51deg, #a52489 18.87%, #8e24a5 80.29%);
+}
+.choice-category {
+  margin-bottom: 59px;
+}
+.big {
+  width: 100%;
+}
+.question__label {
+  margin-bottom: 8px;
+  padding-left: 5px;
+}
+.first-block__question {
+  margin-bottom: 100px;
+}
+.two-input {
+  display: flex;
+  max-width: 1080px;
+  margin: 0px -70px;
+  margin-bottom: 10px;
+}
+.two-input div {
+  flex: 0 0 50%;
+  margin: 0px 20px;
+}
+.first-block__correct-asnwer-title {
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+.radio-buttons{
+    text-align: center;
+}
+.two-radio-button {
+  display: flex;
+  max-width: 1080px;
+  margin: 0px -20px;
+}
+.two-radio-button label {
+  accent-color: #972499;
+  vertical-align: middle;
+}
+.two-radio-button div {
+  flex: 0 0 50%;
+  margin: 10px 20px;
+}
+.submit-buttons{
+    text-align: center;
+    margin-top: 30px;
+}
+.submit-button {
+  width: 347px;
+  height: 73px;
+  background: #c6e485;
+  border-radius: 75px;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 44px;
+  padding: auto;
+  color: #548e38;
+}
+.submit-button:hover{
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff,
+    0 0 40px #c6e485, 0 0 80px #c6e485, 0 0 90px #c6e485, 0 0 100px #c6e485,
+    0 0 150px #c6e485;
+}
+input[type="radio"] {
+  -ms-transform: scale(2.5); /* IE 9 */
+  -webkit-transform: scale(2.5); /* Chrome, Safari, Opera */
+  transform: scale(2.5);
+  accent-color: #972499;
+}
+.light-pink-input {
+  border-radius: 35px;
+  background: #e0cfed;
+  color: #972499;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 135%;
+  padding: 0px 25px;
+}
+
+.light-pink-input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #972499;
+  opacity: 1; /* Firefox */
+}
+
+.light-pink-input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #972499;
+}
+
+.light-pink-input::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #972499;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #972499;
+}
+@media(max-width:1360px){
+    .container {
+        max-width: 900px;
+    }
+    .two-input{
+        width: 600px;
+    }
+    .two-input div {
+        flex: 1 1 50%;
+        }
+    .light-pink-input{
+        font-size: 24px;
+    }
+}
+@media(max-width:1157px){
+    .container {
+        max-width: 700px;
+    }
+    .light-pink-input{
+        font-size: 20px;
+    }
+}
+@media(max-width:890px){
+    .container {
+        max-width: 500px;
+    }
+    .light-pink-input{
+        font-size: 18px;
+    }
+}
+@media(max-width:742px){
+    .container {
+        max-width: 300px;
+    }
+    .light-pink-input{
+        font-size: 14px;
+    }
+    .two-input{
+        width: 300px;
+    }
+}
