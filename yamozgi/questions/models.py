@@ -1,12 +1,11 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-from core.models import CoreSave
 from users.models import CustomUser
 from arena.models import Category
 
 
-class Question(CoreSave):
+class Question(models.Model):
     author = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,

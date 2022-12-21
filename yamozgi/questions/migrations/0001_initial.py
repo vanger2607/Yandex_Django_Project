@@ -53,8 +53,6 @@ class Migration(migrations.Migration):
                 ("question_choice3", models.TextField(max_length=250)),
                 ("question_choice4", models.TextField(max_length=250)),
                 ("is_approved", models.BooleanField()),
-                ("created", models.DateTimeField(editable=False)),
-                ("modified", models.DateTimeField()),
                 (
                     "author",
                     models.ForeignKey(
