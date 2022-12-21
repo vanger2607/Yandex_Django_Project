@@ -33,9 +33,7 @@ class Profile(TemplateView, FormView):
         user = self.request.user
         user.login = form.cleaned_data["login"]
         user.birthday = str(form.cleaned_data["birthday"])
-        print(self.request.FILES)
         if self.request.FILES and self.request.FILES['avatar']:
-            print("okkkkkkkkkkkk")
             upload = self.request.FILES["avatar"]
             print(upload.name)
             fss = FileSystemStorage()
