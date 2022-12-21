@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 
@@ -31,6 +32,14 @@ class Question(CoreSave):
     question_choice2 = models.TextField(max_length=250)
     question_choice3 = models.TextField(max_length=250)
     question_choice4 = models.TextField(max_length=250)
+
+    right_answer = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        validators=[MinValueValidator(1), MaxValueValidator(4)],
+        default=1,
+    )
+    difficulty = models.IntegerField(default=0)
 
     is_approved = models.BooleanField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
