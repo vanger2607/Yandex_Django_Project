@@ -1,4 +1,3 @@
-import os
 from django.contrib.auth.views import (
     LoginView,
     PasswordChangeDoneView,
@@ -10,8 +9,7 @@ from django.contrib.auth.views import (
     LogoutView,
 )
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, TemplateView,UpdateView
-from django.core.files.storage import FileSystemStorage
+from django.views.generic import CreateView, UpdateView
 
 from .forms import (
     MyPasswordChangeForm,

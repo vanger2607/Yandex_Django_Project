@@ -6,7 +6,6 @@ from arena.models import Category
 from .managers import CustomUserManager
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
-from django.core.files.storage import FileSystemStorage
 
 
 class CustomUser(AbstractBaseUser):
@@ -38,9 +37,9 @@ class CustomUser(AbstractBaseUser):
     )
 
     avatar = models.ImageField(
-        default='null',
+        default="null",
         upload_to="uploads/%Y/%m",
-        verbose_name='аватар',
+        verbose_name="аватар",
     )
 
     @property
@@ -61,6 +60,7 @@ class CustomUser(AbstractBaseUser):
             if old_self.avatar and self.avatar != old_self.avatar:
                 old_self.avatar.delete(False)
         return super(CustomUser, self).save(*args, **kwargs)
+
     count_of_battles = models.IntegerField(
         "количество битв", null=True, blank=True
     )

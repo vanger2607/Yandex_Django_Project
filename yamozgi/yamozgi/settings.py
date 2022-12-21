@@ -14,7 +14,7 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 
 
 ALLOWED_HOSTS = ["*"]
-INTERNAL_IPS = ['*']
+INTERNAL_IPS = ["*"]
 
 # Application definition
 
