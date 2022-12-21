@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth.views import (
     LoginView,
     PasswordChangeDoneView,
@@ -10,6 +11,7 @@ from django.contrib.auth.views import (
 )
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView
+from django.core.files.storage import FileSystemStorage
 
 from .forms import (
     MyPasswordChangeForm,
@@ -30,19 +32,26 @@ class Profile(TemplateView, FormView):
     def form_valid(self, form):
         user = self.request.user
         user.login = form.cleaned_data["login"]
-        user.birthday = form.cleaned_data["birthday"]
-        """
-        if self.request.FILES['upload']:
-            # тут не знаю как картинку в профиле поменять
-            upload = self.request.FILES['upload']
+        user.birthday = str(form.cleaned_data["birthday"])
+        print(self.request.FILES)
+        if self.request.FILES["avatar"]:
+            print("okkkkkkkkkkkk")
+            upload = self.request.FILES["avatar"]
+            print(upload.name)
             fss = FileSystemStorage()
             file = fss.save(upload.name, upload)
-            file_url = fss.url(file)
-            user.avatar.url = file_url
-        """
-
+            file_url = fss.url(file)[1:]
+            print(file_url)
+            if user.avatar:
+                os.remove(str(user.avatar))
+            user.avatar = file_url
         user.save()
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("ok")
+        print(form.errors)
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

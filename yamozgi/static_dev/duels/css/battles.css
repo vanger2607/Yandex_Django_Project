@@ -1,3 +1,4 @@
+
 .battle-container {
   max-width: 1300px;
   margin: 0px auto;
@@ -11,6 +12,7 @@
 .battle-main-block {
   position: relative;
   align-items: center;
+  
 }
 .battle-main-block__body {
   padding: 180px 2px;
@@ -123,12 +125,13 @@
 }
 .current-battles__column :first-child,
 .abandoned-battles__column
-  :first-child.to-you-challenges-battles__column
+  :first-child,.to-you-challenges-battles__column
   :first-child {
-  margin-left: 0px;
+  margin-left: 5px;
 }
 .battle-item {
   display: flex;
+
 }
 .battle-item > * {
   padding: 0px 5px;

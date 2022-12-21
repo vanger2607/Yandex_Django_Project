@@ -13,20 +13,6 @@ from .models import CustomUser
 
 class ProfileForm(forms.ModelForm):
     class Meta:
-        MONTHS = {
-            "январь": "янв",
-            "февраль": "февр",
-            "март": "март",
-            "апрель": "апр",
-            "май": "май",
-            "июнь": "июнь",
-            "июль": "июль",
-            "август": "авг",
-            "сентябрь": "сент",
-            "октябрь": "окт",
-            "ноябрь": "нояб",
-            "декабрь": "дек",
-        }
         model = CustomUser
         fields = ["login", "birthday", "avatar"]
         widgets = {
@@ -37,7 +23,6 @@ class ProfileForm(forms.ModelForm):
             ),
             "birthday": SelectDateWidget(
                 years=range(1940, 2014),
-                months=MONTHS,
                 attrs={
                     "class": "light-pink-input date-input",
                 },

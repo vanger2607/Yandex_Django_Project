@@ -6,6 +6,7 @@ from arena.models import Category
 from .managers import CustomUserManager
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
+from django.core.files.storage import FileSystemStorage
 
 
 class CustomUser(AbstractBaseUser):
@@ -37,7 +38,8 @@ class CustomUser(AbstractBaseUser):
     )
 
     avatar = models.ImageField(
-        default="..\static_dev\homepage\img\me.png", upload_to="uploads/%Y/%m"
+        default="..\static_dev\homepage\img\me.png",
+        storage=FileSystemStorage(),
     )
 
     @property

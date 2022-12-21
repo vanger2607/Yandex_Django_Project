@@ -32,11 +32,15 @@
           {% if view_name == 'users:profile' %}
             <div class="header__profile profile">
               <a href="{% url 'users:profile' %}" class="profile__name active">Профиль</a>
+              {% if user.avatar %}
               <img
-                src={{ user.avatar.url }}
+                src="{{ user.avatar }}"
                 alt="картинка-пользователя"
                 class="profile__photo"
               />
+              {% else %}
+              <div class="none-photo"></div>
+              {% endif %}
             </div>
           {% else %}
           <div class="header__profile profile">

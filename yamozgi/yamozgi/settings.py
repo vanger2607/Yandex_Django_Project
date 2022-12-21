@@ -124,3 +124,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "send_mail"
 EMAIL_USE_TLS = True
+MEDIA_URL = "media/"
+
+MEDIA_ROOT = os.path.join("media")

@@ -20,14 +20,18 @@
           {% csrf_token %}
           <div class="form__body">
             <div class="form__pic left-column">
+              {% if user.avatar %}
               <img
-                src="..\..\static_dev\homepage\img\me.png"
+                src="{{user.avatar}}"
                 alt="картинка-пользователя"
                 class="form__photo"
               />
+              {% else %}
+              <div class="no-photo">фото не выбрано</div>
+              {% endif %}
                 <label class="input-file">
-                  <input type="file" name="file">		
-                  <span class="profile-button input-file__button form__button">Выберите файл</span>
+                  {{form.avatar}}	
+                  <span class="profile-button input-file__button form__button">Обновить изображение</span>
               </label>
               <div class="left-column__buttons">
                 <div class="profile-button form__button orange">
