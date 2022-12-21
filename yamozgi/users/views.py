@@ -35,11 +35,9 @@ class Profile(TemplateView, FormView):
         user.birthday = str(form.cleaned_data["birthday"])
         if self.request.FILES and self.request.FILES['avatar']:
             upload = self.request.FILES["avatar"]
-            print(upload.name)
             fss = FileSystemStorage()
             file = fss.save(upload.name, upload)
             file_url = fss.url(file)[1:]
-            print(file_url)
             if user.avatar:
                 os.remove(str(user.avatar))
             user.avatar = file_url
