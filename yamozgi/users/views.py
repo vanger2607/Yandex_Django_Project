@@ -32,16 +32,6 @@ class Profile(LoginRequiredMixin, FormView):
         user = self.request.user
         user.login = form.cleaned_data["login"]
         user.birthday = form.cleaned_data["birthday"]
-        """
-        if self.request.FILES['upload']:
-            # тут не знаю как картинку в профиле поменять
-            upload = self.request.FILES['upload']
-            fss = FileSystemStorage()
-            file = fss.save(upload.name, upload)
-            file_url = fss.url(file)
-            user.avatar.url = file_url
-        """
-
         user.save()
         return super().form_valid(form)
 

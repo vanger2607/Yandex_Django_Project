@@ -38,8 +38,7 @@ def QuestionAPI(request):
         print(answer)
         print(question_id)
         if (
-            answer
-            == Question.objects.filter(pk=question_id)
+            answer == Question.objects.filter(pk=question_id)
             .only("right_answer")
             .first()
             .right_answer
