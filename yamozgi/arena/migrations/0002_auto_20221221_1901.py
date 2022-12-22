@@ -6,16 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('arena', '0001_initial'),
+        ("arena", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='category',
-            name='created',
+            model_name="category",
+            name="created",
         ),
         migrations.RemoveField(
-            model_name='category',
-            name='modified',
+            model_name="category",
+            name="modified",
         ),
     ]

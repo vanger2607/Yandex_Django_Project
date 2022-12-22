@@ -6,16 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('duels', '0002_alter_round_category'),
+        ("duels", "0002_alter_round_category"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='battle',
-            name='created',
+            model_name="battle",
+            name="created",
         ),
         migrations.RemoveField(
-            model_name='battle',
-            name='modified',
+            model_name="battle",
+            name="modified",
         ),
     ]

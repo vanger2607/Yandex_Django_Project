@@ -5,5 +5,9 @@ from . import views
 app_name = "questions"
 
 urlpatterns = [
-    path("create_question", views.CreateQuestion.as_view(), name="create",),
+    path(
+        "create_question",
+        views.CreateQuestion.as_view(),
+        name="create-question",
+    ),
 ]

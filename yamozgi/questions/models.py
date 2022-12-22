@@ -1,13 +1,21 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-from users.models import CustomUser
-from arena.models import Category
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = "категория вопроса"
+        verbose_name_plural = "категории вопросов"
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Question(models.Model):
     author = models.ForeignKey(
-        CustomUser,
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         null=True,
     )
@@ -26,7 +34,7 @@ class Question(models.Model):
     )
     difficulty = models.IntegerField(default=0)
 
-    is_approved = models.BooleanField()
+    is_approved = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:

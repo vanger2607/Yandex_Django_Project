@@ -2,15 +2,30 @@
 {% load static %}
 {% block head %}
 <link rel="stylesheet" href="{% static '\questions\css\questions_create.css' %}" />
+<link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
+<script src="{% static 'bootstrap\js\bootstrap.min.js' %}"></script>
 {% endblock %}
 {% block content %}
 <div class="back-color">
 <div class="container">
   <div class="question-page">
     <div class="question-page__first-block first-block">
+      {% if form.errors %}
+      {% for field in form %}
+          {% for error in field.errors %} 
+             <div class="alert alert-danger" id="error">
+                  <strong>{{ error|escape }}</strong>
+                  <span class="closebtn" onclick="hide_button()" >×</span>
+             </div>
+          {% endfor %}
+      {% endfor %}
+   {% endif %}
+   {% load static %}
+   {% include 'includes/messages.html' %}
       <div class="first-block__title">Создать вопрос</div>
       <div class="first-block__form">
         <form method="post">
+          {% csrf_token %}
           <div class="choice-category">
             {{form.category.label}}
             {{form.category}}</div>
@@ -44,19 +59,15 @@
           <div class="radio-buttons">
             <div class="two-radio-button">
               <div class="first_button">
-              <input type="radio" id="answer_1" name="correct-answer" value="1">
-              <label for="answer_1">Ответ 1</label></div>
+                {{form.right_answer.0}}</div>
               <div class="second_button">
-              <input type="radio" id="answer_2" name="correct-answer" value="2">
-              <label for="answer_2">Ответ 2</label></div>
+                {{form.right_answer.1}}</div>
             </div>
             <div class="two-radio-button">
               <div class="first_button">
-              <input type="radio" id="answer_3" name="correct-answer" value="3">
-              <label for="answer_1">Ответ 3</label></div>
+                {{form.right_answer.2}}</div>
               <div class="second_button">
-              <input type="radio" id="answer_4" name="correct-answer" value="4">
-              <label for="answer_2">Ответ 4</label></div>
+                {{form.right_answer.3}}</div>
             </div>
           </div>
           <div class="submit-buttons">
@@ -67,4 +78,5 @@
     </div>
   </div>
 </div></div>
+<script src="{% static '\includes\js\hide_button.js' %}"></script>
 {% endblock %}
