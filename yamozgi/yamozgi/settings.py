@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "leaderboard.apps.LeaderboardConfig",
     "shop.apps.ShopConfig",
     "debug_toolbar",
-    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -48,7 +47,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -121,7 +119,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_REDIRECT_URL = "homepage:home"
-LOGIN_REDIRECT_URL = "homepage:home"
 STATIC_URL = "/static_dev/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static_dev"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -141,6 +138,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "send_mail"
 EMAIL_USE_TLS = True
-MEDIA_URL = "media/"
-
-MEDIA_ROOT = os.path.join("media")
