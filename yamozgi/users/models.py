@@ -13,6 +13,7 @@ class CustomUser(AbstractBaseUser):
         "имя пользователя",
         max_length=13,
         help_text="Максимальная длина 13 символов",
+        unique=True,
     )
     email = models.EmailField(
         "почта",
