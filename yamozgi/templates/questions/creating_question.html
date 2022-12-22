@@ -11,6 +11,7 @@
       <div class="first-block__title">Создать вопрос</div>
       <div class="first-block__form">
         <form method="post">
+          {% csrf_token %}
           <div class="choice-category">
             {{form.category.label}}
             {{form.category}}</div>

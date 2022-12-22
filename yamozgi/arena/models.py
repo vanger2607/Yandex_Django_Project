@@ -7,3 +7,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = "категория вопроса"
         verbose_name_plural = "категории вопросов"
+
+    def __str__(self):
+        return self.name

@@ -26,7 +26,7 @@ class Question(models.Model):
     )
     difficulty = models.IntegerField(default=0)
 
-    is_approved = models.BooleanField()
+    is_approved = models.BooleanField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
