@@ -10,4 +10,9 @@ urlpatterns = [
         views.Battle.as_view(),
         name="battles",
     ),
+    path(
+        "make_challenge",
+        views.UserList.as_view(),
+        name="userlist",
+    ),
 ]

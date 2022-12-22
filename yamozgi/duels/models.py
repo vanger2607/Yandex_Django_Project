@@ -50,7 +50,7 @@ class Round(models.Model):
         verbose_name_plural = "раунды"
 
 
-class Player_answer(models.Model):
+class PlayerAnswer(models.Model):
     player_id = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
