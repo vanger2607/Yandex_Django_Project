@@ -6,44 +6,39 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetDoneView,
     PasswordResetView,
+    LogoutView,
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, UpdateView
 
-from .forms import (MyPasswordChangeForm, MyResetPasswordForm,
-                    MySetPasswordForm, ProfileForm, SignInForm, SignUpForm)
+from .forms import (
+    MyPasswordChangeForm,
+    MyResetPasswordForm,
+    MySetPasswordForm,
+    ProfileForm,
+    SignInForm,
+    SignUpForm,
+)
 from .models import CustomUser
 
 
-class Profile(TemplateView, FormView):
+class Profile(LoginRequiredMixin, UpdateView):
     model = CustomUser
     template_name = "users/profile.html"
     form_class = ProfileForm
 
-    def form_valid(self, form):
-        user = self.request.user
-        user.login = form.cleaned_data["login"]
-        user.birthday = form.cleaned_data["birthday"]
-        '''
-        if self.request.FILES['upload']:
-            # тут не знаю как картинку в профиле поменять
-            upload = self.request.FILES['upload']
-            fss = FileSystemStorage()
-            file = fss.save(upload.name, upload)
-            file_url = fss.url(file)
-            user.avatar.url = file_url
-        '''
-
-        user.save()
-        return super().form_valid(form)
+    def get_object(self):
+        return CustomUser.objects.get(pk=self.request.user.pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        userform = self.form_class(self.request.POST or None,
-                                   initial={'login': user.login,
-                                            'birthday': user.birthday})
-        context['form'] = userform
+        userform = self.form_class(
+            self.request.POST or None,
+            initial={"login": user.login, "birthday": user.birthday},
+        )
+        context["form"] = userform
         return context
 
     def get_success_url(self, **kwargs):
@@ -67,6 +62,10 @@ class SignUp(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class LogoutUser(LogoutView):
+    next_page = "users:signin"
 
 
 class ChangePassword(PasswordChangeView):

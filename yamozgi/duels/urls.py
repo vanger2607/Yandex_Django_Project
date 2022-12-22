@@ -15,4 +15,10 @@ urlpatterns = [
         views.UserList.as_view(),
         name="userlist",
     ),
+    path(
+        "question",
+        views.QuestionView.as_view(),
+        name="question",
+    ),
+    path("question-api", views.QuestionAPI, name="question-api"),
 ]

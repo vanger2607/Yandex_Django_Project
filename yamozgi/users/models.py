@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
 
-from arena.models import Category
+from questions.models import Category
 
 from .managers import CustomUserManager
 
@@ -37,20 +37,29 @@ class CustomUser(AbstractBaseUser):
     )
 
     avatar = models.ImageField(
-        default="..\static_dev\homepage\img\me.png",
-        upload_to="uploads/%Y/%m")
+        default="null",
+        upload_to="uploads/%Y/%m",
+        verbose_name="аватар",
+    )
 
     @property
     def get_img(self):
-        return get_thumbnail(self.avatar, '300x300', crop='center', quality=51)
+        return get_thumbnail(self.avatar, "300x300", crop="center", quality=51)
 
     def image_tmb(self):
         if self.upload:
             return mark_safe(f'<img src="{self.get_img.url}">')
         return mark_safe('<img src="..\static_dev\homepage\img\me.png">')
 
-    image_tmb.short_description = 'превью'
+    image_tmb.short_description = "превью"
     image_tmb.allow_tags = True
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            old_self = CustomUser.objects.get(pk=self.pk)
+            if old_self.avatar and self.avatar != old_self.avatar:
+                old_self.avatar.delete(False)
+        return super(CustomUser, self).save(*args, **kwargs)
 
     count_of_battles = models.IntegerField(
         "количество битв", null=True, blank=True

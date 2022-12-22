@@ -6,43 +6,85 @@
     <div class="_container">
       <div class="profile-main-block__body">
         <div class="profile-main-block__title profile-title">Мой профиль</div>
-        {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %} 
-               <div class="alert alert-danger" id="error">
-                    <strong>{{ error|escape }}</strong>
-                    <span class="closebtn" onclick="hide_button()" >×</span>
-               </div>
-            {% endfor %}
-        {% endfor %}
-     {% endif %}
-        <form method="post" action="{% url 'users:profile' %}" enctype="multipart/form-data">
-            {% csrf_token %}
+        {% if form.errors %} {% for field in form %} {% for error in field.errors %}
+        <div class="alert alert-danger" id="error">
+          <strong>{{ error|escape }}</strong>
+          <span class="closebtn" onclick="hide_button()">×</span>
+        </div>
+        {% endfor %} {% endfor %} {% endif %}
+        <form
+          method="post"
+          action="{% url 'users:profile' %}"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
           <div class="form__body">
             <div class="form__pic left-column">
+              {% if user.avatar != 'null' %}
               <img
-                src={{ user.avatar.url }}
+                src="{{user.avatar.url}}"
                 alt="картинка-пользователя"
                 class="form__photo"
               />
-              <input type="file" name="upload" accept="image/*">
+              {% else %}
+              <div class="no-photo">фото не выбрано</div>
+              {% endif %}
+                <label class="input-file">
+                  {{form.avatar}}	
+                  <span class="profile-button input-file__button form__button">Обновить изображение</span>
+              </label>
+              <div class="left-column__buttons">
+                <div class="profile-button form__button orange">
+                  <a href="{% url 'users:logout' %}">Выйти</a>
+                </div>
+                <div class="profile-button form__button">
+                  <a href="{% url 'users:change_password' %}">Сменить пароль</a>
+                </div>
+              </div>
+              <div class="left-column__info info">
+                <div class="info__body">
+                  <div class="info__item">
+                    <p class="info__text">Лучшая категория: программированиеееееее</p>
+                  </div>
+                  <div class="info__item">
+                    <p class="info__text">Cыграно игр: 100</p>
+                  </div>
+                  <div class="info__item">
+                    <p class="info__text">Серого вещества:  99999999 <img src="..\..\static_dev\homepage\img\gray_brain.svg" alt=""></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form__inputs inputs">
+              {{form.login}}
               <div class="left-column__birthday-flex">
                 <div class="left-column__birthday birthday">День рождения:</div>
                 {{form.birthday}}
               </div>
-            </div>
-            <div class="form__inputs inputs">
-                {{form.login}}
-                {{form.email}}
+              <p class="left-column__text">Почта: {{request.user.email}}</p>
             </div>
           </div>
           <div class="form__submit-buttons">
-            <input type="submit" value="Сохранить изменения" class="profile-button">
-        </div>
+            <input
+              type="submit"
+              value="Сохранить изменения"
+              class="profile-button submit-button"
+            />
+          </div>
         </form>
+        <div class="profile-button shop-button"><a href="#">Перейти в магазин</a></div>
+        <div class="special-time">
+          <div class="profile-main-block__title profile-title special-time__title">Уже готовы к Новому году?</div>
+          <div class="profile-button special-time__button"><a href="#">Перейти к Новогодней ели</a></div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <script src="{% static '\includes\js\hide_button.js' %}"></script>
+<script src="{% static '\users\js\jquery-3.6.3.min.js' %}"></script>
+<script>$('.input-file input[type=file]').on('change', function(){
+	let file = this.files[0];
+	$(this).next().html(file.name);
+});</script>
 {% endblock %}

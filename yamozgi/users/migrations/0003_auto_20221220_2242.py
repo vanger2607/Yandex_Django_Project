@@ -7,29 +7,43 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('arena', '0001_initial'),
-        ('users', '0002_customuser_avatar'),
+        ("arena", "0001_initial"),
+        ("users", "0002_customuser_avatar"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='customuser',
-            name='best_category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='arena.category', verbose_name='лучшая категория'),
+            model_name="customuser",
+            name="best_category",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="arena.category",
+                verbose_name="лучшая категория",
+            ),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='count_of_battles',
-            field=models.IntegerField(blank=True, null=True, verbose_name='количество битв'),
+            model_name="customuser",
+            name="count_of_battles",
+            field=models.IntegerField(
+                blank=True, null=True, verbose_name="количество битв"
+            ),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='count_of_questions',
-            field=models.IntegerField(blank=True, null=True, verbose_name='количество созданных вопросов'),
+            model_name="customuser",
+            name="count_of_questions",
+            field=models.IntegerField(
+                blank=True,
+                null=True,
+                verbose_name="количество созданных вопросов",
+            ),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='count_of_wins',
-            field=models.IntegerField(blank=True, null=True, verbose_name='количество побед'),
+            model_name="customuser",
+            name="count_of_wins",
+            field=models.IntegerField(
+                blank=True, null=True, verbose_name="количество побед"
+            ),
         ),
     ]

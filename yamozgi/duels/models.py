@@ -2,7 +2,7 @@ from django.db import models
 
 from questions.models import Question
 from users.models import CustomUser
-from arena.models import Category
+from questions.models import Category
 
 
 class Challenge(models.Model):
