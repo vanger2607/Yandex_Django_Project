@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link rel="stylesheet" href="{% static '\duels\css\user_list.css' %}" />
+{% endblock %} {% block content %}
+<div class="back-color">
+  <div class="container">
+    <div class="row">
+      <div class="row__body">
+        {{users}}
+        {% for userr in users %}
+        {% if user.login != userr.login %}
+        <div class="row__item item">
+          <div class="item__nickname">{{userr.login}}</div>
+          <div class="item__avatar">
+            {% if userr.avatar != 'null' %}
+            <img
+              src="{{ userr.avatar.url }}"
+              alt="картинка-пользователя"
+              class="profile__photo"
+            />
+            {% else %}
+            <div class="none-photo"></div>
+            {% endif %}
+          </div>
+          <div class="item__button" onclick="">Бросить вызов</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

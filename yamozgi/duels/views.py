@@ -15,7 +15,7 @@ class Battle(TemplateView):
 
 class UserList(ListView):
     model = CustomUser
-    template_name = "test/userlist.html"
+    template_name = "duels/user_list.html"
     context_object_name = "users"
 
     def get_queryset(self):
