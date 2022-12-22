@@ -3,6 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
+
 load_dotenv()
 
 
@@ -47,7 +48,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    
 ]
 
 ROOT_URLCONF = "yamozgi.urls"

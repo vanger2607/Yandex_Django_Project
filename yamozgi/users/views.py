@@ -76,8 +76,11 @@ class SignUp(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
 class LogoutUser(LogoutView):
     next_page = "users:signin"
+
 
 class ChangePassword(PasswordChangeView):
     form_class = MyPasswordChangeForm

@@ -21,7 +21,7 @@ class CreateQuestion(LoginRequiredMixin, FormView):
             question_choice4=form.cleaned_data["question_choice4"],
             right_answer=form.cleaned_data["right_answer"],
             category=form.cleaned_data["category"],
-            author_id=self.request.user.pk
+            author_id=self.request.user.pk,
         )
 
         question.save()

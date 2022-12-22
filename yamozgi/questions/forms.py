@@ -6,12 +6,11 @@ from questions.models import Category
 
 
 class QuestionForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
     category = forms.ModelChoiceField(
-        queryset=Category.objects.all()
-        .only("name"),
+        queryset=Category.objects.all().only("name"),
         empty_label=None,
         label="Категория: ",
         widget=Select(

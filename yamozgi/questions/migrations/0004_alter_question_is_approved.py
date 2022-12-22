@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('questions', '0003_delete_category'),
+        ("questions", "0003_delete_category"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='question',
-            name='is_approved',
+            model_name="question",
+            name="is_approved",
             field=models.BooleanField(default=0),
         ),
     ]
