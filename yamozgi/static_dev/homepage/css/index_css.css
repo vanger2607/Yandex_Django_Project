@@ -172,8 +172,15 @@ body {
   border: 1px solid #737373;
   border-radius: 50%;
 }
+.none-photo{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: gray;
+}
 .reg-und-sig__item {
   color: #e0cfed;
+  padding: 10px;
 
 }
 .reg-und-sig :not(:last-child) {
@@ -198,7 +205,7 @@ body {
   }
   .header__menu {
     margin: 0px 0px 0px 15px;
-    line-height: 160%;
+    line-height: 120%;
   }
   .menu__link {
     font-size: 18px;
@@ -233,6 +240,9 @@ body {
   .menu__list > * {
     flex: 1 1 127px;
     max-width: 127px;
+  }
+  .menu__link{
+    line-height: 100%;
   }
 }
 /*---------MAIN-BLOCK-----------*/

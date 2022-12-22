@@ -10,7 +10,7 @@ from django.contrib.auth.views import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, UpdateView
 
 from .forms import (
     MyPasswordChangeForm,
@@ -23,17 +23,13 @@ from .forms import (
 from .models import CustomUser
 
 
-class Profile(LoginRequiredMixin, FormView):
+class Profile(LoginRequiredMixin, UpdateView):
     model = CustomUser
     template_name = "users/profile.html"
     form_class = ProfileForm
 
-    def form_valid(self, form):
-        user = self.request.user
-        user.login = form.cleaned_data["login"]
-        user.birthday = form.cleaned_data["birthday"]
-        user.save()
-        return super().form_valid(form)
+    def get_object(self):
+        return CustomUser.objects.get(pk=self.request.user.pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

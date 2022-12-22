@@ -39,20 +39,28 @@
           {% if view_name == 'users:profile' %}
             <div class="header__profile profile">
               <a href="{% url 'users:profile' %}" class="profile__name active">Профиль</a>
+              {% if user.avatar != 'null' %}
               <img
-                src={{ user.avatar.url }}
+                src="{{ user.avatar.url }}"
                 alt="картинка-пользователя"
                 class="profile__photo"
               />
+              {% else %}
+              <div class="none-photo"></div>
+              {% endif %}
             </div>
           {% else %}
           <div class="header__profile profile">
             <a href="{% url 'users:profile' %}" class="profile__name">Профиль</a>
-            <img
-              src="..\..\static_dev\homepage\img\me.png"
-              alt="картинка-пользователя"
-              class="profile__photo"
-            />
+            {% if user.avatar != 'null' %}
+              <img
+                src="{{ user.avatar.url }}"
+                alt="картинка-пользователя"
+                class="profile__photo"
+              />
+              {% else %}
+              <div class="none-photo"></div>
+              {% endif %}
           </div>
           {%endif %}
         {% else %}

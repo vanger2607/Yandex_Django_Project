@@ -37,7 +37,9 @@ class CustomUser(AbstractBaseUser):
     )
 
     avatar = models.ImageField(
-        default="..\static_dev\homepage\img\me.png", upload_to="uploads/%Y/%m"
+        default="null",
+        upload_to="uploads/%Y/%m",
+        verbose_name="аватар",
     )
 
     @property
@@ -51,6 +53,13 @@ class CustomUser(AbstractBaseUser):
 
     image_tmb.short_description = "превью"
     image_tmb.allow_tags = True
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            old_self = CustomUser.objects.get(pk=self.pk)
+            if old_self.avatar and self.avatar != old_self.avatar:
+                old_self.avatar.delete(False)
+        return super(CustomUser, self).save(*args, **kwargs)
 
     count_of_battles = models.IntegerField(
         "количество битв", null=True, blank=True
