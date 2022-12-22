@@ -48,42 +48,42 @@
     }
 },
 {
-    "model": "arena.category",
+    "model": "questions.category",
     "pk": 1,
     "fields": {
         "name": "Новый год"
     }
 },
 {
-    "model": "arena.category",
+    "model": "questions.category",
     "pk": 2,
     "fields": {
         "name": "Игры"
     }
 },
 {
-    "model": "arena.category",
+    "model": "questions.category",
     "pk": 3,
     "fields": {
         "name": "Программирование"
     }
 },
 {
-    "model": "arena.category",
+    "model": "questions.category",
     "pk": 4,
     "fields": {
         "name": "Наука"
     }
 },
 {
-    "model": "arena.category",
+    "model": "questions.category",
     "pk": 5,
     "fields": {
         "name": "Спорт"
     }
 },
 {
-    "model": "arena.category",
+    "model": "questions.category",
     "pk": 6,
     "fields": {
         "name": "Искусство"
