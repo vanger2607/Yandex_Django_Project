@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "homepage.apps.HomepageConfig",
     "questions.apps.QuestionsConfig",
     "duels.apps.DuelsConfig",
+    "arena.apps.ArenaConfig",
     "leaderboard.apps.LeaderboardConfig",
     "shop.apps.ShopConfig",
     "debug_toolbar",
