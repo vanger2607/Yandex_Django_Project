@@ -1,11 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
-
-from arena.models import Category
-
-from .managers import CustomUserManager
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
+
+from questions.models import Category
+
+from .managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser):

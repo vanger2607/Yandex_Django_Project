@@ -8,6 +8,7 @@ urlpatterns = [
     path("", include("homepage.urls")),
     path("", include("duels.urls")),
     path("", include("users.urls")),
+    path("", include("questions.urls")),
 ]
 urlpatterns += static(
     settings.STATIC_URL,
@@ -17,12 +18,9 @@ urlpatterns += static(
     settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT,
 )
-if settings.DEBUG:
-    import debug_toolbar
+if settings.DEBUG is True:
+    from django.urls import include, path
 
-    urlpatterns += [
-        path(
-            "__debug__/",
-            include("debug_toolbar.urls"),
-        ),
-    ]
+urlpatterns += [
+    path("__debug__/", include("debug_toolbar.urls")),
+]

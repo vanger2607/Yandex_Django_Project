@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+from django.contrib.messages import constants as messages
 
 load_dotenv()
 
@@ -14,7 +15,10 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 
 
 ALLOWED_HOSTS = ["*"]
-INTERNAL_IPS = ["*"]
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "*",
+]
 
 # Application definition
 
@@ -115,10 +119,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_REDIRECT_URL = "homepage:home"
-LOGIN_REDIRECT_URL = "homepage:home"
 STATIC_URL = "/static_dev/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static_dev"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+MESSAGE_TAGS = {
+    messages.DEBUG: "alert-info",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.ERROR: "alert-danger",
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -126,6 +138,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "send_mail"
 EMAIL_USE_TLS = True
-MEDIA_URL = "media/"
-
-MEDIA_ROOT = os.path.join("media")

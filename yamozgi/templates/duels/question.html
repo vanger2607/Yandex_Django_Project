@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static '\duels\css\question.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="back-color">
+    <div class="container">
+        <div class="question">
+            <div class="question__body">
+                <div class="question__number">Вопрос 1:</div>
+                <div class="question__text">
+                    {{question.question_text}}
+                </div>
+                <div class="question__answers question-answers">
+                    <div class="question-answers__body">
+                        <div class="first_answer " onclick="is_right(this)">{{question.question_choice1}}</div>
+                        <div class="second_answer"  onclick="is_right(this)">{{question.question_choice2}}</div>
+                    </div>
+                    <div class="question-answers__body">
+                        <div class="third_answer"  onclick="is_right(this)">{{question.question_choice3}}</div>
+                        <div class="fourth_answer"  onclick="is_right(this)">{{question.question_choice4}}</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <script type="text/javascript">function is_right(el) {
+        function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+        answer = el.textContent;
+        let question_id = "{{ question.pk }}"
+    
+        alert(question_id)
+        const check ={
+            userr_answer: answer,
+            question_id: question_id,
+          }
+        let  body1 = JSON.stringify(check);
+        alert(body1)
+        let response = fetch('http://127.0.0.1:8000/question-api',{
+        method: 'POST',
+        headers: {
+          // Добавляем необходимые заголовки
+          'Content-type': 'application/json; charset=UTF-8',
+          'X-CSRFToken': csrftoken},
+          body: JSON.stringify(check), // Тело запроса в JSON-формате
+        mode: 'same-origin'
+        },)
+        if (response.ok) { // если HTTP-статус в диапазоне 200-299
+            // получаем тело ответа (см. про этот метод ниже)
+            alert('верно')
+          } else {
+            alert("Ошибка HTTP: " + response.status);
+          }
+      }
+    </script>
+</div>
+{% endblock %}

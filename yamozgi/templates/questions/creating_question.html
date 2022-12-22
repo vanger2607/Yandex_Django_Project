@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static '\questions\css\questions_create.css' %}" />
+<link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
+<script src="{% static 'bootstrap\js\bootstrap.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="back-color">
+<div class="container">
+  <div class="question-page">
+    <div class="question-page__first-block first-block">
+      {% if form.errors %}
+      {% for field in form %}
+          {% for error in field.errors %} 
+             <div class="alert alert-danger" id="error">
+                  <strong>{{ error|escape }}</strong>
+                  <span class="closebtn" onclick="hide_button()" >×</span>
+             </div>
+          {% endfor %}
+      {% endfor %}
+   {% endif %}
+   {% load static %}
+   {% include 'includes/messages.html' %}
+      <div class="first-block__title">Создать вопрос</div>
+      <div class="first-block__form">
+        <form method="post">
+          {% csrf_token %}
+          <div class="choice-category">
+            {{form.category.label}}
+            {{form.category}}</div>
+          <div class="first-block__question">
+            <div class="question__label">{{form.question_text.label}}</div>
+            {{form.question_text}}
+          </div>
+          <div class="answers">
+            <div class="answers__two-input two-input">
+              <div class="two-input__first-input">
+                {{form.question_choice1.label}}
+                {{form.question_choice1}}
+              </div>
+              <div class="two-input__second-input">
+                {{form.question_choice2.label}}
+                {{form.question_choice2}}
+              </div>
+            </div>
+            <div class="answers__two-input two-input">
+              <div class="two-input__first-input">
+                {{form.question_choice3.label}}
+                {{form.question_choice3}}
+              </div>
+              <div class="two-input__second-input">
+                {{form.question_choice4.label}}
+                {{form.question_choice4}}
+          </div>
+          </div>
+        </div>
+          <div class="first-block__title first-block__correct-asnwer-title">Верный Ответ:</div>
+          <div class="radio-buttons">
+            <div class="two-radio-button">
+              <div class="first_button">
+                {{form.right_answer.0}}</div>
+              <div class="second_button">
+                {{form.right_answer.1}}</div>
+            </div>
+            <div class="two-radio-button">
+              <div class="first_button">
+                {{form.right_answer.2}}</div>
+              <div class="second_button">
+                {{form.right_answer.3}}</div>
+            </div>
+          </div>
+          <div class="submit-buttons">
+            <button type="submit" class="submit-button">Готово</button>
+          </div>
+        </form> 
+      </div>
+    </div>
+  </div>
+</div></div>
+<script src="{% static '\includes\js\hide_button.js' %}"></script>
+{% endblock %}
