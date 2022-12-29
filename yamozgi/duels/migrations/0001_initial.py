@@ -8,52 +8,89 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Battle',
+            name="Battle",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_over', models.BooleanField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_over", models.BooleanField(default=0)),
             ],
             options={
-                'verbose_name': 'битва',
-                'verbose_name_plural': 'битвы',
+                "verbose_name": "битва",
+                "verbose_name_plural": "битвы",
             },
         ),
         migrations.CreateModel(
-            name='Challenge',
+            name="Challenge",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'вызов',
-                'verbose_name_plural': 'вызовы',
+                "verbose_name": "вызов",
+                "verbose_name_plural": "вызовы",
             },
         ),
         migrations.CreateModel(
-            name='PlayerAnswer',
+            name="PlayerAnswer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_right', models.BooleanField(null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_right", models.BooleanField(null=True)),
             ],
             options={
-                'verbose_name': 'вопрос в раунде',
-                'verbose_name_plural': 'вопросы в раунде',
+                "verbose_name": "вопрос в раунде",
+                "verbose_name_plural": "вопросы в раунде",
             },
         ),
         migrations.CreateModel(
-            name='Round',
+            name="Round",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_over', models.BooleanField(default=0)),
-                ('battle_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='duels.battle')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_over", models.BooleanField(default=0)),
+                (
+                    "battle_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="duels.battle",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'раунд',
-                'verbose_name_plural': 'раунды',
+                "verbose_name": "раунд",
+                "verbose_name_plural": "раунды",
             },
         ),
     ]

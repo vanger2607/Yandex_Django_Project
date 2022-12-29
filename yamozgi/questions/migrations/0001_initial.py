@@ -8,37 +8,61 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
             options={
-                'verbose_name': 'категория вопроса',
-                'verbose_name_plural': 'категории вопросов',
+                "verbose_name": "категория вопроса",
+                "verbose_name_plural": "категории вопросов",
             },
         ),
         migrations.CreateModel(
-            name='Question',
+            name="Question",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question_text', models.TextField(max_length=250)),
-                ('question_choice1', models.TextField(max_length=250)),
-                ('question_choice2', models.TextField(max_length=250)),
-                ('question_choice3', models.TextField(max_length=250)),
-                ('question_choice4', models.TextField(max_length=250)),
-                ('right_answer', models.PositiveIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(4)])),
-                ('difficulty', models.IntegerField(default=0)),
-                ('is_approved', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("question_text", models.TextField(max_length=250)),
+                ("question_choice1", models.TextField(max_length=250)),
+                ("question_choice2", models.TextField(max_length=250)),
+                ("question_choice3", models.TextField(max_length=250)),
+                ("question_choice4", models.TextField(max_length=250)),
+                (
+                    "right_answer",
+                    models.PositiveIntegerField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(4),
+                        ],
+                    ),
+                ),
+                ("difficulty", models.IntegerField(default=0)),
+                ("is_approved", models.BooleanField(default=False)),
             ],
             options={
-                'verbose_name': 'вопрос',
-                'verbose_name_plural': 'вопросы',
+                "verbose_name": "вопрос",
+                "verbose_name_plural": "вопросы",
             },
         ),
     ]

@@ -11,49 +11,77 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('questions', '0001_initial'),
-        ('duels', '0001_initial'),
+        ("questions", "0001_initial"),
+        ("duels", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='round',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='questions.category'),
+            model_name="round",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="questions.category",
+            ),
         ),
         migrations.AddField(
-            model_name='playeranswer',
-            name='player_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='battle_player', to=settings.AUTH_USER_MODEL),
+            model_name="playeranswer",
+            name="player_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="battle_player",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='playeranswer',
-            name='question_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='questions.question'),
+            model_name="playeranswer",
+            name="question_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="questions.question",
+            ),
         ),
         migrations.AddField(
-            model_name='playeranswer',
-            name='round_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='duels.round'),
+            model_name="playeranswer",
+            name="round_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="duels.round"
+            ),
         ),
         migrations.AddField(
-            model_name='challenge',
-            name='player_recieved_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='player_recieved', to=settings.AUTH_USER_MODEL),
+            model_name="challenge",
+            name="player_recieved_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="player_recieved",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='challenge',
-            name='player_sent_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='player_sent', to=settings.AUTH_USER_MODEL),
+            model_name="challenge",
+            name="player_sent_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="player_sent",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='battle',
-            name='player_1',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='battle_player1', to=settings.AUTH_USER_MODEL),
+            model_name="battle",
+            name="player_1",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="battle_player1",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='battle',
-            name='player_2',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='battle_player2', to=settings.AUTH_USER_MODEL),
+            model_name="battle",
+            name="player_2",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="battle_player2",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

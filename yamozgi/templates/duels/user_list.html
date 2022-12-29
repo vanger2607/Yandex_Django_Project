@@ -1,19 +1,21 @@
-{% extends 'base.html' %} {% load static %} {% block head %}
+{% extends 'base.html' %} {% load static %} {% load my_tags %} {% block head %}
+
 <link rel="stylesheet" href="{% static '\duels\css\user_list.css' %}" />
 {% endblock %} {% block content %}
 <div class="back-color">
   <div class="container">
+    {% for num in number|times%}
     <div class="row">
       <div class="row__body">
-        {{users}}
-        {% for userr in users %}
-        {% if user.login != userr.login %}
+        {%  get_user_pk users num as userr_id %}
+        {% if user.pk != userr_id %}
         <div class="row__item item">
-          <div class="item__nickname">{{userr.login}}</div>
+          <div class="item__nickname">{% index users num %}</div>
           <div class="item__avatar">
-            {% if userr.avatar != 'null' %}
+            {%  index_url users num as userr_url %}
+            {% if userr_url != '/media/null' %}
             <img
-              src="{{ userr.avatar.url }}"
+              src="{% index_url users num %}"
               alt="картинка-пользователя"
               class="profile__photo"
             />
@@ -21,12 +23,54 @@
             <div class="none-photo"></div>
             {% endif %}
           </div>
-          <div class="item__button" onclick="">Бросить вызов</div>
-        </div>
-        {% endif %}
-        {% endfor %}
+          <div class="item__button" id="btn-1" onclick="challenge('{{user.pk}}', '{% get_user_pk users num %}')">Бросить вызов</div>
+        </div>{% endif %}
+        {%  get_user_pk users num 1 as userr_id %}
+        {% if userr_id %}
+        {% if user.pk != userr_id %}
+        <div class="row__item item">
+            <div class="item__nickname">{% index users num 1 %}</div>
+            <div class="item__avatar">
+              {%  index_url users num 1 as userr_url %}
+              {% if userr_url != '/media/null' %}
+              <img
+                src="{% index_url users num 1 %}"
+                alt="картинка-пользователя"
+                class="profile__photo"
+              />
+              {% else %}
+              <div class="none-photo"></div>
+              {% endif %}
+            </div>
+            <div class="item__button" onclick="challenge('{{user.pk}}', '{% get_user_pk users num 1 %}')">Бросить вызов</div>
+        </div>{% endif %} {% endif %}
+        {% get_user_pk users num 2 as userr_id %}
+        {% if userr_id %}
+        {% if user.pk != userr_id %}
+          <div class="row__item item">
+            <div class="item__nickname">{% index users num 2 %}</div>
+            <div class="item__avatar">
+            
+              {%  index_url users num 2 as userr_url %}
+              {% if userr_url != '/media/null' %}
+              <img
+                src="{% index_url users num 2 %}"
+                alt="картинка-пользователя"
+                class="profile__photo"
+              />
+              {% else %}
+              <div class="none-photo"></div>
+              {% endif %}
+            </div>
+            <div class="item__button" onclick="challenge('{{user.pk}}', '{% get_user_pk users num 2 %}')">Бросить вызов</div>
+          </div>
+        {% endif %} {% endif %}
       </div>
-    </div>
+    </div>        {% endfor %}
   </div>
 </div>
+<script src="{% static 'duels/js/close_message.js' %}"></script>
+<script src="{% static 'js/csrf_token.js' %}"></script>
+    <script type="text/javascript" src="{% static 'duels/js/make_challenge.js' %}">
+    </script>
 {% endblock %}
