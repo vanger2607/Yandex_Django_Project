@@ -85,6 +85,8 @@ def ChallengeToOtherApi(request):
         )
         if not created and challenge:
             return JsonResponse(
-                {"messages": f"Вы уже бросили вызов {to_user_login} дождитесь когда он его примет"}
+                {
+                    "messages": f"Вы уже бросили вызов {to_user_login} дождитесь когда он его примет"
+                }
             )
     return JsonResponse({"messages": f"{to_user_login} получил/а Ваш вызов"})
