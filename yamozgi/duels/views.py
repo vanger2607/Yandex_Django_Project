@@ -42,12 +42,9 @@ class QuestionView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "вопрос"
         ids = Question.objects.values_list("id", flat=True)
-        print(ids)
         if ids:
             rand_id = random.choice(ids)
-            print(rand_id)
             question = Question.objects.get(pk=rand_id)
-            print(question)
         context["question"] = question
         return context
 
@@ -59,8 +56,6 @@ def QuestionAPI(request):
         data_from_post = json.load(request)
         question_id = data_from_post["question_id"]
         answer = data_from_post["userr_answer"]
-        print(answer)
-        print(question_id)
         if (
             answer
             == Question.objects.filter(pk=question_id)
@@ -86,7 +81,8 @@ def ChallengeToOtherApi(request):
         if not created and challenge:
             return JsonResponse(
                 {
-                    "messages": f"Вы уже бросили вызов {to_user_login} дождитесь когда он его примет"
+                    "messages": f"Вы уже бросили вызов {to_user_login}"
+                    f"дождитесь когда он/а его примет"
                 }
             )
     return JsonResponse({"messages": f"{to_user_login} получил/а Ваш вызов"})
