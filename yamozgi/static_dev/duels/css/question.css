@@ -18,32 +18,33 @@
   line-height: 110%;
   margin-bottom: 89px;
 }
-.question__number{
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 44px;
+.question__number {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 44px;
 }
-.question-answers__body{
-    display: flex;
-    height: 187px;
-    margin: 0px -30px;
-    margin-bottom: 30px;
+.question-answers__body {
+  display: flex;
+  height: 187px;
+  margin: 0px -30px;
+  margin-bottom: 30px;
+}
+.question-answers__body div {
+  flex: 0 1 50%;
+  background-color: #e0cfed;
+  border-radius: 54px;
+  text-align: center;
+  padding-top: 68.5px;
+  padding-left: 10px;
+  margin: 0px 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 32px;
+  line-height: 110%;
+  overflow: auto;
+  word-wrap: break-word;
+  color: #972499;
+}
 
-}
-.question-answers__body div{
-    flex: 0 1 50%;
-    background-color: #E0CFED;
-    border-radius: 54px;
-    text-align: center;
-    padding-top: 68.5px;
-    margin: 0px 15px;
-    font-weight: 700;
-    cursor: pointer;
-font-size: 32px;
-line-height: 110%;
-
-color: #972499;
-}
-.first_answer{
-   
+.first_answer {
 }

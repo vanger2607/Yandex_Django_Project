@@ -81,7 +81,7 @@ def ChallengeToOtherApi(request):
             return JsonResponse(
                 {
                     "messages": f"Вы уже бросили вызов {to_user_login}"
-                    f"дождитесь когда он/а его примет"
+                    f" дождитесь когда он/а его примет"
                 }
             )
     return JsonResponse({"messages": f"{to_user_login} получил/а Ваш вызов"})

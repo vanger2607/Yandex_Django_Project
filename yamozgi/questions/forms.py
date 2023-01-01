@@ -23,10 +23,10 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         CHOICES = [
-            ("1", "Ответ 1"),
-            ("2", "Ответ 2"),
-            ("3", "Ответ 3"),
-            ("4", "Ответ 4"),
+            ("question_choice1", "Ответ 1"),
+            ("question_choice2", "Ответ 2"),
+            ("question_choice3", "Ответ 3"),
+            ("question_choice4", "Ответ 4"),
         ]
         model = Question
 

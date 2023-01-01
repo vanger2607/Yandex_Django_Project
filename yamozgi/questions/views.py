@@ -12,13 +12,14 @@ class CreateQuestion(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         self.success_url = reverse_lazy("questions:create-question")
+        right_answer = form.cleaned_data["right_answer"]
         question = Question.objects.create(
             question_text=form.cleaned_data["question_text"],
             question_choice1=form.cleaned_data["question_choice1"],
             question_choice2=form.cleaned_data["question_choice2"],
             question_choice3=form.cleaned_data["question_choice3"],
             question_choice4=form.cleaned_data["question_choice4"],
-            right_answer=form.cleaned_data["right_answer"],
+            right_answer=form.cleaned_data[right_answer],
             category=form.cleaned_data["category"],
             author_id=self.request.user.pk,
         )
@@ -30,6 +31,10 @@ class CreateQuestion(LoginRequiredMixin, FormView):
             extra_tags="alert",
         )
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -11,7 +11,7 @@ function is_right(el, question_id) {
               };
             let  body1 = JSON.stringify(check);
             alert(body1);
-            let response = fetch('http://127.0.0.1:8000/challenge-api',{
+            let response = fetch('http://127.0.0.1:8000/question-api',{
             method: 'POST',
             headers: {
               // Добавляем необходимые заголовки
