@@ -5,10 +5,21 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 from questions.models import Question
+from .models import Challenge
 
 
 class Battle(TemplateView):
     template_name = "duels/battles.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Битвы"
+        challenges = (Challenge.objects
+                               .filter(player_recieved_id=self.request.user)
+                               .only("player_sent_id",)
+                      )
+        context["challenges"] = challenges
+        return context
 
 
 class QuestionView(TemplateView):
