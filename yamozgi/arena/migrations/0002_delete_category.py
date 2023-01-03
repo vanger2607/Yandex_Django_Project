@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0002_auto_20221222_1712'),
-        ('arena', '0001_initial'),
+        ("users", "0002_auto_20221222_1712"),
+        ("arena", "0001_initial"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='Category',
+            name="Category",
         ),
     ]
