@@ -136,8 +136,7 @@ def question_api(request):
         question_id = data_from_post["question_id"]
         answer = data_from_post["userr_answer"]
         if (
-            answer
-            == Question.objects.filter(pk=question_id)
+            answer == Question.objects.filter(pk=question_id)
             .only("right_answer")
             .first()
             .right_answer
