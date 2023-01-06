@@ -29,7 +29,9 @@ class Profile(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
 
     def get_object(self):
-        return CustomUser.objects.get(pk=self.request.user.pk)
+        if self.request.user:
+            user_id = self.request.user.pk
+            return CustomUser.objects.get(pk=user_id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

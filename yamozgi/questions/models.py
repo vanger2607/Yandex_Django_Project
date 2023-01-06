@@ -1,4 +1,3 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -26,11 +25,11 @@ class Question(models.Model):
     question_choice3 = models.TextField(max_length=250)
     question_choice4 = models.TextField(max_length=250)
 
-    right_answer = models.PositiveIntegerField(
+    right_answer = models.CharField(
         null=False,
         blank=False,
-        validators=[MinValueValidator(1), MaxValueValidator(4)],
-        default=1,
+        verbose_name="правильный ответ",
+        max_length=100,
     )
     difficulty = models.IntegerField(default=0)
 

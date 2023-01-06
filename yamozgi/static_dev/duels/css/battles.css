@@ -1,4 +1,23 @@
 
+.message{
+  display: none;
+}
+.activated-mes{
+  position: fixed;
+  width: 100%;
+  min-height:65px;
+  left: 0;
+  top: 0;
+  z-index: 23;
+  text-align: center;
+  background: #d4edda;
+  color: #3c763d;
+  padding-top: 5px;
+}
+.red-mes{
+  background-color: #f00;
+  color: white;
+}
 .battle-container {
   max-width: 1300px;
   margin: 0px auto;
@@ -54,6 +73,7 @@
   padding: 5px 36px;
   flex-wrap: nowrap;
   margin: auto;
+  cursor: pointer;
 }
 .battle-button:hover {
     text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff,
@@ -163,6 +183,12 @@
   object-fit: cover;
   border: 1px solid #737373;
   border-radius: 50%;
+}
+.battle-none-photo{
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  background-color: gray;
 }
 .battle-item {
   margin-right: 39px;

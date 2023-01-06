@@ -7,7 +7,7 @@ app_name = "duels"
 urlpatterns = [
     path(
         "battles",
-        views.Battle.as_view(),
+        views.BattleView.as_view(),
         name="battles",
     ),
     path(
@@ -20,6 +20,29 @@ urlpatterns = [
         views.QuestionView.as_view(),
         name="question",
     ),
-    path("question-api", views.QuestionAPI, name="question-api"),
-    path("challenge-api", views.ChallengeToOtherApi, name="challenge-api"),
+    path(
+        "question-api",
+        views.question_api,
+        name="question-api",
+    ),
+    path(
+        "challenge-api",
+        views.challenge_to_other_api,
+        name="challenge-api",
+    ),
+    path(
+        "decline-challenge-api",
+        views.decline_challenge_api,
+        name="decline-challenge-api",
+    ),
+    path(
+        "accept-challenge-api",
+        views.accept_challenge_api,
+        name="accept-challenge-api",
+    ),
+    path(
+        "decline-my-challenge-api",
+        views.decline_my_challenge_api,
+        name="decline-my-challenge-api",
+    ),
 ]
