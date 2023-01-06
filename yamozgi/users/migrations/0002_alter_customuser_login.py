@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0001_initial'),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='customuser',
-            name='login',
-            field=models.CharField(help_text='Максимальная длина 13 символов', max_length=13, unique=True, verbose_name='имя пользователя'),
+            model_name="customuser",
+            name="login",
+            field=models.CharField(
+                help_text="Максимальная длина 13 символов",
+                max_length=13,
+                unique=True,
+                verbose_name="имя пользователя",
+            ),
         ),
     ]

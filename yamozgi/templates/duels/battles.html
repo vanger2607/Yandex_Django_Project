@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load my_tags %}
 {% block head %}
 <link rel="stylesheet" href="{% static '\duels\css\battles.css' %}" />
 {% endblock %}
@@ -18,328 +19,291 @@
     </div>
   </div>
   <div class="battle-page__current-battles current-battles">
-    <div class="current-battles__title battle-title">Текущие игры:</div>
+    <div class="current-battles__title battle-title">
+      {% if battles %}
+        Текущие игры:
+      {% else %}
+        Нет текущих игр :(
+      {% endif %}
+    </div>
     <div class="current-battles__battle-container battle-container">
+      {% for num in number_of_battles|times%}
       <div class="current-battles__body">
         <div class="current-battles__column">
           <div class="current-battles__item battle-item">
             <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
+              {% index_url battles num as userr_url %}
+              {% if userr_url != '/media/null' %}
+                <img
+                  src="{{ userr_url }}"
+                  alt="картинка-пользователя"
+                  class="battle-item__photo adapt-photo"
+                />
+              {% else %}
+                <div class="battle-none-photo"></div>
+              {% endif %}
             </div>
             <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__title">{% index battles num %}</div>
               <div class="battle-info__text">Раунд 0</div>
               <div class="battle-info__button">
-                <a href="#" class="battle-button mini-button">перейти!</a>
+                <a href="{% battle_url battles num %}" class="battle-button mini-button">перейти!</a>
               </div>
             </div>
           </div>
         </div>
+      {% index_url battles num 1 as userr_url %}
+      {% if userr_url %}
         <div class="current-battles__column">
           <div class="current-battles__item battle-item">
             <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
+              {% if userr_url != '/media/null' %}
+                <img
+                  src="{{ userr_url }}"
+                  alt="картинка-пользователя"
+                  class="battle-item__photo adapt-photo"
+                />
+              {% else %}
+                <div class="battle-none-photo"></div>
+              {% endif %}
             </div>
             <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__title">{% index battles num 1 %}</div>
               <div class="battle-info__text">Раунд 0</div>
               <div class="battle-info__button">
-                <a href="#" class="battle-button mini-button">перейти!</a>
+                <a href="{% battle_url battles num 1 %}" class="battle-button mini-button">перейти!</a>
               </div>
             </div>
           </div>
         </div>
+      {% endif %}
+      {% index_url battles num 2 as userr_url %}
+      {% if userr_url %}
         <div class="current-battles__column">
           <div class="current-battles__item battle-item">
             <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
+              {% if userr_url != '/media/null' %}
+                <img
+                  src="{{ userr_url }}"
+                  alt="картинка-пользователя"
+                  class="battle-item__photo adapt-photo"
+                />
+              {% else %}
+                <div class="battle-none-photo"></div>
+              {% endif %}
             </div>
             <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
+              <div class="battle-info__title">{% index battles num 2 %}</div>
               <div class="battle-info__text">Раунд 0</div>
               <div class="battle-info__button">
-                <a href="#" class="battle-button mini-button">перейти!</a>
+                <a href="{% battle_url battles num 2 %}" class="battle-button mini-button">перейти!</a>
               </div>
             </div>
           </div>
         </div>
+      {% endif %}
       </div>
-      <div class="current-battles__body">
-        <div class="current-battles__column">
-          <div class="current-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
-              <div class="battle-info__text">Раунд 0</div>
-              <div class="battle-info__button">
-                <a href="#" class="battle-button mini-button">перейти!</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="current-battles__column">
-          <div class="current-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
-              <div class="battle-info__text">Раунд 0</div>
-              <div class="battle-info__button">
-                <a href="#" class="battle-button mini-button">перейти!</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="current-battles__column">
-          <div class="current-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
-              <div class="battle-info__text">Раунд 0</div>
-              <div class="battle-info__button">
-                <a href="#" class="battle-button mini-button">перейти!</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    {% endfor %}
     </div>
   </div>
   <div class="battle-page__abandoned-battles abandoned-battles">
-    <div class="abandoned-battles__title battle-title">Брошенные вызовы:</div>
+    <div class="abandoned-battles__title battle-title">
+      {% if my_challenges %}
+        Брошенные вызовы:
+      {% else %}
+        Вы пока еще никому не бросили вызов
+      {% endif %}
+    </div>
     <div class="abandoned-battles__battle-container battle-container">
-      <div class="abandoned-battles__body">
-        <div class="abandoned-battles__column">
-          <div class="abandoned-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
-              <div class="abandoned-battles__button battle-info__button">
-                <a href="#" class="battle-button mini-button orange"
-                  >отменить</a
-                >
+      {% for num in number_of_my_challenges|times%}
+        <div class="abandoned-battles__body">
+          <div class="abandoned-battles__column">
+            <div class="abandoned-battles__item battle-item">
+              <div class="battle-item__pic">
+              {% index_url my_challenges num as userr_url %}
+              {% if userr_url != '/media/null' %}
+                <img
+                  src="{{ userr_url }}"
+                  alt="картинка-пользователя"
+                  class="battle-item__photo adapt-photo"
+                />
+              {% else %}
+                <div class="battle-none-photo"></div>
+              {% endif %}
+              </div>
+              <div class="battle-item__info battle-info">
+                <div class="battle-info__title">{% index my_challenges num %}</div>
+                <div class="abandoned-battles__button battle-info__button">
+                  <div class="battle-button mini-button orange"
+                  onclick="decline_my_challenge(this, '{% get_user_recieved_pk my_challenges num %}')">отменить</div
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="abandoned-battles__column">
-          <div class="abandoned-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
-              <div class="abandoned-battles__button battle-info__button">
-                <a href="#" class="battle-button mini-button orange"
-                  >отменить</a
-                >
+          {% index_url my_challenges num 1 as userr_url %}
+          {% if userr_url %}
+            <div class="abandoned-battles__column">
+              <div class="abandoned-battles__item battle-item">
+                <div class="battle-item__pic">
+                  {% if userr_url != '/media/null' %}
+                    <img
+                      src="{{ userr_url }}"
+                      alt="картинка-пользователя"
+                      class="battle-item__photo adapt-photo"
+                    />
+                  {% else %}
+                    <div class="battle-none-photo"></div>
+                  {% endif %}
+                </div>
+                <div class="battle-item__info battle-info">
+                  <div class="battle-info__title">{% index my_challenges num 1%}</div>
+                  <div class="abandoned-battles__button battle-info__button">
+                    <div  class="battle-button mini-button orange"
+                    onclick="decline_my_challenge(this, '{% get_user_recieved_pk my_challenges num 1 %}')">отменить</div
+                    >
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="abandoned-battles__column">
-          <div class="abandoned-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title">vanger__2006_20</div>
-              <div class="abandoned-battles__button battle-info__button">
-                <a href="#" class="battle-button mini-button orange"
-                  >отменить</a
-                >
+          {% endif %}
+          {% index_url my_challenges num 2 as userr_url %}
+          {% if userr_url %}
+            <div class="abandoned-battles__column">
+              <div class="abandoned-battles__item battle-item">
+                <div class="battle-item__pic">
+                  {% if userr_url != '/media/null' %}
+                    <img
+                      src="{{ userr_url }}"
+                      alt="картинка-пользователя"
+                      class="battle-item__photo adapt-photo"
+                    />
+                  {% else %}
+                    <div class="battle-none-photo"></div>
+                  {% endif %}
+                </div>
+                <div class="battle-item__info battle-info">
+                  <div class="battle-info__title">{% index my_challenges num 2%}</div>
+                  <div class="abandoned-battles__button battle-info__button">
+                    <div  class="battle-button mini-button orange"
+                    onclick="decline_my_challenge(this, '{% get_user_recieved_pk my_challenges num 2%}')">отменить</div
+                    >
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          {% endif %}
         </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
   <div class="battle-page__to-you-challenges-battles to-you-challenges-battles">
     <div class="to-you-challenges-battles__title battle-title">
-      Вам бросили вызов!
+      {% if not challenges %}
+        <p>Пока никто не бросил Вам вызов :(</p>
+      {% else %}
+      <p>Вам бросили вызов!</p>
+      {% endif %}
     </div>
     <div class="to-you-challenges-battles__battle-container battle-container">
+      
+      {% for num in number_of_challenges|times%}
       <div class="to-you-challenges-battles__body">
+        
         <div class="to-you-challenges-battles__column">
           <div class="to-you-challenges-battles__item battle-item">
             <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo adapt-photo"
-              />
+              {% index_url challenges num as userr_url %}
+              {% if userr_url != '/media/null' %}
+                <img
+                  src="{{ userr_url }}"
+                  alt="картинка-пользователя"
+                  class="battle-item__photo adapt-photo"
+                />
+              {% else %}
+                <div class="battle-none-photo"></div>
+              {% endif %}
             </div>
             <div class="battle-item__info battle-info">
-              <div class="battle-info__title adapt-title">vanger__2006_20</div>
+              <div class="battle-info__title adapt-title">{% index challenges num %}</div>
               <div
                 class="to-you-challenges-battles__button battle-info__buttons"
               >
-                <a href="#" class="battle-button mini-button adapt-button">принять</a>
-                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
-                  >отменить</a
+                <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num %}', '{% get_user_sent_pk challenges num  %}', '{{userr_url}}')">принять</div>
+                <div class="battle-button mini-button orange mrg-0 adapt-button"
+                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num %}')">отменить</div
                 >
               </div>
             </div>
           </div>
         </div>
-        <div class="to-you-challenges-battles__column">
-          <div class="to-you-challenges-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo adapt-photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title adapt-title">vanger__2006_20</div>
-              <div
-                class="to-you-challenges-battles__button battle-info__buttons"
-              >
-                <a href="#" class="battle-button mini-button adapt-button">принять</a>
-                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
-                  >отменить</a
+        {% index_url challenges num 1 as userr_url %}
+        {% if userr_url %}
+          <div class="to-you-challenges-battles__column">
+            <div class="to-you-challenges-battles__item battle-item">
+              <div class="battle-item__pic">
+                
+                {% if userr_url != '/media/null' %}
+                  <img
+                    src="{{ userr_url }}"
+                    alt="картинка-пользователя"
+                    class="battle-item__photo adapt-photo"
+                  />
+                {% else %}
+                  <div class="battle-none-photo"></div>
+                {% endif %}
+              </div>
+              <div class="battle-item__info battle-info">
+                <div class="battle-info__title adapt-title">{% index challenges num 1 %}</div>
+                <div
+                  class="to-you-challenges-battles__button battle-info__buttons"
                 >
+                  <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num 1%}', '{% get_user_sent_pk challenges num 1 %}', '{{userr_url}}')">принять</div>
+                  <div  class="battle-button mini-button orange mrg-0 adapt-button"
+                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num 1 %}')">отменить</div
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="to-you-challenges-battles__column">
-          <div class="to-you-challenges-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo adapt-photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title adapt-title">vanger__2006_20</div>
-              <div
-                class="to-you-challenges-battles__button battle-info__buttons"
-              >
-                <a href="#" class="battle-button mini-button adapt-button">принять</a>
-                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
-                  >отменить</a
+        {% endif %}
+        {% index_url challenges num 2 as userr_url %}
+        {% if userr_url %}
+          <div class="to-you-challenges-battles__column">
+            <div class="to-you-challenges-battles__item battle-item">
+              <div class="battle-item__pic">
+                
+                {% if userr_url != '/media/null' %}
+                  <img
+                    src="{{ userr_url }}"
+                    alt="картинка-пользователя"
+                    class="battle-item__photo adapt-photo"
+                  />
+                {% else %}
+                  <div class="battle-none-photo"></div>
+                {% endif %}
+              </div>
+              <div class="battle-item__info battle-info">
+                <div class="battle-info__title adapt-title">{% index challenges num 2 %}</div>
+                <div
+                  class="to-you-challenges-battles__button battle-info__buttons"
                 >
+                  <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num 2 %}', '{% get_user_sent_pk challenges num 2 %}', '{{userr_url}}')">принять</div>
+                  <div  class="battle-button mini-button orange mrg-0 adapt-button"
+                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num 2 %}')" >отменить</div
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div><div class="to-you-challenges-battles__body">
-        <div class="to-you-challenges-battles__column">
-          <div class="to-you-challenges-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo adapt-photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title adapt-title">vanger__2006_20</div>
-              <div
-                class="to-you-challenges-battles__button battle-info__buttons"
-              >
-                <a href="#" class="battle-button mini-button adapt-button">принять</a>
-                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
-                  >отменить</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="to-you-challenges-battles__column">
-          <div class="to-you-challenges-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo adapt-photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title adapt-title">vanger__2006_20</div>
-              <div
-                class="to-you-challenges-battles__button battle-info__buttons"
-              >
-                <a href="#" class="battle-button mini-button adapt-button">принять</a>
-                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
-                  >отменить</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="to-you-challenges-battles__column">
-          <div class="to-you-challenges-battles__item battle-item">
-            <div class="battle-item__pic">
-              <img
-                src="..\..\static_dev\homepage\img\me.png"
-                alt="картинка-пользователя"
-                class="battle-item__photo adapt-photo adapt-photo"
-              />
-            </div>
-            <div class="battle-item__info battle-info">
-              <div class="battle-info__title adapt-title adapt-title">vanger__2006_20</div>
-              <div
-                class="to-you-challenges-battles__button battle-info__buttons"
-              >
-                <a href="#" class="battle-button mini-button adapt-button">принять</a>
-                <a href="#" class="battle-button mini-button orange mrg-0 adapt-button"
-                  >отменить</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endif %}
       </div>
+    {% endfor %}
     </div>
     </div>
   </div>
-</div>
+  <script src="{% static 'duels/js/close_message.js' %}"></script>
+  <script src="{% static 'js/csrf_token.js' %}"> </script>
+  <script type="text/javascript" src="{% static 'duels/js/decline_challenges.js' %}"> </script>
+  <script type="text/javascript" src="{% static 'duels/js/accept_challenges.js' %}"> </script>
 {% endblock %}

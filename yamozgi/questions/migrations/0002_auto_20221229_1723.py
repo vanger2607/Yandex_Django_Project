@@ -9,24 +9,34 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('questions', '0001_initial'),
+        ("questions", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='question',
-            name='author',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
+            model_name="question",
+            name="author",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='question',
-            name='category',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='questions.category'),
+            model_name="question",
+            name="category",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="questions.category",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='question',
-            name='right_answer',
-            field=models.CharField(max_length=100, verbose_name='правильный ответ'),
+            model_name="question",
+            name="right_answer",
+            field=models.CharField(
+                max_length=100, verbose_name="правильный ответ"
+            ),
         ),
     ]
