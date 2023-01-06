@@ -7,31 +7,37 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('questions', '0001_initial'),
+        ("questions", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='category',
-            name='created',
+            model_name="category",
+            name="created",
         ),
         migrations.RemoveField(
-            model_name='category',
-            name='modified',
+            model_name="category",
+            name="modified",
         ),
         migrations.AddField(
-            model_name='question',
-            name='difficulty',
+            model_name="question",
+            name="difficulty",
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='question',
-            name='right_answer',
-            field=models.PositiveIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(4)]),
+            model_name="question",
+            name="right_answer",
+            field=models.PositiveIntegerField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1),
+                    django.core.validators.MaxValueValidator(4),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='question',
-            name='is_approved',
+            model_name="question",
+            name="is_approved",
             field=models.BooleanField(default=False),
         ),
     ]
