@@ -1,5 +1,5 @@
 .message{
-  display: none\;
+  display: none;
 }
 .activated-mes{
   position: fixed;
@@ -12,6 +12,10 @@
   background: #d4edda;
   color: #3c763d;
   padding-top: 5px;
+}
+.red-mes{
+  background-color: #f00;
+  color: white;
 }
 .back-color {
   background: linear-gradient(103.37deg, #9324a5 0%, #5524a5 100%);
