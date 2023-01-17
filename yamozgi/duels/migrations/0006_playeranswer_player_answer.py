@@ -6,14 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('duels', '0005_auto_20230109_0002'),
+        ("duels", "0005_auto_20230109_0002"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='playeranswer',
-            name='player_answer',
-            field=models.CharField(default=1, max_length=16, verbose_name='ответ игрока'),
+            model_name="playeranswer",
+            name="player_answer",
+            field=models.CharField(
+                default=1, max_length=16, verbose_name="ответ игрока"
+            ),
             preserve_default=False,
         ),
     ]

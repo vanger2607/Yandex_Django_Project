@@ -7,34 +7,61 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('questions', '0002_auto_20221229_1723'),
-        ('duels', '0003_alter_round_category'),
+        ("questions", "0002_auto_20221229_1723"),
+        ("duels", "0003_alter_round_category"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='round',
-            name='question_1',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='first_question', to='questions.question', verbose_name='первый вопрос'),
+            model_name="round",
+            name="question_1",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="first_question",
+                to="questions.question",
+                verbose_name="первый вопрос",
+            ),
         ),
         migrations.AddField(
-            model_name='round',
-            name='question_2',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='second_question', to='questions.question', verbose_name='второй вопрос'),
+            model_name="round",
+            name="question_2",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="second_question",
+                to="questions.question",
+                verbose_name="второй вопрос",
+            ),
         ),
         migrations.AddField(
-            model_name='round',
-            name='question_3',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='third_question', to='questions.question', verbose_name='второй вопрос'),
+            model_name="round",
+            name="question_3",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="third_question",
+                to="questions.question",
+                verbose_name="второй вопрос",
+            ),
         ),
         migrations.AlterField(
-            model_name='round',
-            name='battle_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='duels.battle', verbose_name='айди битвы'),
+            model_name="round",
+            name="battle_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="duels.battle",
+                verbose_name="айди битвы",
+            ),
         ),
         migrations.AlterField(
-            model_name='round',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='questions.category', verbose_name='категория'),
+            model_name="round",
+            name="category",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="questions.category",
+                verbose_name="категория",
+            ),
         ),
     ]

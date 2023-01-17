@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('duels', '0008_alter_playeranswer_player_answer'),
+        ("duels", "0008_alter_playeranswer_player_answer"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='battle',
-            name='player_1_scores',
-            field=models.IntegerField(default=0, verbose_name='очки первого игрока'),
+            model_name="battle",
+            name="player_1_scores",
+            field=models.IntegerField(
+                default=0, verbose_name="очки первого игрока"
+            ),
         ),
         migrations.AddField(
-            model_name='battle',
-            name='player_2_scores',
-            field=models.IntegerField(default=0, verbose_name='очки второго игрока'),
+            model_name="battle",
+            name="player_2_scores",
+            field=models.IntegerField(
+                default=0, verbose_name="очки второго игрока"
+            ),
         ),
     ]

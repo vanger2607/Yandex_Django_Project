@@ -153,13 +153,13 @@ def other_player_answers(request, obj, round_id):
     return len(
         list(
             PlayerAnswer.objects.filter(
-                player_id_id=other_player_id,
-                round_id_id=round_id
+                player_id_id=other_player_id, round_id_id=round_id
             ).values_list(
                 "id",
                 flat=True,
             )
-        ))
+        )
+    )
 
 
 def my_and_opponent_scores(user_id, obj):
@@ -225,11 +225,19 @@ def get_answers_in_round(request, rounds, round_now, battle_obj):
             for answer in answers:
                 if answer["player_id_id"] == user_id:
                     cur_user_answers.append(
-                        (answer["question_id_id"], answer["is_right"], round["id"])
+                        (
+                            answer["question_id_id"],
+                            answer["is_right"],
+                            round["id"],
+                        )
                     )
                 else:
                     other_user_answers.append(
-                        (answer["question_id_id"], answer["is_right"], round["id"])
+                        (
+                            answer["question_id_id"],
+                            answer["is_right"],
+                            round["id"],
+                        )
                     )
             lst_of_round_answers.append([cur_user_answers, other_user_answers])
             cur_user_answers = []

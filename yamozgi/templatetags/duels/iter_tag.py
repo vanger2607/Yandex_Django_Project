@@ -74,7 +74,7 @@ def length_rng(iteriable):
     return range(1, len(iteriable) + 1)
 
 
-@register.filter(name='one_more')
+@register.filter(name="one_more")
 def one_more(first, second):
     return first, second
 

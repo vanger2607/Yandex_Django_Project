@@ -9,97 +9,128 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('questions', '0002_auto_20221229_1723'),
-        ('duels', '0009_auto_20230110_2146'),
+        ("questions", "0002_auto_20221229_1723"),
+        ("duels", "0009_auto_20230110_2146"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='battle',
-            name='player_1_scores',
+            model_name="battle",
+            name="player_1_scores",
         ),
         migrations.RemoveField(
-            model_name='battle',
-            name='player_2_scores',
+            model_name="battle",
+            name="player_2_scores",
         ),
         migrations.RemoveField(
-            model_name='battle',
-            name='round_now',
+            model_name="battle",
+            name="round_now",
         ),
         migrations.RemoveField(
-            model_name='playeranswer',
-            name='player_answer',
+            model_name="playeranswer",
+            name="player_answer",
         ),
         migrations.RemoveField(
-            model_name='playeranswer',
-            name='start_answering',
+            model_name="playeranswer",
+            name="start_answering",
         ),
         migrations.RemoveField(
-            model_name='round',
-            name='question_1',
+            model_name="round",
+            name="question_1",
         ),
         migrations.RemoveField(
-            model_name='round',
-            name='question_2',
+            model_name="round",
+            name="question_2",
         ),
         migrations.RemoveField(
-            model_name='round',
-            name='question_3',
+            model_name="round",
+            name="question_3",
         ),
         migrations.AlterField(
-            model_name='battle',
-            name='is_over',
+            model_name="battle",
+            name="is_over",
             field=models.BooleanField(default=0),
         ),
         migrations.AlterField(
-            model_name='battle',
-            name='player_1',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='battle_player1', to=settings.AUTH_USER_MODEL),
+            model_name="battle",
+            name="player_1",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="battle_player1",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='battle',
-            name='player_2',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='battle_player2', to=settings.AUTH_USER_MODEL),
+            model_name="battle",
+            name="player_2",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="battle_player2",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='challenge',
-            name='player_recieved_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='player_recieved', to=settings.AUTH_USER_MODEL),
+            model_name="challenge",
+            name="player_recieved_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="player_recieved",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='challenge',
-            name='player_sent_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='player_sent', to=settings.AUTH_USER_MODEL),
+            model_name="challenge",
+            name="player_sent_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="player_sent",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='playeranswer',
-            name='is_right',
+            model_name="playeranswer",
+            name="is_right",
             field=models.BooleanField(null=True),
         ),
         migrations.AlterField(
-            model_name='playeranswer',
-            name='player_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='battle_player', to=settings.AUTH_USER_MODEL),
+            model_name="playeranswer",
+            name="player_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="battle_player",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='playeranswer',
-            name='question_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='questions.question'),
+            model_name="playeranswer",
+            name="question_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="questions.question",
+            ),
         ),
         migrations.AlterField(
-            model_name='playeranswer',
-            name='round_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='duels.round'),
+            model_name="playeranswer",
+            name="round_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="duels.round"
+            ),
         ),
         migrations.AlterField(
-            model_name='round',
-            name='battle_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='duels.battle'),
+            model_name="round",
+            name="battle_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="duels.battle"
+            ),
         ),
         migrations.AlterField(
-            model_name='round',
-            name='category',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='questions.category'),
+            model_name="round",
+            name="category",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="questions.category",
+            ),
             preserve_default=False,
         ),
     ]
