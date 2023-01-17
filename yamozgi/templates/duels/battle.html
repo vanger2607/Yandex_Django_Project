@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static '\duels\css\battle.css' %}" />
+{% endblock %}
+{% block content %}
+    <div class="back-color">
+    <div class="in-battle-page">
+        <div class="in-battle-page__body">
+            <div class="in-battle-page__first-block first-block">
+                <div class="first-block__title title">
+                    {% if has_ended %}
+                        Битва Окончена
+                    {% else %}
+                        Раунд {{round_now}}
+                    {% endif %}
+                </div>
+                <div class="first-block__subtitle">
+                    Игра против: {{other_player}}
+                </div>
+
+                <div class="first-block__second-subtitle">
+                    {% if has_ended %}
+                        {% if my_scores > opponent_scores %}
+                            Вы выиграли! Поздравляем!
+                        {% elif my_scores < opponent_scores %}
+                            Вы проиграли!
+                        {% elif my_scores == opponent_scores %}
+                            Ничья!
+                        {% endif %}
+                    {% else %}
+                        {% if category_name %}
+                            Категория: {{category_name}}
+                        {% else %}
+                            Категория: Не выбрана
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="first-block__scores">
+                    {{my_scores}} : {{opponent_scores}}
+                </div>
+            </div>
+            <div class="in-battle-page__second-block second-block">
+                {% for round in rounds|length_rng %}
+                <div class="second-block__row">
+                {% if answers|one_more:round|return_item_for_answer:0 %}
+                    {% for answer in answers|one_more:round|return_item_for_answer:0 %}
+                    {% with rd=answer.2 %}
+                        {% if answer.1 %}
+                        <div class="second-block__answer right">
+                            <a href="{{base_url|str_add:'/'|str_add:'battles'|str_add:'/'|str_add:battle_id|str_add:'/rounds/'|str_add:rd|str_add:'/'|str_add:'question_pos/'|str_add:forloop.counter|str_add:'/complete/user/'|str_add:user_id}}"><img src="{% static '\duels\img\check_mark.png' %}" alt="галочка"></a>
+                        </div>
+                        {% else %}
+                        <div class="second-block__answer wrong">
+                            <a href="{{base_url|str_add:'/'|str_add:'battles'|str_add:'/'|str_add:battle_id|str_add:'/rounds/'|str_add:rd|str_add:'/'|str_add:'question_pos/'|str_add:forloop.counter|str_add:'/complete/user/'|str_add:user_id}}"><img src="{% static '\duels\img\cross.png' %}" alt="крестик"></a>
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+                    {% endfor %}
+                {% else %}
+                    <div class="second-block__answer none-answer">
+                    </div>
+                    <div class="second-block__answer none-answer">
+                    </div>
+                    <div class="second-block__answer none-answer">
+                    </div>
+                {% endif %}
+                    <div class="second-block__round">Раунд {{round}}</div>
+                {% if answers|one_more:round|return_item_for_answer:1 %}
+                    {% for answer in answers|one_more:round|return_item_for_answer:1 %}
+                    {% with rd=answer.2 %}
+                    {% if answer.1 %}
+                    <div class="second-block__answer right">
+                        <a href="{{base_url|str_add:'/'|str_add:'battles'|str_add:'/'|str_add:battle_id|str_add:'/rounds/'|str_add:rd|str_add:'/'|str_add:'question_pos/'|str_add:forloop.counter|str_add:'/complete/user/'|str_add:other_user_id}}"><img src="{% static '\duels\img\check_mark.png' %}" alt="галочка"></a>
+                    </div>
+                    {% else %}
+                    <div class="second-block__answer wrong">
+                        <a href="{{base_url|str_add:'/'|str_add:'battles'|str_add:'/'|str_add:battle_id|str_add:'/rounds/'|str_add:rd|str_add:'/'|str_add:'question_pos/'|str_add:forloop.counter|str_add:'/complete/user/'|str_add:other_user_id}}"><img src="{% static '\duels\img\cross.png' %}" alt="крестик"></a>
+                    </div>
+                    {% endif %}
+                {% endwith %}
+                {% endfor %}
+                {% else %}
+                    <div class="second-block__answer none-answer">
+                    </div>
+                    <div class="second-block__answer none-answer">
+                    </div>
+                    <div class="second-block__answer none-answer">
+                    </div>
+                {% endif %}
+                </div>
+                {% endfor %}
+                {% if has_ended %}
+                <a href="{% url 'duels:battles' %}" class="button"
+                    >Вернуться обратно</a>
+                {% else %}
+                <a href="{{round_url}}" class="button">
+                    Играть
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div></div>
+    <script src="{% static 'duels/js/close_message.js' %}"></script>
+{%endblock %}

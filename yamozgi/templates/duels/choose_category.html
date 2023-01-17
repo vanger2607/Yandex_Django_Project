@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static '\duels\css\choose_category.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="back-color">
+    <div class="page-body">
+        {% if chooser %}
+            <div class="page-body__title title">
+                Выберите категорию
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" value="{{first_category.pk}}" name="category" class="hide">
+                <input type="submit" value="{{first_category}}" class="choose-button effect effect-5">
+            </form>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" value="{{second_category.pk}}" name="category" class="hide">
+                <input type="submit" value="{{second_category}}" class="choose-button">
+            </form>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" value="{{third_category.pk}}" name="category" class="hide">
+                <input type="submit" value="{{third_category}}" class="choose-button">
+            </form>
+        {% else %}
+        <div class="page-body__title title">
+            Ваш соперник играет раунд, подождите пока
+            <div class="my-button"><a href="{% url 'duels:battle_detail' pk=battle_id %}">Вернуться назад</a></div>
+        {% endif %}
+    </div>
+</div>
+<script src="{% static 'duels/js/close_message.js' %}"></script>
+{% endblock %}

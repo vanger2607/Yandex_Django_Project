@@ -8,26 +8,149 @@
     <div class="container">
         <div class="question">
             <div class="question__body">
-                <div class="question__number">Вопрос 1:</div>
+                <div class="question__number">Вопрос {{question_now}}: чуть-ниже будет текст вопроса, нажмите кнопку начать(она тоже ниже), чтобы он появился</div>
                 <div class="question__text">
-                    {{question.question_text}}
+                    да, я буду здесь
+                    <div class="line">
+                        <div class="line__background">
+                            <div class="line__special"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="question__answers question-answers">
                     <div class="question-answers__body">
-                        <div class="first_answer " onclick="is_right(this, '{{question.pk}}')"><p>{{question.question_choice1}}</p></div>
-                        <div class="second_answer"  onclick="is_right(this,  '{{question.pk}}')"><p>{{question.question_choice2}}</p></div>
+                        <div class="first_answer"><p>здесь будет вариант ответа</p></div>
+                        <div class="second_answer"><p>здесь будет вариант ответа</p></div>
                     </div>
                     <div class="question-answers__body">
-                        <div class="third_answer"  onclick="is_right(this,  '{{question.pk}}')"><p>{{question.question_choice3}}</p></div>
-                        <div class="fourth_answer"  onclick="is_right(this,  '{{question.pk}}')"><p>{{question.question_choice4}}</p></div>
+                        <div class="third_answer"><p>здесь будет вариант ответа</p></div>
+                        <div class="fourth_answer"><p>здесь будет вариант ответа</p></div>
                     </div>
                 </div>
+                
+                <div class="button" onclick="start_game(this, '{{base_url}}', '{{round_id}}', '{{question.id}}', '{{round_now}}')">начать</div>
             </div>
             
         </div>
     </div>
     <script src="{% static 'js/csrf_token.js' %}"></script>
-    <script type="text/javascript" src="{% static 'duels/js/get_answer.js' %}">
-    </script>
+    <script type="text/javascript" src="{% static 'duels/js/get_answer.js' %}"></script>
+    <script type="text/javascript" src="{% static 'duels/js/timer.js' %}"></script>
+    <script type="text/javascript">function start_game(elem, base_url, round_id, question_id, round_now){
+        const csrftoken = getCookie("csrftoken");
+      const f_body = {
+        round_id: round_id,
+        question_id: question_id
+      };
+        let response = fetch(`${base_url}/question-api-start`, {
+        method: "POST",
+        headers: {
+          // Добавляем необходимые заголовки
+          "Content-type": "application/json; charset=UTF-8",
+          "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify(f_body), // Тело запроса в JSON-формате
+      })
+        .then((response) => {
+          if (response.ok) {
+            question_number = document.querySelector('.question__number')
+            if (typeof question_number.innerText !== "undefined") {
+            // IE8-
+            question_number.innerText = `Вопрос {{question_now}}:`;
+          } else {
+            // Нормальные браузеры
+            question_number.createTextNode(`Вопрос {{question_now}}:`);
+          };
+            question_text = document.querySelector('.question__text')
+            if (typeof question_text.innerText !== "undefined") {
+            // IE8-
+            question_text.innerText = `{{question.question_text}}:`;
+          } else {
+            // Нормальные браузеры
+            question_text.createTextNode(`{{question.question_text}}:`);
+          };
+            line = document.createElement('div')
+            line.classList.add('line')
+            line__background = document.createElement('div')
+            line__background.classList.add('line__background')
+            line__special = document.createElement('div')
+            line__special.classList.add('line__special')
+            line__background.append(line__special)
+            line.append(line__background)
+            question_text.append(line)
+            first_answer = document.querySelector('.first_answer')
+            if (typeof first_answer.innerText !== "undefined") {
+            // IE8-
+            first_answer.innerText = `{{question.question_choice1}}`;
+          } else {
+            // Нормальные браузеры
+            first_answer.createTextNode(`{{question.question_choice1}}`);
+          };
+          first_answer.setAttribute('onclick', `is_right(this,  {{question.pk}}, 'question_choice1', {{round_id}}, {{question_now}}, {{battle_now}}, {{round_now}}, '${base_url}')`)
+          first_answer.classList.add('pointer')
+          second_answer = document.querySelector('.second_answer')
+            if (typeof first_answer.innerText !== "undefined") {
+            // IE8-
+            second_answer.innerText = `{{question.question_choice2}}`;
+          } else {
+            // Нормальные браузеры
+            second_answer.createTextNode(`{{question.question_choice2}}`);
+          };
+          second_answer.setAttribute('onclick', `is_right(this,  {{question.pk}}, 'question_choice2', {{round_id}}, {{question_now}}, {{battle_now}}, {{round_now}}, '${base_url}')`)
+          second_answer.classList.add('pointer')
+          third_answer = document.querySelector('.third_answer')
+            if (typeof third_answer.innerText !== "undefined") {
+            // IE8-
+            third_answer.innerText = `{{question.question_choice3}}`;
+          } else {
+            // Нормальные браузеры
+            third_answer.createTextNode(`{{question.question_choice3}}`);
+          };
+          third_answer.setAttribute('onclick', `is_right(this,  {{question.pk}}, 'question_choice3', {{round_id}}, {{question_now}}, {{battle_now}}, {{round_now}}, '${base_url}')`)
+          third_answer.classList.add('pointer')
+          fourth_answer = document.querySelector('.fourth_answer')
+            if (typeof fourth_answer.innerText !== "undefined") {
+            // IE8-
+            fourth_answer.innerText = `{{question.question_choice4}}`;
+          } else {
+            // Нормальные браузеры
+            foutrh_answer.createTextNode(`{{question.question_choice4}}`);
+          };
+          fourth_answer.setAttribute('onclick', `is_right(this,  {{question.pk}}, 'question_choice4', {{round_id}}, {{question_now}}, {{battle_now}}, {{round_now}}, '${base_url}')`)
+          fourth_answer.classList.add('pointer')
+          elem.remove()
+          window.scrollTo(0, 100)
+          timer(base_url, question_id, round_id, '{{question_now}}', '{{battle_now}}', '{{round_now}}')
+          } else {
+            throw new Error("Bad Status");
+          }
+        })
+        .catch((error) => {
+            alert(error)
+          let exist = document.querySelector(".message");
+          if (exist) {
+            exist.remove();
+          }
+          let el = document.createElement("div");
+          if (typeof el.innerText !== "undefined") {
+            // IE8-
+            el.innerText = "что-то пошло не так";
+          } else {
+            // Нормальные браузеры
+            el.createTextNode("что-то пошло не так");
+          }
+          el.classList.add("message");
+          el.classList.add("activated-mes");
+          el.classList.add("red-mes");
+          el.style.display = "block";
+          let sp = document.createElement("span");
+          sp.innerText = "×";
+          sp.setAttribute("class", "closebtn");
+          sp.setAttribute("onclick", "close_message()");
+          el.append(sp);
+          document.body.append(el);
+        });
+    }</script>
+    <script src="{% static 'duels/js/close_message.js' %}"></script>
 </div>
 {% endblock %}

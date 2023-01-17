@@ -1,0 +1,85 @@
+.page-body {
+    padding: 180px 2px;
+    margin: 0px 140px;
+    position: relative;
+    z-index: 2;
+    width: 1224px;
+  }
+.back-color {
+    background: linear-gradient(103.37deg, #9324a5 0%, #5524a5 100%);
+  }
+.page-body{
+    text-align: center;
+}
+
+.page-body :not(:last-child){
+    margin-bottom: 28px;
+}
+.choose-button{
+    background-color: #c6e485;
+    border-radius: 75px;
+    width: 800px;
+    display: flex;
+    font-weight: 700;
+    font-size: calc(2rem + 2vw - 1vh);
+    line-height: 136%;
+    color: #1d6a1d;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 36px;
+    flex-wrap: nowrap;
+    margin: auto;
+    cursor: pointer;
+}
+.choose-button:hover{
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff,
+    0 0 40px #c6e485, 0 0 80px #c6e485, 0 0 90px #c6e485, 0 0 100px #c6e485,
+    0 0 150px #c6e485;
+}
+.hide{
+    display: none;
+}
+.message{
+    display: none;
+  }
+  .activated-mes{
+    position: fixed;
+    width: 100%;
+    min-height:65px;
+    left: 0;
+    top: 0;
+    z-index: 23;
+    text-align: center;
+    background: #d4edda;
+    color: #3c763d;
+    padding-top: 5px;
+  }
+  .red-mes{
+    background-color: #f00;
+    color: white;
+  }
+.my-button{
+  background-color: #c6e485;
+  border-radius: 75px;
+  max-width: 388px;
+  display: flex;
+  font-weight: 700;
+  font-size: calc(2rem + 2vw - 1vh);
+  line-height: 136%;
+  color: #1d6a1d;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 36px;
+  flex-wrap: nowrap;
+  cursor: pointer;
+  margin: auto;
+  margin-top: 30px;
+}
+.my-button:hover{
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff,
+    0 0 40px #c6e485, 0 0 80px #c6e485, 0 0 90px #c6e485, 0 0 100px #c6e485,
+    0 0 150px #c6e485;
+}
+.my-button a{
+  color: #1d6a1d;
+}
