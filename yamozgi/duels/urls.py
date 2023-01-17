@@ -16,9 +16,32 @@ urlpatterns = [
         name="userlist",
     ),
     path(
-        "question",
+        "battles/<int:pk>/rounds/<int:round>",
+        views.RoundChooseView.as_view(),
+        name="choose_category",
+    ),
+    path(
+        "battles/<int:pk>/rounds/<int:round>/question_pos/<int:pos>",
         views.QuestionView.as_view(),
         name="question",
+    ),
+    path(
+        (
+            "battles/<int:pk>/rounds/<int:round>/question_pos/"
+            "<int:pos>/complete/user/<int:user_id>"
+        ),
+        views.QuestionCompleteView.as_view(),
+        name="question-complete",
+    ),
+    path(
+        "question-api-start",
+        views.question_api_start,
+        name="question-api-start",
+    ),
+    path(
+        "question_api_endtime",
+        views.question_api_endtime,
+        name="question_api_endtime",
     ),
     path(
         "question-api",
@@ -44,5 +67,10 @@ urlpatterns = [
         "decline-my-challenge-api",
         views.decline_my_challenge_api,
         name="decline-my-challenge-api",
+    ),
+    path(
+        "battles/<int:pk>",
+        views.DetailBattleView.as_view(),
+        name="battle_detail",
     ),
 ]

@@ -27,6 +27,7 @@
       {% endif %}
     </div>
     <div class="current-battles__battle-container battle-container">
+      {% if battles %}
       {% for num in number_of_battles|times%}
       <div class="current-battles__body">
         <div class="current-battles__column">
@@ -104,23 +105,26 @@
       {% endif %}
       </div>
     {% endfor %}
+    {% endif %}
     </div>
   </div>
   <div class="battle-page__abandoned-battles abandoned-battles">
     <div class="abandoned-battles__title battle-title">
-      {% if my_challenges %}
-        Брошенные вызовы:
+      {% if my_ended_battles %}
+        Сыгранные битвы:
       {% else %}
-        Вы пока еще никому не бросили вызов
+        У вас пока нет завершенных битв
       {% endif %}
     </div>
+
     <div class="abandoned-battles__battle-container battle-container">
-      {% for num in number_of_my_challenges|times%}
+      {% if my_ended_battles %}
+      {% for num in number_of_my_ended_battles|times%}
         <div class="abandoned-battles__body">
           <div class="abandoned-battles__column">
             <div class="abandoned-battles__item battle-item">
               <div class="battle-item__pic">
-              {% index_url my_challenges num as userr_url %}
+              {% index_url my_ended_battles num as userr_url %}
               {% if userr_url != '/media/null' %}
                 <img
                   src="{{ userr_url }}"
@@ -132,16 +136,15 @@
               {% endif %}
               </div>
               <div class="battle-item__info battle-info">
-                <div class="battle-info__title">{% index my_challenges num %}</div>
+                <div class="battle-info__title">{% index my_ended_battles num %}</div>
                 <div class="abandoned-battles__button battle-info__button">
-                  <div class="battle-button mini-button orange"
-                  onclick="decline_my_challenge(this, '{% get_user_recieved_pk my_challenges num %}')">отменить</div
-                  >
+                  <div class="battle-button mini-button"
+                 > <a href="{% battle_url my_ended_battles num %}" class="battle-button mini-button">посмотреть результат!</a></div>
                 </div>
               </div>
             </div>
           </div>
-          {% index_url my_challenges num 1 as userr_url %}
+          {% index_url my_ended_battles num 1 as userr_url %}
           {% if userr_url %}
             <div class="abandoned-battles__column">
               <div class="abandoned-battles__item battle-item">
@@ -157,17 +160,17 @@
                   {% endif %}
                 </div>
                 <div class="battle-item__info battle-info">
-                  <div class="battle-info__title">{% index my_challenges num 1%}</div>
+                  <div class="battle-info__title">{% index my_ended_battles num 1%}</div>
                   <div class="abandoned-battles__button battle-info__button">
-                    <div  class="battle-button mini-button orange"
-                    onclick="decline_my_challenge(this, '{% get_user_recieved_pk my_challenges num 1 %}')">отменить</div
+                    <div  class="battle-button mini-button"
+                    > <a href="{% battle_url my_ended_battles num 1 %}" class="battle-button mini-button">посмотреть результат!</a></div
                     >
                   </div>
                 </div>
               </div>
             </div>
           {% endif %}
-          {% index_url my_challenges num 2 as userr_url %}
+          {% index_url my_ended_battles num 2 as userr_url %}
           {% if userr_url %}
             <div class="abandoned-battles__column">
               <div class="abandoned-battles__item battle-item">
@@ -183,10 +186,10 @@
                   {% endif %}
                 </div>
                 <div class="battle-item__info battle-info">
-                  <div class="battle-info__title">{% index my_challenges num 2%}</div>
+                  <div class="battle-info__title">{% index my_ended_battles num 2%}</div>
                   <div class="abandoned-battles__button battle-info__button">
-                    <div  class="battle-button mini-button orange"
-                    onclick="decline_my_challenge(this, '{% get_user_recieved_pk my_challenges num 2%}')">отменить</div
+                    <div  class="battle-button mini-button"
+                   > <a href="{% battle_url my_ended_battles num 2%}" class="battle-button mini-button">посмотреть результат!</a></div
                     >
                   </div>
                 </div>
@@ -196,6 +199,7 @@
         </div>
       {% endfor %}
     </div>
+    {% endif %}
   </div>
   <div class="battle-page__to-you-challenges-battles to-you-challenges-battles">
     <div class="to-you-challenges-battles__title battle-title">
@@ -229,9 +233,9 @@
               <div
                 class="to-you-challenges-battles__button battle-info__buttons"
               >
-                <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num %}', '{% get_user_sent_pk challenges num  %}', '{{userr_url}}')">принять</div>
+                <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num %}', '{% get_user_sent_pk challenges num  %}', '{{userr_url}}', '{{base_url}}')">принять</div>
                 <div class="battle-button mini-button orange mrg-0 adapt-button"
-                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num %}')">отменить</div
+                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num %}', '{{base_url}}')">отменить</div
                 >
               </div>
             </div>
@@ -258,9 +262,9 @@
                 <div
                   class="to-you-challenges-battles__button battle-info__buttons"
                 >
-                  <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num 1%}', '{% get_user_sent_pk challenges num 1 %}', '{{userr_url}}')">принять</div>
+                  <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num 1%}', '{% get_user_sent_pk challenges num 1 %}', '{{userr_url}}', '{{base_url}}')">принять</div>
                   <div  class="battle-button mini-button orange mrg-0 adapt-button"
-                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num 1 %}')">отменить</div
+                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num 1 %}' , '{{base_url}}')">отменить</div
                   >
                 </div>
               </div>
@@ -288,9 +292,9 @@
                 <div
                   class="to-you-challenges-battles__button battle-info__buttons"
                 >
-                  <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num 2 %}', '{% get_user_sent_pk challenges num 2 %}', '{{userr_url}}')">принять</div>
+                  <div  class="battle-button mini-button adapt-button" onclick="accept_challenge(this, '{% index challenges num 2 %}', '{% get_user_sent_pk challenges num 2 %}', '{{userr_url}}', '{{base_url}}')">принять</div>
                   <div  class="battle-button mini-button orange mrg-0 adapt-button"
-                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num 2 %}')" >отменить</div
+                  onclick="decline_challenge(this, '{% get_user_sent_pk challenges num 2 %}', '{{base_url}}')" >отменить</div
                   >
                 </div>
               </div>

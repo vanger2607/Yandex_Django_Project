@@ -1,5 +1,6 @@
-{% load static %}
+
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
   <head>
     {% block head %}
@@ -14,6 +15,13 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans:regular,500,600,700&display=swap&subset=cyrillic-ext"
       rel="stylesheet"
     />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'homepage/img/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'homepage/img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'homepage/img/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'homepage/img/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'homepage/img/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#ce70dd">
+    <meta name="theme-color" content="#ffffff">
 </head>
 <body>
     {% include 'includes/header.html' %}

@@ -23,7 +23,7 @@
             <div class="none-photo"></div>
             {% endif %}
           </div>
-          <div class="item__button" id="btn-1" onclick="challenge('{{user.pk}}', '{% get_user_pk users num %}')">Бросить вызов</div>
+          <div class="item__button" id="btn-1" onclick="challenge('{{user.pk}}', '{% get_user_pk users num %}', '{{base_url}}')">Бросить вызов</div>
         </div>{% endif %}
         {%  get_user_pk users num 1 as userr_id %}
         {% if userr_id %}
@@ -42,7 +42,7 @@
               <div class="none-photo"></div>
               {% endif %}
             </div>
-            <div class="item__button" onclick="challenge('{{user.pk}}', '{% get_user_pk users num 1 %}')">Бросить вызов</div>
+            <div class="item__button" onclick="challenge('{{user.pk}}', '{% get_user_pk users num 1 %}', '{{base_url}}')">Бросить вызов</div>
         </div>{% endif %} {% endif %}
         {% get_user_pk users num 2 as userr_id %}
         {% if userr_id %}
@@ -62,7 +62,7 @@
               <div class="none-photo"></div>
               {% endif %}
             </div>
-            <div class="item__button" onclick="challenge('{{user.pk}}', '{% get_user_pk users num 2 %}')">Бросить вызов</div>
+            <div class="item__button" onclick="challenge('{{user.pk}}', '{% get_user_pk users num 2 %}', '{{base_url}}')">Бросить вызов</div>
           </div>
         {% endif %} {% endif %}
       </div>

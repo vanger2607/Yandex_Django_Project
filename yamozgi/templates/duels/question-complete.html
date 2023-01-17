@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static '\duels\css\question.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="back-color">
+    <div class="container">
+        <div class="question">
+            <div class="question__body">
+                <div class="question__number">Вопрос {{question_now}}:</div>
+                <div class="question__text">
+                    {{question.question_text}}
+                </div>
+                <div class="question__text">
+                    {% if player_answer == 'timeout' %}
+                    Вы не успели ответить на этот вопрос
+                    {% elif player_answer != question.right_answer %}
+                    Вы ответили неверно, не расстраивайтесь! В следующей раз повезет больше!
+                    {% elif player_answer == question.right_answer %}
+                    Поздравляем, Вы верно ответили на вопрос!
+                    {% endif %}
+                </div>
+                <div class="question__answers question-answers">
+                    <div class="question-answers__body">
+                        {% if player_answer == 'timeout' %}
+                            {% if question.question_choice1 == question.right_answer %}
+                                <div class="first_answer right"><p>{{question.question_choice1}}</p></div>
+                            {% else %}
+                                <div class="first_answer wrong"><p>{{question.question_choice1}}</p></div>
+                            {% endif %}
+                            {% if question.question_choice2 == question.right_answer %}
+                                <div class="second_answer right"><p>{{question.question_choice2}}</p></div>
+                            {% else %}
+                                <div class="second_answer wrong"><p>{{question.question_choice2}}</p></div>
+                            {% endif %}
+                            </div>
+                        <div class="question-answers__body">
+                            {% if question.question_choice3 == question.right_answer %}
+                                <div class="third_answer right"><p>{{question.question_choice3}}</p></div>
+                            {% else %}
+                                <div class="third_answer wrong"><p>{{question.question_choice3}}</p></div>
+                            {% endif %}
+                            {% if question.question_choice4 == question.right_answer %}
+                                <div class="fourth_answer right"><p>{{question.question_choice4}}</p></div>
+                            {% else %}
+                                <div class="fourth_answer wrong"><p>{{question.question_choice4}}</p></div>
+                            {% endif %}</div>
+                        {% else %}
+                            {% if question.question_choice1 == question.right_answer %}
+                                <div class="first_answer right"><p>{{question.question_choice1}}</p></div>
+                            {% else %}
+                                {% if question.question_choice1 == player_answer %}
+                                    <div class="first_answer wrong"><p>{{question.question_choice1}}</p></div>
+                                {% else %}
+                                    <div class="first_answer"><p>{{question.question_choice1}}</p></div>
+                                {% endif %}
+                            {% endif %}
+                            {% if question.question_choice2 == question.right_answer %}
+                                <div class="second_answer right"><p>{{question.question_choice2}}</p></div>
+                            {% else %}
+                                {% if question.question_choice2 == player_answer %}
+                                    <div class="second_answer wrong"><p>{{question.question_choice2}}</p></div>
+                                {% else %}
+                                    <div class="second_answer"><p>{{question.question_choice2}}</p></div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="question-answers__body">
+                            {% if question.question_choice3 == question.right_answer %}
+                                <div class="third_answer right"><p>{{question.question_choice3}}</p></div>
+                            {% else %}
+                                {% if question.question_choice3 == player_answer %}
+                                    <div class="third_answer wrong"><p>{{question.question_choice3}}</p></div>
+                                {% else %}
+                                    <div class="third_answer"><p>{{question.question_choice3}}</p></div>
+                                {% endif %}
+                            {% endif %}
+                            {% if question.question_choice4 == question.right_answer %}
+                                <div class="fourth_answer right"><p>{{question.question_choice4}}</p></div>
+                            {% else %}
+                                {% if question.question_choice4 == player_answer %}
+                                    <div class="fourth_answer wrong"><p>{{question.question_choice4}}</p></div>
+                                {% else %}
+                                    <div class="fourth_answer"><p>{{question.question_choice4}}</p></div>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% if next_question %}
+                <div class="button"><a href="{{next_question_url}}">Следующий вопрос</a></div>
+                {% else %}
+                <div class="back-button"><a href="{{next_question_url}}">Вернуться на страницу битвы</a></div>
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+    <script src="{% static 'js/csrf_token.js' %}"></script>
+    <script type="text/javascript" src="{% static 'duels/js/get_answer.js' %}"></script>
+    <script type="text/javascript" src="{% static 'duels/js/timer.js' %}"></script>
+</div>
+{% endblock %}
