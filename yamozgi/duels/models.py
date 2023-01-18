@@ -45,8 +45,14 @@ class Battle(models.Model):
         default=1,
         verbose_name="раунд сейчас",
     )
-    player_1_scores = models.IntegerField(default=0, verbose_name="очки первого игрока",)
-    player_2_scores = models.IntegerField(default=0, verbose_name="очки второго игрока",)
+    player_1_scores = models.IntegerField(
+        default=0,
+        verbose_name="очки первого игрока",
+    )
+    player_2_scores = models.IntegerField(
+        default=0,
+        verbose_name="очки второго игрока",
+    )
 
     class Meta:
         verbose_name = "битва"
@@ -115,7 +121,7 @@ class PlayerAnswer(models.Model):
         verbose_name="верно или нет",
     )
     player_answer = models.CharField(
-        verbose_name='ответ игрока',
+        verbose_name="ответ игрока",
         max_length=150,
     )
     start_answering = models.TimeField()

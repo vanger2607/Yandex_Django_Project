@@ -243,7 +243,8 @@ class RoundChooseView(TemplateView):
                     "id",
                     flat=True,
                 )
-            ) + 1
+            )
+            + 1
         )
         user_id = check_and_return_existence_user_id(self.request)
         category = get_object_or_404(
@@ -371,10 +372,13 @@ class DetailBattleView(DetailView):
                     "id",
                     flat=True,
                 )
-            ) + 1
+            )
+            + 1
         )
         logger.debug(f"{round_now}, раунд тута")
-        round_category = get_object_or_404(Round.objects.values_list('category_id__name', flat=True), pk=round)
+        round_category = get_object_or_404(
+            Round.objects.values_list("category_id__name", flat=True), pk=round
+        )
         rounds = get_rounds_by_battle_id(battle.pk)
         answers = get_answers_in_round(self.request, rounds, round_now, battle)
         context["title"] = f"Игра с {user_name}"
@@ -461,9 +465,8 @@ def question_api_endtime(request):
                 battle.round_now = next_round.pk
                 battle.save()
             elif (
-                len_answers == 3
-                and data_from_post["round_now"] == 6
-                and int(data_from_post["question_now"]) == 3
+                len_answers == 3 and data_from_post["round_now"] == 6
+                    and int(data_from_post["question_now"]) == 3
             ):
                 round = get_object_or_404(Round, pk=data_from_post["round_id"])
                 round.is_over = True
@@ -488,7 +491,7 @@ def question_api(request):
     if request.method == "GET":
         return HttpResponse(status=404)
     elif request.method == "POST":
-        logger.debug('question api start') 
+        logger.debug("question api start")
         time_now = datetime.datetime.strptime(
             f'{datetime.datetime.now().strftime("%H:%M:%S")}', "%H:%M:%S"
         )
@@ -514,9 +517,11 @@ def question_api(request):
                 in_time = True
         except Exception:
             raise Http404
-        logger.debug(f'question api таймер , {timer.total_seconds()}, {in_time}') 
+        logger.debug(
+            f"question api таймер , {timer.total_seconds()}, {in_time}"
+        )
         if answer == question.right_answer and in_time:
-            logger.debug('question api вошли в правильный ответ') 
+            logger.debug("question api вошли в правильный ответ")
             right = True
             if user_id == battle.player_1_id:
                 battle.player_1_scores += 1
@@ -527,12 +532,12 @@ def question_api(request):
         if not in_time:
             answer = "timeout"
         if not player_answer.player_answer:
-            logger.debug('question api вошли в сохранения ответа пользователя') 
+            logger.debug("question api вошли в сохранения ответа пользователя")
             player_answer.is_right = right
             player_answer.player_answer = answer
             player_answer.save()
         if int(data_from_post["question_now"]) == 3:
-            logger.debug('question api если третий вопрос') 
+            logger.debug("question api если третий вопрос")
             oth_player_id = other_player(request, battle)[1]
             len_answers = len(
                 list(
@@ -545,9 +550,11 @@ def question_api(request):
                     )
                 )
             )
-            logger.debug(f'question api длина ответов другого игрока, {len_answers}') 
+            logger.debug(
+                f"question api длина ответов другого игрока, {len_answers}"
+            )
             if len_answers == 3 and data_from_post["round_now"] != 6:
-                logger.debug('question api вошли в завершение раунда') 
+                logger.debug("question api вошли в завершение раунда")
                 round = get_object_or_404(Round, pk=data_from_post["round_id"])
                 round.is_over = True
                 round.save()
@@ -556,7 +563,7 @@ def question_api(request):
                 ).first()
                 battle.round_now = next_round.pk
                 battle.save()
-                logger.debug('question api все прошло успешно') 
+                logger.debug("question api все прошло успешно")
             elif (
                 len_answers == 3
                 and data_from_post["round_now"] == 6
