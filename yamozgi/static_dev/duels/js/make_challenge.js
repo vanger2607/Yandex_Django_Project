@@ -44,7 +44,6 @@ function challenge(from, to, base_url) {
       document.body.append(el)
     })
     .catch((error) => {
-        alert(error)
       let exist = document.querySelector('.message')
       if (exist){
         exist.remove()
