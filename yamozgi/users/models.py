@@ -10,20 +10,20 @@ from .managers import CustomUserManager
 
 class CustomUser(AbstractBaseUser):
     login = models.CharField(
-        "имя пользователя",
+        verbose_name="имя пользователя",
         max_length=13,
         help_text="Максимальная длина 13 символов",
         unique=True,
     )
     email = models.EmailField(
-        "почта",
+        verbose_name="почта",
         max_length=150,
         unique=True,
         help_text="Максимальная длина 150 символов",
     )
 
     birthday = models.DateField(
-        "день рождения",
+        verbose_name="день рождения",
         blank=True,
         null=True,
         help_text="Укажите дату рождения",
@@ -41,6 +41,10 @@ class CustomUser(AbstractBaseUser):
         default="null",
         upload_to="uploads/%Y/%m",
         verbose_name="аватар",
+    )
+    gray_matter = models.IntegerField(
+        verbose_name="серое вещество",
+        default=0,
     )
 
     @property
@@ -63,20 +67,33 @@ class CustomUser(AbstractBaseUser):
         return super(CustomUser, self).save(*args, **kwargs)
 
     count_of_battles = models.IntegerField(
-        "количество битв", null=True, blank=True
+        verbose_name="количество битв",
+        null=True,
+        blank=True,
     )
     count_of_wins = models.IntegerField(
-        "количество побед", null=True, blank=True
+        verbose_name="количество побед",
+        null=True,
+        blank=True,
     )
     count_of_questions = models.IntegerField(
-        "количество созданных вопросов",
+        verbose_name="количество созданных вопросов",
         null=True,
         blank=True,
     )
 
-    is_staff = models.BooleanField("сотрудник", default=False)
-    is_superuser = models.BooleanField("админ", default=False)
-    is_active = models.BooleanField("активный пользователь", default=True)
+    is_staff = models.BooleanField(
+        verbose_name="сотрудник",
+        default=False,
+    )
+    is_superuser = models.BooleanField(
+        verbose_name="админ",
+        default=False,
+    )
+    is_active = models.BooleanField(
+        verbose_name="активный пользователь",
+        default=True,
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["login", "password"]

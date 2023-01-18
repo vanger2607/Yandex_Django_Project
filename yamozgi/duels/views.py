@@ -89,8 +89,7 @@ class QuestionView(TemplateView):
         )
         if self.kwargs["pos"] == 1 and not round_questions.question_1:
             ids = Question.objects.filter(
-                category_id=round_questions.category_id,
-                is_approved=True
+                category_id=round_questions.category_id, is_approved=True
             ).values_list("id", flat=True)
             if ids:
                 rand_id = random.choice(ids)
@@ -104,8 +103,7 @@ class QuestionView(TemplateView):
         elif self.kwargs["pos"] == 2 and not round_questions.question_2:
             ids = list(
                 Question.objects.filter(
-                    category_id=round_questions.category_id,
-                    is_approved=True
+                    category_id=round_questions.category_id, is_approved=True
                 ).values_list("id", flat=True)
             )
             ids.remove(round_questions.question_1_id)
@@ -121,8 +119,7 @@ class QuestionView(TemplateView):
         elif self.kwargs["pos"] == 3 and not round_questions.question_3:
             ids = list(
                 Question.objects.filter(
-                    category_id=round_questions.category_id,
-                    is_approved=True
+                    category_id=round_questions.category_id, is_approved=True
                 ).values_list("id", flat=True)
             )
             ids.remove(round_questions.question_1_id)
@@ -469,8 +466,9 @@ def question_api_endtime(request):
                 battle.round_now = next_round.pk
                 battle.save()
             elif (
-                len_answers == 3 and data_from_post["round_now"] == 6
-                    and int(data_from_post["question_now"]) == 3
+                len_answers == 3
+                and data_from_post["round_now"] == 6
+                and int(data_from_post["question_now"]) == 3
             ):
                 round = get_object_or_404(Round, pk=data_from_post["round_id"])
                 round.is_over = True
