@@ -2,8 +2,10 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .forms import QuestionForm
 from .models import Question
+from services.common.common_services import check_and_return_existence_user_id
 
 
 class CreateQuestion(LoginRequiredMixin, FormView):
@@ -11,6 +13,7 @@ class CreateQuestion(LoginRequiredMixin, FormView):
     form_class = QuestionForm
 
     def form_valid(self, form):
+        check_and_return_existence_user_id(self.request)
         self.success_url = reverse_lazy("questions:create-question")
         right_answer = form.cleaned_data["right_answer"]
         question = Question.objects.create(

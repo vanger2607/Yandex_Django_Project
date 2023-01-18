@@ -1,20 +1,13 @@
-import logging
-
 from django.http import Http404
-from django.db.models import F
 from django.shortcuts import get_object_or_404
-from .models import Challenge, Battle, Round, PlayerAnswer
+from django.db.models import F
 
-logger = logging.getLogger(__name__)
+from duels.models import Battle, Challenge, PlayerAnswer, Round
+from services.common.common_services import (
+    check_and_return_existence_user_id,
+)
 
-
-def check_and_return_existence_user_id(request):
-    """проверяет передала ли нам джанго pk,
-    если почему-то не передала бросаем ошибку"""
-    if request.user and request.user.id:
-        return request.user.id
-    else:
-        raise Http404
+# region common functions for duel
 
 
 def check_correct_user_in_battle(user_id, battle_id):
@@ -35,13 +28,9 @@ def check_correct_user_in_battle(user_id, battle_id):
     return battle_obj
 
 
-def check_correct_user_in_battle_by_obj(user_id, battle_obj):
-    """проверяет, может ли игрок находится в этой битве
-    или пытается попасть в чужую и если все хорошо возвращает battle_obj
-    (какой сейчас раунд и айди игроков)"""
-    if not (user_id in [battle_obj.player_2_id, battle_obj.player_1_id]):
-        raise Http404
-    return battle_obj
+# endregion
+
+# region functions for BattleView
 
 
 def context_for_battle_view(request):
@@ -124,71 +113,9 @@ def context_for_battle_view(request):
     return challenges, my_ended_battles, battles
 
 
-def other_player(request, obj):
-    """возвращает логин другого(не текущего пользователя)
-    игрока битвы и айди"""
-    user_id = check_and_return_existence_user_id(request)
-    if user_id == obj.player_1_id:
-        return (
-            Battle.objects.filter(
-                player_1_id=obj.player_1_id,
-                player_2_id=obj.player_2_id,
-            )
-            .select_related("player_2_id")
-            .values_list("player_2_id__login", flat=True)[0]
-        ), obj.player_2_id
-    else:
-        return (
-            Battle.objects.filter(
-                player_1_id=obj.player_1_id,
-                player_2_id=obj.player_2_id,
-            )
-            .select_related("player_1_id")
-            .values_list("player_1_id__login", flat=True)[0]
-        ), obj.player_1_id
+# endregion
 
-
-def other_player_answers(request, obj, round_id):
-    other_player_id = other_player(request, obj)[1]
-    return len(
-        list(
-            PlayerAnswer.objects.filter(
-                player_id_id=other_player_id, round_id_id=round_id
-            ).values_list(
-                "id",
-                flat=True,
-            )
-        )
-    )
-
-
-def my_and_opponent_scores(user_id, obj):
-    """по айди текущего пользователя и Quesryset Battle
-    возвращает очки обоих пользователей"""
-    if user_id == obj.player_1_id:
-        my_scores = obj.player_1_scores
-        other_scores = obj.player_2_scores
-    elif user_id == obj.player_2_id:
-        my_scores = obj.player_2_scores
-        other_scores = obj.player_1_scores
-    return my_scores, other_scores
-
-
-def get_round_now(battle_id):
-    """по айди битвы возвращает текущий раунд"""
-    return get_object_or_404(
-        Battle.objects.only("round_now"), id=battle_id
-    ).round_now
-
-
-def get_chooser(round_now, battle_obj):
-    """по текущему раунду и Querysetу Battle с айди игроков
-    возвращает кто из них выбирает категорию"""
-    if round_now % 2 == 0:
-        chooser = battle_obj.player_2_id
-    else:
-        chooser = battle_obj.player_1_id
-    return chooser
+# region functions for DetailBattleView
 
 
 def get_rounds_by_battle_id(battle_id):
@@ -203,6 +130,15 @@ def get_rounds_by_battle_id(battle_id):
         )
     )
     return rounds
+
+
+def check_correct_user_in_battle_by_obj(user_id, battle_obj):
+    """проверяет, может ли игрок находится в этой битве
+    или пытается попасть в чужую и если все хорошо возвращает battle_obj
+    (какой сейчас раунд и айди игроков)"""
+    if not (user_id in [battle_obj.player_2_id, battle_obj.player_1_id]):
+        raise Http404
+    return battle_obj
 
 
 def get_answers_in_round(request, rounds, round_now, battle_obj):
@@ -262,6 +198,34 @@ def get_answers_in_round(request, rounds, round_now, battle_obj):
                     ]
                 )
             break
-    logger.debug(f"{round_now}, раунд сейчас")
-    logger.debug(f"{lst_of_round_answers}, ответы игрока")
     return lst_of_round_answers
+
+
+def my_and_opponent_scores(user_id, obj):
+    """по айди текущего пользователя и Quesryset Battle
+    возвращает очки обоих пользователей"""
+    if user_id == obj.player_1_id:
+        my_scores = obj.player_1_scores
+        other_scores = obj.player_2_scores
+    elif user_id == obj.player_2_id:
+        my_scores = obj.player_2_scores
+        other_scores = obj.player_1_scores
+    return my_scores, other_scores
+
+
+# endregion
+
+# region functions for RoundChooseView
+
+
+def get_chooser(round_now, battle_obj):
+    """по текущему раунду и Querysetу Battle с айди игроков
+    возвращает кто из них выбирает категорию"""
+    if round_now % 2 == 0:
+        chooser = battle_obj.player_2_id
+    else:
+        chooser = battle_obj.player_1_id
+    return chooser
+
+
+# endregion

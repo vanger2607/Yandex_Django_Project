@@ -12,14 +12,17 @@ from django.http import Http404
 from users.models import CustomUser
 from questions.models import Question, Category
 from .models import Challenge, Battle, Round, PlayerAnswer
-from .services import (
-    context_for_battle_view,
-    other_player,
-    get_rounds_by_battle_id,
-    get_answers_in_round,
+
+from services.common.common_services import (
     check_and_return_existence_user_id,
-    check_correct_user_in_battle,
+    other_player,
+)
+from services.duels.views_services import (
+    get_rounds_by_battle_id,
     check_correct_user_in_battle_by_obj,
+    check_correct_user_in_battle,
+    context_for_battle_view,
+    get_answers_in_round,
     get_chooser,
     my_and_opponent_scores,
 )
