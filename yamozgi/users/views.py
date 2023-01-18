@@ -39,6 +39,7 @@ class Profile(LoginRequiredMixin, UpdateView):
             initial={"login": user.login, "birthday": user.birthday},
         )
         context["form"] = userform
+        context["gray_matter"] = user.gray_matter
         return context
 
     def get_success_url(self, **kwargs):
