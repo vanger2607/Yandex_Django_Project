@@ -1,6 +1,6 @@
 from django import template
 
-from yamozgi.settings import MEDIA_URL, BASE_URL
+from yamozgi.settings import MEDIA_URL
 
 register = template.Library()
 
