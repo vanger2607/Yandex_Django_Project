@@ -40,7 +40,6 @@ class BattleView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Битвы"
         challenges, my_ended_battles, battles = context_for_battle_view(
             self.request
         )
@@ -51,6 +50,7 @@ class BattleView(TemplateView):
         context["challenges"] = challenges
         context["number_of_challenges"] = len(challenges)
         context["base_url"] = BASE_URL
+        context["title"] = "Битвы"
         return context
 
 
