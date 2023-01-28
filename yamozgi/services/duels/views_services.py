@@ -1,94 +1,100 @@
-from django.http import Http404
+from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.db.models import F
 
-from duels.models import Battle, Challenge, PlayerAnswer, Round
+from typing import TypedDict, NamedTuple
+
+from duels.models import Battle, Challenge, CustomUser, PlayerAnswer, Round
 from services.common.common_services import (
     check_and_return_existence_user_id,
 )
 
+
 # region common functions for duel
 
 
-def check_correct_user_in_battle(user_id, battle_id):
+def get_chooser(round_now: int, battle_obj: Battle) -> int:
+    """по текущему раунду и Querysetу Battle с айди игроков
+    возвращает кто из них выбирает категорию."""
+    if round_now % 2 == 0:
+        return battle_obj.player_2_id
+    return battle_obj.player_1_id
+
+
+def check_correct_user_in_battle(user_id: int, battle_id: int) -> Battle:
     """проверяет, может ли игрок находится в этой битве
     или пытается попасть в чужую и если все хорошо возвращает battle_obj
-    (какой сейчас раунд и айди игроков)"""
+    (какой сейчас раунд и айди игроков)."""
     battle_obj = get_object_or_404(
         Battle.objects.only(
-            "round_now",
-            "player_1_id",
-            "player_2_id",
-            "is_over",
+            Battle.round_now.field.name,
+            Battle.player_1.field.name,
+            Battle.player_2.field.name,
+            Battle.is_over.field.name,
         ),
         pk=battle_id,
     )
-    if not (user_id in [battle_obj.player_2_id, battle_obj.player_1_id]):
+    if not (user_id in [battle_obj.player_2, battle_obj.player_1]):
         raise Http404
     return battle_obj
 
 
-# endregion
+class BaseBattleDict(TypedDict):
+    id: int
+    login: str
+    avatar: str
 
-# region functions for BattleView
+
+class EndedBattleDict(BaseBattleDict):
+    recieved_id: int
 
 
-def context_for_battle_view(request):
-    """функция на вход получает request,
-    делает запросы к бд
-    и возвращает список вызовов (challenges), брошенных текущему пользователю,
-    список вызовов брошенных текущим пользователем (my_challenges),
-    список текущих игр (battles)"""
+class CurrentBattleDict(BaseBattleDict):
+    sent_id: int
 
-    """проверка на существование user.id"""
-    user_id = check_and_return_existence_user_id(request)
 
-    """получаю список вызовов брошенных текущиму пользователю +
-    + никнеймы и аватары пользователей, которые бросили вызов"""
-    challenges = list(
-        (
-            Challenge.objects.filter(player_recieved_id=request.user)
-            .select_related("player_sent_id")
-            .values(
-                login=F("player_sent_id__login"),
-                avatar=F("player_sent_id__avatar"),
-                sent_id=F("player_sent_id"),
-            )
-        )
-    )
+class CurrentbattlesChallengesEndedbattles(NamedTuple):
+    challenges: list[dict[str, int]]
+    my_ended_battles: list[EndedBattleDict]
+    battles: list[CurrentBattleDict]
 
+
+def _get_ended_battles(user_id: int) -> list[EndedBattleDict]:
     """получаю списки  законченных битв пользователя +
     + никнеймы и аватары пользователей, которые закончили эту битву"""
-    my_ended_battles_1 = list(
-        (
-            Battle.objects.filter(player_1_id=user_id, is_over=True)
-            .select_related("player_2_id")
-            .values(
-                "id",
-                login=F("player_2_id__login"),
-                avatar=F("player_2_id__avatar"),
-                recieved_id=F("player_2_id"),
-            )
+    my_ended_battles_1 = (
+        Battle.objects.filter(player_1_id=user_id, is_over=True)
+        .select_related("player_2_id")
+        .values(
+            Battle.pk.field.name,
+            login=F(
+                f"{Battle.player_1.field.name}__{CustomUser.login.field.name}"
+            ),
+            avatar=F(
+                f"{Battle.player_1.field.name}__{CustomUser.avatar.field.name}"
+            ),
+            recieved_id=F(Battle.player_2.field.name),
         )
     )
-    my_ended_battles_2 = list(
-        (
-            Battle.objects.filter(player_2_id=user_id, is_over=True)
-            .select_related("player_1_id")
-            .values(
-                "id",
-                login=F("player_1_id__login"),
-                avatar=F("player_1_id__avatar"),
-                recieved_id=F("player_1_id"),
-            )
+    my_ended_battles_2 = (
+        Battle.objects.filter(player_2_id=user_id, is_over=True)
+        .select_related(Battle.player_1.field.name)
+        .values(
+            Battle.pk.field.name,
+            login=F("player_1_id__login"),
+            avatar=F("player_1_id__avatar"),
+            recieved_id=F("player_1_id"),
         )
     )
-    my_ended_battles = my_ended_battles_1 + my_ended_battles_2
+    return list(my_ended_battles_1 + my_ended_battles_2)
+
+
+def _get_current_battle(user_id: int) -> list[CurrentBattleDict]:
     """получаю списки текущих игр + никнеймы и аватары пользователей,
     против которых идет игра(сначала получаю список игр,
     где id текущего пользователя равен player_1_id,
     потом player_2_id, после складываю эти списки
-    в переменную battles)"""
+    в переменную battles)."""
     battles_1 = list(
         Battle.objects.filter(player_1_id=user_id, is_over=False)
         .select_related("player_2_id")
@@ -109,8 +115,44 @@ def context_for_battle_view(request):
             sent_id=F("player_1_id"),
         )
     )
-    battles = battles_1 + battles_2
-    return challenges, my_ended_battles, battles
+    return battles_1 + battles_2
+
+
+# endregion
+
+# region functions for BattleView
+
+
+def context_for_battle_view(
+    request: HttpRequest,
+) -> CurrentbattlesChallengesEndedbattles:
+    """функция на вход получает request,
+    делает запросы к бд и возвращает список вызовов (challenges),
+    брошенных текущему пользователю,
+    список сыгранных битв (ended_battles),
+    список текущих игр (battles)."""
+
+    user_id = check_and_return_existence_user_id(request)
+
+    """получаю список вызовов брошенных текущиму пользователю +
+    + никнеймы и аватары пользователей, которые бросили вызов."""
+    challenges = list(
+        Challenge.objects.filter(player_recieved_id=request.user)
+        .select_related("player_sent_id")
+        .values(
+            login=F("player_sent_id__login"),
+            avatar=F("player_sent_id__avatar"),
+            sent_id=F("player_sent_id"),
+        )
+    )
+
+    my_ended_battles = _get_ended_battles(user_id)
+    battles = _get_current_battle(user_id)
+    return CurrentbattlesChallengesEndedbattles(
+        challenges,
+        my_ended_battles,
+        battles,
+    )
 
 
 # endregion
@@ -118,8 +160,14 @@ def context_for_battle_view(request):
 # region functions for DetailBattleView
 
 
-def get_rounds_by_battle_id(battle_id):
-    """по айди битвы возвращает список всех раундов связанных с ней"""
+class RoundMetaDict(TypedDict):
+    id: int
+    is_over: bool
+    category_id: int
+
+
+def get_rounds_by_battle_id(battle_id: int) -> list[RoundMetaDict]:
+    """по айди битвы возвращает список всех раундов связанных с ней."""
     rounds = list(
         Round.objects.filter(battle_id_id=battle_id)
         .order_by("id")
@@ -132,27 +180,42 @@ def get_rounds_by_battle_id(battle_id):
     return rounds
 
 
-def check_correct_user_in_battle_by_obj(user_id, battle_obj):
+def check_correct_user_in_battle_by_obj(
+    user_id: int, battle_obj: Battle
+) -> Battle:
     """проверяет, может ли игрок находится в этой битве
     или пытается попасть в чужую и если все хорошо возвращает battle_obj
     (какой сейчас раунд и айди игроков)"""
-    if not (user_id in [battle_obj.player_2_id, battle_obj.player_1_id]):
+    if user_id not in (battle_obj.player_2_id, battle_obj.player_1_id):
         raise Http404
     return battle_obj
 
 
-def get_answers_in_round(request, rounds, round_now, battle_obj):
+class AnswersInRound(NamedTuple):
+    question_id: int
+    is_right: bool
+    round_id: int
+
+
+def get_answers_in_round(
+    request: HttpRequest,
+    rounds: list[RoundMetaDict],
+    round_now: int,
+    battle_obj: Battle,
+) -> list[list[list[AnswersInRound]]]:
     """на вход получает request, rounds(список всех раундов биты),
     round_now(номер какой раунд сейчас 1-6, а не айди раунда!),
     battle_obj(Queryset Battle с айди игроков)"""
     cur_user_answers = []
     other_user_answers = []
     lst_of_round_answers = []
-    for round in rounds:
+    for nth_round in rounds:
         user_id = check_and_return_existence_user_id(request)
-        if round["is_over"]:
+        if nth_round["is_over"]:
             answers = list(
-                PlayerAnswer.objects.filter(round_id_id=round["id"]).values(
+                PlayerAnswer.objects.filter(
+                    round_id_id=nth_round["id"]
+                ).values(
                     "player_id_id",
                     "is_right",
                     "question_id_id",
@@ -164,7 +227,7 @@ def get_answers_in_round(request, rounds, round_now, battle_obj):
                         (
                             answer["question_id_id"],
                             answer["is_right"],
-                            round["id"],
+                            nth_round["id"],
                         )
                     )
                 else:
@@ -172,7 +235,7 @@ def get_answers_in_round(request, rounds, round_now, battle_obj):
                         (
                             answer["question_id_id"],
                             answer["is_right"],
-                            round["id"],
+                            nth_round["id"],
                         )
                     )
             lst_of_round_answers.append([cur_user_answers, other_user_answers])
@@ -183,7 +246,7 @@ def get_answers_in_round(request, rounds, round_now, battle_obj):
             answers = list(
                 PlayerAnswer.objects.filter(
                     player_id_id=chooser,
-                    round_id_id=round["id"],
+                    round_id_id=nth_round["id"],
                 ).values_list("question_id_id", "is_right", "round_id_id")
             )
             if len(answers) == 3:
@@ -201,7 +264,13 @@ def get_answers_in_round(request, rounds, round_now, battle_obj):
     return lst_of_round_answers
 
 
-def my_and_opponent_scores(user_id, obj):
+Current_user_scores = int
+Opponent_scores = int
+
+
+def my_and_opponent_scores(
+    user_id: int, obj: Battle
+) -> tuple[Current_user_scores, Opponent_scores]:
     """по айди текущего пользователя и Quesryset Battle
     возвращает очки обоих пользователей"""
     if user_id == obj.player_1_id:
@@ -216,16 +285,5 @@ def my_and_opponent_scores(user_id, obj):
 # endregion
 
 # region functions for RoundChooseView
-
-
-def get_chooser(round_now, battle_obj):
-    """по текущему раунду и Querysetу Battle с айди игроков
-    возвращает кто из них выбирает категорию"""
-    if round_now % 2 == 0:
-        chooser = battle_obj.player_2_id
-    else:
-        chooser = battle_obj.player_1_id
-    return chooser
-
 
 # endregion

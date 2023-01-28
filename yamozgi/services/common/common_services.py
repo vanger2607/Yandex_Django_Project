@@ -1,9 +1,9 @@
-from django.http import Http404
+from django.http import Http404, HttpRequest
 
 from duels.models import Battle
 
 
-def check_and_return_existence_user_id(request):
+def check_and_return_existence_user_id(request: HttpRequest):
     """проверяет передала ли нам джанго pk,
     если почему-то не передала бросаем ошибку"""
     if request.user and request.user.id:
@@ -12,7 +12,7 @@ def check_and_return_existence_user_id(request):
         raise Http404
 
 
-def other_player(request, obj):
+def other_player(request: HttpRequest, obj: Battle):
     """возвращает логин другого(не текущего пользователя)
     игрока битвы и айди"""
     user_id = check_and_return_existence_user_id(request)
