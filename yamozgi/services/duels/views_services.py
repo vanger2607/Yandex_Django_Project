@@ -433,47 +433,53 @@ class Parametrs_for_redirect(NamedTuple):
 def handler_for_category_in_round_and_player_is_chooser(
     user_id: int, browse_params: dict[str, int]
 ) -> Parametrs_for_redirect:
+    """проверяет ответил ли пользователь на все три вопроса в раунде -
+    - возвращает параметры для redirect"""
     if is_len_player_answers_equal_three(user_id, browse_params["round"]):
         return (
             Parametrs_for_redirect(
                 "duels:question-complete",
                 Dct_with_params_for_redirect(
-                    {
-                        "pk": browse_params["pk"],
-                        "round": browse_params["round"],
-                        "pos": 1,
-                        "user_id": user_id,
-                    }
+                    pk=browse_params["pk"],
+                    round=browse_params["round"],
+                    pos=1,
+                    user_id=user_id,
                 ),
             ),
             True,
+        )
+    else:
+        return Parametrs_for_redirect(
+            "duels:question",
+            Dct_with_params_for_redirect(
+                pk=browse_params["pk"],
+                round=browse_params["round"],
+                pos=1,
+            ),
         )
 
 
 def handler_for_category_in_round_and_player_is_not_chooser(
     user_id: int, browse_params: dict[str, int]
 ) -> Parametrs_for_redirect:
-    """"""
+    """проверяет ответил ли пользователь на все три вопроса в раунде -
+    - возвращает параметры для redirect"""
     if is_len_player_answers_equal_three(user_id, browse_params["round"]):
         return Parametrs_for_redirect(
             "duels:question",
             Dct_with_params_for_redirect(
-                {
-                    "pk": browse_params["pk"],
-                    "round": browse_params["round"],
-                    "pos": 1,
-                }
+                pk=browse_params["pk"],
+                round=browse_params["round"],
+                pos=1,
             ),
         )
 
     return Parametrs_for_redirect(
         "duels:question",
         Dct_with_params_for_redirect(
-            {
-                "pk": browse_params["pk"],
-                "round": browse_params["round"],
-                "pos": 1,
-            }
+            pk=browse_params["pk"],
+            round=browse_params["round"],
+            pos=1,
         ),
     )
 
