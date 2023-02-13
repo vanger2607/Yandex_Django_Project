@@ -433,7 +433,7 @@ class Parametrs_for_redirect(NamedTuple):
 def handler_for_category_in_round_and_player_is_chooser(
     user_id: int, browse_params: dict[str, int]
 ) -> Parametrs_for_redirect:
-    if is_len_player_answers_equal_three(user_id, browse_params["round"]) == 3:
+    if is_len_player_answers_equal_three(user_id, browse_params["round"]):
         return (
             Parametrs_for_redirect(
                 "duels:question-complete",
@@ -453,6 +453,7 @@ def handler_for_category_in_round_and_player_is_chooser(
 def handler_for_category_in_round_and_player_is_not_chooser(
     user_id: int, browse_params: dict[str, int]
 ) -> Parametrs_for_redirect:
+    """"""
     if is_len_player_answers_equal_three(user_id, browse_params["round"]) == 3:
         return Parametrs_for_redirect(
             "duels:question",
@@ -484,6 +485,7 @@ class GeneratedCategories(NamedTuple):
 
 
 def generate_categories() -> GeneratedCategories:
+    """создает три категории и возвращает их"""
     ids = list(Category.objects.values_list("id", flat=True))
     if ids:
         random.shuffle(ids)
