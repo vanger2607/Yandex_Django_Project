@@ -297,10 +297,12 @@ class RoundChooseView(TemplateView):
             self.redirect_data = redirect(url, **params)
         elif category.category_id and user_id != chooser and not round.is_over:
             (
-                to_redirect,
                 url,
                 params,
             ) = handler_for_category_in_round_and_player_is_not_chooser()
+            if url:
+                self.to_redirect = True
+                self.redirect_data(url, **params)
         elif category.category_id and round.is_over:
             LOGGER.debug("мы в конце раунда все хорошо")
             self.redirect_data = redirect(

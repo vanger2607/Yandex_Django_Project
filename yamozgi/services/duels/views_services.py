@@ -474,14 +474,7 @@ def handler_for_category_in_round_and_player_is_not_chooser(
             ),
         )
 
-    return Parametrs_for_redirect(
-        "duels:question",
-        Dct_with_params_for_redirect(
-            pk=browse_params["pk"],
-            round=browse_params["round"],
-            pos=1,
-        ),
-    )
+    return False, False, False
 
 
 class GeneratedCategories(NamedTuple):
