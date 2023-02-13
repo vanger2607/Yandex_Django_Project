@@ -1,14 +1,22 @@
-from django.http import Http404, HttpRequest
-from django.shortcuts import get_object_or_404
-from django.db.models import F
-
 from typing import TypedDict, NamedTuple
+import random
 
-from duels.models import Battle, Challenge, CustomUser, PlayerAnswer, Round
+from django.http import Http404, HttpRequest
+from django.shortcuts import get_object_or_404, redirect
+from django.db.models import F, QuerySet
+
+from duels.models import (
+    Battle,
+    Category,
+    Challenge,
+    CustomUser,
+    PlayerAnswer,
+    Round,
+)
 from services.common.common_services import (
     check_and_return_existence_user_id,
 )
-
+from yamozgi.settings import LOGGER
 
 # region common functions for duel
 
@@ -21,7 +29,9 @@ def get_chooser(round_now: int, battle_obj: Battle) -> int:
     return battle_obj.player_1_id
 
 
-def check_correct_user_in_battle(user_id: int, battle_id: int) -> Battle:
+def check_correct_user_in_battle_and_return_battle_obj(
+    user_id: int, battle_id: int
+) -> Battle:
     """проверяет, может ли игрок находится в этой битве
     или пытается попасть в чужую и если все хорошо возвращает battle_obj
     (какой сейчас раунд и айди игроков)."""
@@ -61,12 +71,12 @@ class CurrentbattlesChallengesEndedbattles(NamedTuple):
 
 def _get_ended_battles(user_id: int) -> list[EndedBattleDict]:
     """получаю списки  законченных битв пользователя +
-    + никнеймы и аватары пользователей, которые закончили эту битву"""
-    my_ended_battles_1 = (
+    + никнеймы и аватары пользователей, которые закончили эту битву."""
+    my_ended_battles_1 = list(
         Battle.objects.filter(player_1_id=user_id, is_over=True)
         .select_related("player_2_id")
         .values(
-            Battle.pk.field.name,
+            Battle.id.field.name,
             login=F(
                 f"{Battle.player_1.field.name}__{CustomUser.login.field.name}"
             ),
@@ -76,17 +86,17 @@ def _get_ended_battles(user_id: int) -> list[EndedBattleDict]:
             recieved_id=F(Battle.player_2.field.name),
         )
     )
-    my_ended_battles_2 = (
+    my_ended_battles_2 = list(
         Battle.objects.filter(player_2_id=user_id, is_over=True)
         .select_related(Battle.player_1.field.name)
         .values(
-            Battle.pk.field.name,
+            Battle.id.field.name,
             login=F("player_1_id__login"),
             avatar=F("player_1_id__avatar"),
             recieved_id=F("player_1_id"),
         )
     )
-    return list(my_ended_battles_1 + my_ended_battles_2)
+    return my_ended_battles_1 + my_ended_battles_2
 
 
 def _get_current_battle(user_id: int) -> list[CurrentBattleDict]:
@@ -134,8 +144,6 @@ def context_for_battle_view(
 
     user_id = check_and_return_existence_user_id(request)
 
-    """получаю список вызовов брошенных текущиму пользователю +
-    + никнеймы и аватары пользователей, которые бросили вызов."""
     challenges = list(
         Challenge.objects.filter(player_recieved_id=request.user)
         .select_related("player_sent_id")
@@ -180,12 +188,12 @@ def get_rounds_by_battle_id(battle_id: int) -> list[RoundMetaDict]:
     return rounds
 
 
-def check_correct_user_in_battle_by_obj(
+def check_correct_user_in_battle_by_obj_and_return_battle_obj(
     user_id: int, battle_obj: Battle
 ) -> Battle:
     """проверяет, может ли игрок находится в этой битве
     или пытается попасть в чужую и если все хорошо возвращает battle_obj
-    (какой сейчас раунд и айди игроков)"""
+    (какой сейчас раунд и айди игроков)."""
     if user_id not in (battle_obj.player_2_id, battle_obj.player_1_id):
         raise Http404
     return battle_obj
@@ -205,7 +213,7 @@ def get_answers_in_round(
 ) -> list[list[list[AnswersInRound]]]:
     """на вход получает request, rounds(список всех раундов биты),
     round_now(номер какой раунд сейчас 1-6, а не айди раунда!),
-    battle_obj(Queryset Battle с айди игроков)"""
+    battle_obj(Queryset Battle с айди игроков)."""
     cur_user_answers = []
     other_user_answers = []
     lst_of_round_answers = []
@@ -272,7 +280,7 @@ def my_and_opponent_scores(
     user_id: int, obj: Battle
 ) -> tuple[Current_user_scores, Opponent_scores]:
     """по айди текущего пользователя и Quesryset Battle
-    возвращает очки обоих пользователей"""
+    возвращает очки обоих пользователей."""
     if user_id == obj.player_1_id:
         my_scores = obj.player_1_scores
         other_scores = obj.player_2_scores
@@ -285,5 +293,210 @@ def my_and_opponent_scores(
 # endregion
 
 # region functions for RoundChooseView
+
+
+def round_choose_context(
+    self,
+):
+    round_now = (
+        len(
+            Round.objects.filter(
+                battle_id_id=self.kwargs["pk"], is_over=True
+            ).values_list(
+                "id",
+                flat=True,
+            )
+        )
+        + 1
+    )
+    user_id = check_and_return_existence_user_id(self.request)
+    category = get_object_or_404(
+        Round.objects.only("category_id"), pk=self.kwargs["round"]
+    )
+    battle_obj = check_correct_user_in_battle_and_return_battle_obj(
+        user_id, self.kwargs["pk"]
+    )
+    round_data = get_object_or_404(
+        Round.objects.only(
+            "question_1_id",
+            "question_2_id",
+            "question_3_id",
+            "is_over",
+        ),
+        pk=self.kwargs["round"],
+    )
+    chooser = get_chooser(round_now, battle_obj)
+    LOGGER.debug(f"choose round {round_now}")
+    if not category.category_id:
+        if user_id == chooser:
+            ids = list(Category.objects.values_list("id", flat=True))
+            if ids:
+                random.shuffle(ids)
+                first_category = get_object_or_404(Category, pk=ids[0])
+                second_category = get_object_or_404(Category, pk=ids[1])
+                third_category = get_object_or_404(Category, pk=ids[2])
+            context["first_category"] = first_category
+            context["second_category"] = second_category
+            context["third_category"] = third_category
+            context["chooser"] = True
+        else:
+            context["chooser"] = False
+    elif (
+        category.category_id and user_id == chooser and not round_data.is_over
+    ):
+        self.to_redirect = True
+        len_answers = len(
+            PlayerAnswer.objects.filter(
+                player_id_id=user_id,
+                round_id_id=self.kwargs["round"],
+            ).values_list(
+                "id",
+                flat=True,
+            )
+        )
+        if len_answers == 3:
+            self.redirect_data = redirect(
+                "duels:question-complete",
+                pk=self.kwargs["pk"],
+                round=self.kwargs["round"],
+                pos=1,
+                user_id=user_id,
+            )
+        else:
+            self.redirect_data = redirect(
+                "duels:question",
+                pk=self.kwargs["pk"],
+                round=self.kwargs["round"],
+                pos=1,
+            )
+    elif (
+        category.category_id and user_id != chooser and not round_data.is_over
+    ):
+        len_answers = len(
+            PlayerAnswer.objects.filter(
+                player_id_id=chooser,
+                round_id_id=self.kwargs["round"],
+            ).values_list(
+                "id",
+                flat=True,
+            )
+        )
+        if len_answers == 3:
+            self.to_redirect = True
+            self.redirect_data = redirect(
+                "duels:question",
+                pk=self.kwargs["pk"],
+                round=self.kwargs["round"],
+                pos=1,
+            )
+    elif category.category_id and round.is_over:
+        LOGGER.debug("мы в конце раунда все хорошо")
+        self.redirect_data = redirect(
+            "duels:question-complete",
+            pk=self.kwargs["pk"],
+            round=self.kwargs["round"],
+            pos=1,
+            user_id=user_id,
+        )
+
+
+def is_len_player_answers_equal_three(user_id: int, round_id: int) -> bool:
+    """навход принимает айди игрока и айди раунда,
+    проверяет равно ли кол-во ответов игрока в раунде трем,
+    если это так - возвращает True, иначе False."""
+    len_answers = len(
+        list(
+            PlayerAnswer.objects.filter(
+                player_id_id=user_id,
+                round_id_id=round_id,
+            ).values_list(
+                "id",
+                flat=True,
+            )
+        )
+    )
+    return len_answers == 3
+
+
+class Dct_with_params_for_redirect(TypedDict):
+    pk: int
+    round: int
+    pos: int
+    user_id: int
+
+
+class Parametrs_for_redirect(NamedTuple):
+    url: str
+    dct_with_parametrs: Dct_with_params_for_redirect
+
+
+def handler_for_category_in_round_and_player_is_chooser(
+    user_id: int, browse_params: dict[str, int]
+) -> Parametrs_for_redirect:
+    if is_len_player_answers_equal_three(user_id, browse_params["round"]) == 3:
+        return (
+            Parametrs_for_redirect(
+                "duels:question-complete",
+                Dct_with_params_for_redirect(
+                    {
+                        "pk": browse_params["pk"],
+                        "round": browse_params["round"],
+                        "pos": 1,
+                        "user_id": user_id,
+                    }
+                ),
+            ),
+            True,
+        )
+
+
+def handler_for_category_in_round_and_player_is_not_chooser(
+    user_id: int, browse_params: dict[str, int]
+) -> Parametrs_for_redirect:
+    if is_len_player_answers_equal_three(user_id, browse_params["round"]) == 3:
+        return Parametrs_for_redirect(
+            "duels:question",
+            Dct_with_params_for_redirect(
+                {
+                    "pk": browse_params["pk"],
+                    "round": browse_params["round"],
+                    "pos": 1,
+                }
+            ),
+        )
+
+    return Parametrs_for_redirect(
+        "duels:question",
+        Dct_with_params_for_redirect(
+            {
+                "pk": browse_params["pk"],
+                "round": browse_params["round"],
+                "pos": 1,
+            }
+        ),
+    )
+
+
+class GeneratedCategories(NamedTuple):
+    first_category: QuerySet[Category]
+    second_category: QuerySet[Category]
+    third_category: QuerySet[Category]
+
+
+def generate_categories() -> GeneratedCategories:
+    ids = list(Category.objects.values_list("id", flat=True))
+    if ids:
+        random.shuffle(ids)
+        first_category = get_object_or_404(Category, pk=ids[0])
+        second_category = get_object_or_404(Category, pk=ids[1])
+        third_category = get_object_or_404(Category, pk=ids[2])
+        return GeneratedCategories(
+            first_category,
+            second_category,
+            third_category,
+        )
+    LOGGER.error("елы-палы не смогли получить айди категорий!")
+    raise 404
+
 
 # endregion

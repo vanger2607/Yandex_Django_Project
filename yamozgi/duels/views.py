@@ -1,7 +1,6 @@
 import random
 import json
 import datetime
-import logging
 
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -10,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.http import Http404
 
 from users.models import CustomUser
-from questions.models import Question, Category
+from questions.models import Question
 from .models import Challenge, Battle, Round, PlayerAnswer
 
 from services.common.common_services import (
@@ -19,16 +18,17 @@ from services.common.common_services import (
 )
 from services.duels.views_services import (
     get_rounds_by_battle_id,
-    check_correct_user_in_battle_by_obj,
-    check_correct_user_in_battle,
+    check_correct_user_in_battle_by_obj_and_return_battle_obj,
+    check_correct_user_in_battle_and_return_battle_obj,
     context_for_battle_view,
     get_answers_in_round,
     get_chooser,
     my_and_opponent_scores,
+    generate_categories,
+    handler_for_category_in_round_and_player_is_chooser,
+    handler_for_category_in_round_and_player_is_not_chooser,
 )
-from yamozgi.settings import BASE_URL
-
-logger = logging.getLogger(__name__)
+from yamozgi.settings import BASE_URL, LOGGER
 
 
 class BattleView(TemplateView):
@@ -83,7 +83,10 @@ class QuestionView(TemplateView):
         context = super().get_context_data(**kwargs)
         ids = None
         user_id = check_and_return_existence_user_id(self.request)
-        check_correct_user_in_battle(user_id, self.kwargs["pk"])
+        check_correct_user_in_battle_and_return_battle_obj(
+            user_id,
+            self.kwargs["pk"],
+        )
         round_questions = get_object_or_404(
             Round.objects.only(
                 "category_id", "id", "question_1", "question_2", "question_3"
@@ -160,7 +163,10 @@ class QuestionCompleteView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_id = self.kwargs["user_id"]
-        check_correct_user_in_battle(user_id, self.kwargs["pk"])
+        check_correct_user_in_battle_and_return_battle_obj(
+            user_id,
+            self.kwargs["pk"],
+        )
         len_answers = len(
             list(
                 PlayerAnswer.objects.filter(
@@ -254,7 +260,10 @@ class RoundChooseView(TemplateView):
         category = get_object_or_404(
             Round.objects.only("category_id"), pk=self.kwargs["round"]
         )
-        battle_obj = check_correct_user_in_battle(user_id, self.kwargs["pk"])
+        battle_obj = check_correct_user_in_battle_and_return_battle_obj(
+            user_id,
+            self.kwargs["pk"],
+        )
         round = get_object_or_404(
             Round.objects.only(
                 "question_1_id",
@@ -265,84 +274,35 @@ class RoundChooseView(TemplateView):
             pk=self.kwargs["round"],
         )
         chooser = get_chooser(round_now, battle_obj)
-        logger.debug(f"choose round {round_now}")
+        LOGGER.debug(f"choose round {round_now}")
         if not category.category_id:
             if user_id == chooser:
-                if (
-                    round.question_1_id
-                    and round.question_2_id
-                    and round.question_3_id
-                ):
-                    self.to_redirect = True
-                ids = list(Category.objects.values_list("id", flat=True))
-                if ids:
-                    random.shuffle(ids)
-                    first_category = get_object_or_404(Category, pk=ids[0])
-                    second_category = get_object_or_404(Category, pk=ids[1])
-                    third_category = get_object_or_404(Category, pk=ids[2])
+                (
+                    first_category,
+                    second_category,
+                    third_category,
+                ) = generate_categories()
                 context["first_category"] = first_category
                 context["second_category"] = second_category
                 context["third_category"] = third_category
                 context["chooser"] = True
             else:
-                if (
-                    round.question_1_id
-                    and round.question_2_id
-                    and round.question_3_id
-                ):
-                    self.to_redirect = True
-                else:
-                    context["chooser"] = False
+                context["chooser"] = False
         elif category.category_id and user_id == chooser and not round.is_over:
             self.to_redirect = True
-            len_answers = len(
-                list(
-                    PlayerAnswer.objects.filter(
-                        player_id_id=user_id,
-                        round_id_id=self.kwargs["round"],
-                    ).values_list(
-                        "id",
-                        flat=True,
-                    )
-                )
+            url, params = handler_for_category_in_round_and_player_is_chooser(
+                user_id,
+                self.kwargs,
             )
-            if len_answers == 3:
-                self.redirect_data = redirect(
-                    "duels:question-complete",
-                    pk=self.kwargs["pk"],
-                    round=self.kwargs["round"],
-                    pos=1,
-                    user_id=user_id,
-                )
-            else:
-                self.redirect_data = redirect(
-                    "duels:question",
-                    pk=self.kwargs["pk"],
-                    round=self.kwargs["round"],
-                    pos=1,
-                )
+            self.redirect_data = redirect(url, **params)
         elif category.category_id and user_id != chooser and not round.is_over:
-            len_answers = len(
-                list(
-                    PlayerAnswer.objects.filter(
-                        player_id_id=chooser,
-                        round_id_id=self.kwargs["round"],
-                    ).values_list(
-                        "id",
-                        flat=True,
-                    )
-                )
-            )
-            if len_answers == 3:
-                self.to_redirect = True
-                self.redirect_data = redirect(
-                    "duels:question",
-                    pk=self.kwargs["pk"],
-                    round=self.kwargs["round"],
-                    pos=1,
-                )
+            (
+                to_redirect,
+                url,
+                params,
+            ) = handler_for_category_in_round_and_player_is_not_chooser()
         elif category.category_id and round.is_over:
-            logger.debug("мы в конце раунда все хорошо")
+            LOGGER.debug("мы в конце раунда все хорошо")
             self.redirect_data = redirect(
                 "duels:question-complete",
                 pk=self.kwargs["pk"],
@@ -362,7 +322,10 @@ class DetailBattleView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_id = check_and_return_existence_user_id(self.request)
-        battle = check_correct_user_in_battle_by_obj(user_id, self.object)
+        battle = check_correct_user_in_battle_by_obj_and_return_battle_obj(
+            user_id,
+            self.object,
+        )
         user_name, other_user_id = other_player(self.request, self.object)
         my_scores, opponent_scores = my_and_opponent_scores(
             user_id, self.object
@@ -379,7 +342,7 @@ class DetailBattleView(DetailView):
             )
             + 1
         )
-        logger.debug(f"{round_now}, раунд тута")
+        LOGGER.debug(f"{round_now}, раунд тута")
         round_category = get_object_or_404(
             Round.objects.values_list("category_id__name", flat=True), pk=round
         )
@@ -496,7 +459,7 @@ def question_api(request):
     if request.method == "GET":
         return HttpResponse(status=404)
     elif request.method == "POST":
-        logger.debug("question api start")
+        LOGGER.debug("question api start")
         time_now = datetime.datetime.strptime(
             f'{datetime.datetime.now().strftime("%H:%M:%S")}', "%H:%M:%S"
         )
@@ -522,11 +485,11 @@ def question_api(request):
                 in_time = True
         except Exception:
             raise Http404
-        logger.debug(
+        LOGGER.debug(
             f"question api таймер , {timer.total_seconds()}, {in_time}"
         )
         if answer == question.right_answer and in_time:
-            logger.debug("question api вошли в правильный ответ")
+            LOGGER.debug("question api вошли в правильный ответ")
             right = True
             if user_id == battle.player_1_id:
                 battle.player_1_scores += 1
@@ -537,12 +500,12 @@ def question_api(request):
         if not in_time:
             answer = "timeout"
         if not player_answer.player_answer:
-            logger.debug("question api вошли в сохранения ответа пользователя")
+            LOGGER.debug("question api вошли в сохранения ответа пользователя")
             player_answer.is_right = right
             player_answer.player_answer = answer
             player_answer.save()
         if int(data_from_post["question_now"]) == 3:
-            logger.debug("question api если третий вопрос")
+            LOGGER.debug("question api если третий вопрос")
             oth_player_id = other_player(request, battle)[1]
             len_answers = len(
                 list(
@@ -555,11 +518,11 @@ def question_api(request):
                     )
                 )
             )
-            logger.debug(
+            LOGGER.debug(
                 f"question api длина ответов другого игрока, {len_answers}"
             )
             if len_answers == 3 and data_from_post["round_now"] != 6:
-                logger.debug("question api вошли в завершение раунда")
+                LOGGER.debug("question api вошли в завершение раунда")
                 round = get_object_or_404(Round, pk=data_from_post["round_id"])
                 round.is_over = True
                 round.save()
@@ -568,7 +531,7 @@ def question_api(request):
                 ).first()
                 battle.round_now = next_round.pk
                 battle.save()
-                logger.debug("question api все прошло успешно")
+                LOGGER.debug("question api все прошло успешно")
             elif (
                 len_answers == 3
                 and data_from_post["round_now"] == 6
