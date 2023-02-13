@@ -454,7 +454,7 @@ def handler_for_category_in_round_and_player_is_not_chooser(
     user_id: int, browse_params: dict[str, int]
 ) -> Parametrs_for_redirect:
     """"""
-    if is_len_player_answers_equal_three(user_id, browse_params["round"]) == 3:
+    if is_len_player_answers_equal_three(user_id, browse_params["round"]):
         return Parametrs_for_redirect(
             "duels:question",
             Dct_with_params_for_redirect(
