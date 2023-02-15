@@ -62,9 +62,9 @@ class UserList(ListView):
     def get_queryset(self):
         self.queryset = list(
             CustomUser.objects.filter(is_active=True).values(
-                "login",
-                "avatar",
-                "id",
+                CustomUser.login.field.name,
+                CustomUser.avatar.field.name,
+                CustomUser.id.field.name,
             )
         )
         return self.queryset
@@ -290,6 +290,7 @@ class RoundChooseView(TemplateView):
                 context["chooser"] = False
         elif category.category_id and user_id == chooser and not round.is_over:
             self.to_redirect = True
+
             url, params = handler_for_category_in_round_and_player_is_chooser(
                 user_id,
                 self.kwargs,
@@ -564,6 +565,22 @@ def challenge_to_other_api(request):
         to_user_id = data_from_post["to_user"]
         from_user = get_object_or_404(CustomUser, pk=from_user_id)
         to_user_login = get_object_or_404(CustomUser, pk=to_user_id)
+        is_battle_sent_by_me_exist = Battle.objects.filter(
+            player_1=from_user_id, player_2=to_user_id
+        ).exists()
+        is_battle_sent_to_me_exist = Battle.objects.filter(
+            player_1=to_user_id, player_2=from_user_id
+        ).exists()
+        if is_battle_sent_by_me_exist and is_battle_sent_to_me_exist:
+            return JsonResponse(
+                {
+                    "messages": (
+                        "У Вас уже и так две битвы"
+                        "с этим игроком, куда уж больше?!"
+                    ),
+                    "error": True,
+                }
+            )
         challenge, created = Challenge.objects.get_or_create(
             player_sent_id=from_user, player_recieved_id=to_user_login
         )

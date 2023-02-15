@@ -2,7 +2,7 @@ from typing import TypedDict, NamedTuple
 import random
 
 from django.http import Http404, HttpRequest
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.db.models import F, QuerySet
 
 from duels.models import (
@@ -44,7 +44,11 @@ def check_correct_user_in_battle_and_return_battle_obj(
         ),
         pk=battle_id,
     )
-    if not (user_id in [battle_obj.player_2, battle_obj.player_1]):
+    user_login = get_object_or_404(
+        CustomUser.objects.only(CustomUser.login.field.name), pk=user_id
+    )
+    print(user_id, battle_obj.player_1, battle_obj.player_2)
+    if user_login not in (battle_obj.player_2, battle_obj.player_1):
         raise Http404
     return battle_obj
 
