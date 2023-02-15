@@ -54,7 +54,7 @@ class CustomUser(AbstractBaseUser):
     def image_tmb(self):
         if self.upload:
             return mark_safe(f'<img src="{self.get_img.url}">')
-        return mark_safe('<img src="..\static_dev\homepage\img\me.png">')
+        return mark_safe('<img src="..\\static_dev\\homepage\\img\\me.png">')
 
     image_tmb.short_description = "превью"
     image_tmb.allow_tags = True
