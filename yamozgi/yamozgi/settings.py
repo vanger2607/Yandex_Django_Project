@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="not_so_secret")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = True
 
 
 ALLOWED_HOSTS = ["*"]
@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "homepage.apps.HomepageConfig",
     "questions.apps.QuestionsConfig",
     "duels.apps.DuelsConfig",
-    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -45,7 +44,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "yamozgi.urls"
@@ -164,7 +162,7 @@ LOGGING = {
         }
     },
 }
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
 DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_TLS")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
