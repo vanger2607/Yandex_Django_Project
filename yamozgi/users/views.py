@@ -40,6 +40,7 @@ class Profile(LoginRequiredMixin, UpdateView):
         )
         context["form"] = userform
         context["gray_matter"] = user.gray_matter
+        context["played_games"] = user.count_of_battles
         return context
 
     def get_success_url(self, **kwargs):

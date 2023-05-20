@@ -4,8 +4,10 @@ import datetime
 
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 
 from users.models import CustomUser
@@ -31,11 +33,11 @@ from services.duels.views_services import (
 from yamozgi.settings import BASE_URL, LOGGER
 
 
-class BattleView(TemplateView):
+class BattleView(LoginRequiredMixin, TemplateView):
     """страница, на которой отображаются текущие игры,
     брошенные пользователем вызовы
     и вызовы брошенные пользователю"""
-
+    login = reverse_lazy("users:signin")
     template_name = "duels/battles.html"
 
     def get_context_data(self, **kwargs):
