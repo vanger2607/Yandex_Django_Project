@@ -643,6 +643,7 @@ def accept_challenge_api(request):
             player_2_id=sent_user_id,
             is_over=False,
         )
+        print("obj")
         battle_id = obj.pk
         if created:
             Round.objects.bulk_create(
@@ -660,10 +661,12 @@ def accept_challenge_api(request):
         ).first()
         obj.round_now = next_round.pk
         obj.save()
+        print("saved obj")
         challenge = get_object_or_404(
             Challenge,
             player_recieved_id_id=user_id,
             player_sent_id_id=sent_user_id,
         )
         challenge.delete()
+        print("all_good", obj)
         return JsonResponse({"battle_url": f"battles/{battle_id}"})
