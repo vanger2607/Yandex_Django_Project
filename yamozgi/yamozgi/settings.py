@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "homepage.apps.HomepageConfig",
     "questions.apps.QuestionsConfig",
     "duels.apps.DuelsConfig",
@@ -44,6 +45,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "yamozgi.urls"
@@ -162,6 +164,7 @@ LOGGING = {
         }
     },
 }
+LOGIN_URL = 'users:signin'
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
 DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_TLS")
