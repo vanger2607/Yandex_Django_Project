@@ -1,7 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
-from django.utils.safestring import mark_safe
-from sorl.thumbnail import get_thumbnail
 
 from questions.models import Category
 
@@ -47,19 +45,8 @@ class CustomUser(AbstractBaseUser):
         default=0,
     )
 
-    @property
-    def get_img(self):
-        return get_thumbnail(self.avatar, "300x300", crop="center", quality=51)
-
-    def image_tmb(self):
-        if self.upload:
-            return mark_safe(f'<img src="{self.get_img.url}">')
-        return mark_safe('<img src="..\\static_dev\\homepage\\img\\me.png">')
-
-    image_tmb.short_description = "превью"
-    image_tmb.allow_tags = True
-
     def save(self, *args, **kwargs):
+        """при изменение изображения пользователя удаляет старое"""
         if self.pk is not None:
             old_self = CustomUser.objects.get(pk=self.pk)
             if old_self.avatar and self.avatar != old_self.avatar:
