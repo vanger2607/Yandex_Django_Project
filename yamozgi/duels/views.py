@@ -1,8 +1,10 @@
 import random
 import json
 import datetime
+from typing import Any
 
-from django.http import HttpResponse
+
+from django.http import HttpRequest, HttpResponse
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
@@ -29,6 +31,7 @@ from services.duels.views_services import (
     generate_categories,
     handler_for_category_in_round_and_player_is_chooser,
     handler_for_category_in_round_and_player_is_not_chooser,
+    can_see_answers,
 )
 from yamozgi.settings import BASE_URL, LOGGER
 
@@ -37,6 +40,7 @@ class BattleView(LoginRequiredMixin, TemplateView):
     """страница, на которой отображаются текущие игры,
     брошенные пользователем вызовы
     и вызовы брошенные пользователю"""
+
     login = reverse_lazy("users:signin")
     template_name = "duels/battles.html"
 
@@ -57,6 +61,8 @@ class BattleView(LoginRequiredMixin, TemplateView):
 
 
 class UserList(ListView):
+    """страница отображающая всех юзеров, которым можно кинуть вызов"""
+
     model = CustomUser
     template_name = "duels/user_list.html"
     context_object_name = "users"
@@ -161,63 +167,82 @@ class QuestionView(TemplateView):
 
 class QuestionCompleteView(TemplateView):
     template_name = "duels/question-complete.html"
+    # внизу костыль, чтобы пременные можно было видеть и в dispatch и в context
+    user_id = None
+    current_user_id = None
+    can_see = False
+
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any):
+        self.user_id = self.kwargs["user_id"]
+        self.current_user_id = check_and_return_existence_user_id(self.request)
+        LOGGER.debug(self.request.user.id)
+        check_correct_user_in_battle_and_return_battle_obj(
+            self.current_user_id,
+            self.kwargs["pk"],
+        )
+        LOGGER.debug(self.kwargs["round"])
+        LOGGER.debug(self.user_id)
+        self.can_see = can_see_answers(
+            self.current_user_id,
+            self.kwargs["round"],
+            self.user_id,
+        )
+        if not (self.can_see):
+            return redirect("errors:smartass_error")
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user_id = self.kwargs["user_id"]
-        check_correct_user_in_battle_and_return_battle_obj(
-            user_id,
-            self.kwargs["pk"],
-        )
-        len_answers = len(
-            list(
-                PlayerAnswer.objects.filter(
-                    player_id_id=user_id,
-                    round_id_id=self.kwargs["round"],
-                ).values_list(
-                    "id",
-                    flat=True,
+        if self.can_see:
+            len_answers = len(
+                list(
+                    PlayerAnswer.objects.filter(
+                        player_id_id=self.user_id,
+                        round_id_id=self.kwargs["round"],
+                    ).values_list(
+                        "id",
+                        flat=True,
+                    )
                 )
             )
-        )
-        if len_answers == 3 and self.kwargs["pos"] != 3:
-            context["next_question"] = True
-            context["next_question_url"] = (
-                f"{BASE_URL}/battles/{self.kwargs['pk']}"
-                f"/rounds/{self.kwargs['round']}"
-                f"/question_pos/{self.kwargs['pos'] + 1}"
-                f"/complete/user/{user_id}"
+            if len_answers == 3 and self.kwargs["pos"] != 3:
+                context["next_question"] = True
+                context["next_question_url"] = (
+                    f"{BASE_URL}/battles/{self.kwargs['pk']}"
+                    f"/rounds/{self.kwargs['round']}"
+                    f"/question_pos/{self.kwargs['pos'] + 1}"
+                    f"/complete/user/{self.user_id}"
+                )
+            elif self.kwargs["pos"] == 3:
+                context["next_question"] = False
+                context["next_question_url"] = (
+                    f"{BASE_URL}/battles/" f"{self.kwargs['pk']}"
+                )
+            elif len_answers != 3:
+                context["next_question"] = True
+                context["next_question_url"] = (
+                    f"{BASE_URL}/battles/{self.kwargs['pk']}"
+                    f"/rounds/{self.kwargs['round']}"
+                    f"/question_pos/{self.kwargs['pos'] + 1}"
+                )
+            question_id = get_object_or_404(
+                Round.objects.values_list(
+                    f"question_{self.kwargs['pos']}_id",
+                    flat=True,
+                ),
+                id=self.kwargs["round"],
             )
-        elif self.kwargs["pos"] == 3:
-            context["next_question"] = False
-            context["next_question_url"] = (
-                f"{BASE_URL}/battles/" f"{self.kwargs['pk']}"
+            question = get_object_or_404(Question, pk=question_id)
+            player_answer = get_object_or_404(
+                PlayerAnswer,
+                player_id_id=self.user_id,
+                round_id_id=self.kwargs["round"],
+                question_id_id=question_id,
             )
-        elif len_answers != 3:
-            context["next_question"] = True
-            context["next_question_url"] = (
-                f"{BASE_URL}/battles/{self.kwargs['pk']}"
-                f"/rounds/{self.kwargs['round']}"
-                f"/question_pos/{self.kwargs['pos'] + 1}"
-            )
-        question_id = get_object_or_404(
-            Round.objects.values_list(
-                f"question_{self.kwargs['pos']}_id",
-                flat=True,
-            ),
-            id=self.kwargs["round"],
-        )
-        question = get_object_or_404(Question, pk=question_id)
-        player_answer = get_object_or_404(
-            PlayerAnswer,
-            player_id_id=user_id,
-            round_id_id=self.kwargs["round"],
-            question_id_id=question_id,
-        )
-        context["question"] = question
-        context["question_now"] = self.kwargs["pos"]
-        context["player_answer"] = player_answer.player_answer
-        return context
+            context["question"] = question
+            context["question_now"] = self.kwargs["pos"]
+            context["player_answer"] = player_answer.player_answer
+            return context
 
 
 class RoundChooseView(TemplateView):

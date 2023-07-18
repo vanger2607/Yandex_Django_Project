@@ -10,6 +10,7 @@ urlpatterns = [
     path("", include("duels.urls")),
     path("", include("users.urls")),
     path("", include("questions.urls")),
+    path("errors/", include("errors.urls"))
 ]
 urlpatterns += static(
     settings.STATIC_URL,

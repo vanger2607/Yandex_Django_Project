@@ -44,13 +44,32 @@ def check_correct_user_in_battle_and_return_battle_obj(
         ),
         pk=battle_id,
     )
+    LOGGER.debug(battle_obj)
     user_login = get_object_or_404(
         CustomUser.objects.only(CustomUser.login.field.name), pk=user_id
     )
-    print(user_id, battle_obj.player_1, battle_obj.player_2)
     if user_login not in (battle_obj.player_2, battle_obj.player_1):
         raise Http404
     return battle_obj
+
+
+def can_see_answers(user_id: int, round_id: int, whos_answer: int) -> bool:
+    """check that user can see another user's answer.
+    :param user_id:
+        current user id.
+    :param round_id:
+        current round id.
+    :param whos_answer:
+        id of the user who answered the question."""
+    round_is_completed = get_object_or_404(
+        Round.objects.only(Round.is_over.field.name),
+        pk=round_id,
+    )
+    LOGGER.debug(round_is_completed.is_over)
+    LOGGER.debug(f"{user_id}, {whos_answer}")
+    if user_id != whos_answer and (not round_is_completed.is_over):
+        return False
+    return True
 
 
 class BaseBattleDict(TypedDict):
