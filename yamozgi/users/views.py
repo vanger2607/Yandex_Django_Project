@@ -11,6 +11,7 @@ from django.contrib.auth.views import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
+from django.shortcuts import get_object_or_404
 
 from .forms import (
     MyPasswordChangeForm,
@@ -29,7 +30,7 @@ class Profile(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
 
     def get_object(self):
-        return CustomUser.objects.get(pk=self.request.user.pk)
+        return get_object_or_404(CustomUser, pk=self.request.user.pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,6 +40,8 @@ class Profile(LoginRequiredMixin, UpdateView):
             initial={"login": user.login, "birthday": user.birthday},
         )
         context["form"] = userform
+        context["gray_matter"] = self.object.gray_matter
+        context["count_of_battles"] = self.object.count_of_battles
         return context
 
     def get_success_url(self, **kwargs):

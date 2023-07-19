@@ -1,17 +1,18 @@
 import os
 from pathlib import Path
+import logging
 
 from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
 
 load_dotenv()
 
-
+LOGGER = logging.getLogger(__name__)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="not_so_secret")
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = True
 
 
 ALLOWED_HOSTS = ["*"]
@@ -30,10 +31,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+
+    "debug_toolbar",
+
+
     "homepage.apps.HomepageConfig",
     "questions.apps.QuestionsConfig",
     "duels.apps.DuelsConfig",
-    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -135,14 +140,13 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = BASE_DIR / "send_mail"
-EMAIL_USE_TLS = True
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "console": {"format": "%(name)-12s %(levelname)-8s %(message)s"},
+        "console": {
+            "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
+        },
         "file": {
             "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
         },
@@ -156,5 +160,19 @@ LOGGING = {
             "filename": "debug.log",
         },
     },
-    "loggers": {"": {"level": "DEBUG", "handlers": ["console", "file"]}},
+    "loggers": {
+        "": {
+            "level": "DEBUG",
+            "handlers": ["console", "file"],
+            "propagate": True,
+        }
+    },
 }
+LOGIN_URL = 'users:signin'
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_TLS")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")

@@ -19,6 +19,33 @@ function challenge(from, to, base_url) {
                         else{
       throw new Error("Bad Status");}})
     .then((data) => {
+      if("error" in data){
+        let message = data["messages"];
+        let exist = document.querySelector('.message')
+        if (exist){
+          exist.remove()
+        }
+        let el = document.createElement("div");
+        if (typeof el.innerText !== "undefined") {
+          // IE8-
+          el.innerText = message;
+        } else {
+          // Нормальные браузеры
+          el.createTextNode(message);
+  
+        }
+        el.classList.add('message')
+        el.classList.add('activated-mes')
+      el.classList.add('red-mes')
+      el.style.display = 'block';
+      let sp = document.createElement('span')
+      sp.innerText = '×'
+      sp.setAttribute('class' , 'closebtn')
+      sp.setAttribute('onclick', 'close_message()')
+      el.append(sp)
+      document.body.append(el)
+      }
+      else{
       let message = data["messages"];
       let exist = document.querySelector('.message')
       if (exist){
@@ -42,9 +69,8 @@ function challenge(from, to, base_url) {
       sp.setAttribute('onclick', 'close_message()')
       el.append(sp)
       document.body.append(el)
-    })
+    }})
     .catch((error) => {
-        alert(error)
       let exist = document.querySelector('.message')
       if (exist){
         exist.remove()

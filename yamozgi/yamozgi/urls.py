@@ -10,6 +10,7 @@ urlpatterns = [
     path("", include("duels.urls")),
     path("", include("users.urls")),
     path("", include("questions.urls")),
+    path("errors/", include("errors.urls"))
 ]
 urlpatterns += static(
     settings.STATIC_URL,
@@ -31,3 +32,9 @@ urlpatterns += [
         {"document_root": settings.STATIC_ROOT},
     ),
 ]
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [
+        re_path(r"^__debug__/", include(debug_toolbar.urls)),
+    ]
