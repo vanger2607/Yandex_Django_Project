@@ -14,7 +14,6 @@ from django.http import Http404
 
 from users.models import CustomUser
 from questions.models import Question
-
 from .models import Challenge, Battle, Round, PlayerAnswer
 
 from services.common.common_services import (
@@ -33,7 +32,6 @@ from services.duels.views_services import (
     handler_for_category_in_round_and_player_is_chooser,
     handler_for_category_in_round_and_player_is_not_chooser,
     can_see_answers,
-    check_correct_user_obj_in_battle_and_return_battle_obj,
 )
 from yamozgi.settings import BASE_URL, LOGGER
 
@@ -92,9 +90,9 @@ class QuestionView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         ids = None
-        user = self.request.user
-        check_correct_user_obj_in_battle_and_return_battle_obj(
-            user,
+        user_id = check_and_return_existence_user_id(self.request)
+        check_correct_user_in_battle_and_return_battle_obj(
+            user_id,
             self.kwargs["pk"],
         )
         round_questions = get_object_or_404(
