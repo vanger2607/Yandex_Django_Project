@@ -53,6 +53,28 @@ def check_correct_user_in_battle_and_return_battle_obj(
     return battle_obj
 
 
+def check_correct_user_obj_in_battle_and_return_battle_obj(
+    user: CustomUser, battle_id: int
+) -> Battle:
+    """проверяет, может ли игрок находится в этой битве
+    или пытается попасть в чужую и если все хорошо возвращает battle_obj
+    (какой сейчас раунд и айди игроков)."""
+    battle_obj = get_object_or_404(
+        Battle.objects.only(
+            Battle.round_now.field.name,
+            Battle.player_1.field.name,
+            Battle.player_2.field.name,
+            Battle.is_over.field.name,
+        ),
+        pk=battle_id,
+    )
+    LOGGER.debug(battle_obj)
+    user_login = user.login
+    LOGGER.debug(f"{user_login}: {battle_obj.player_2, battle_obj.player_1}")
+    if user_login not in (battle_obj.player_2.login, battle_obj.player_1.login):
+        raise Http404
+    return battle_obj
+
 def can_see_answers(user_id: int, round_id: int, whos_answer: int) -> bool:
     """check that user can see another user's answer.
     :param user_id:

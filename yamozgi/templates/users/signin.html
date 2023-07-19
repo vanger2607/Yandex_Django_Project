@@ -5,13 +5,22 @@
 {% endblock %}
 {% block content %}
 <div class="signin-page">
+  {{form.errors}}
   <div class="signin-page__main-block signin-main-block">
     <div class="container">
       <div class="signin-main-block__body">
         <div class="signin-main-block__title title">Авторизация</div>
         {% if form.errors %}
+        {% if form.non_field_errors %}
+          {% for err in form.non_field_errors %}
+          <div class="alert alert-danger" id="error">
+            <strong>{{ err|escape }}</strong>
+            <span class="closebtn" onclick="hide_button()" >×</span>
+          </div>
+          {% endfor %}
+        {% endif %}
         {% for field in form %}
-            {% for error in field.errors %} 
+            {% for error in errors%} 
                <div class="alert alert-danger" id="error">
                     <strong>{{ error|escape }}</strong>
                     <span class="closebtn" onclick="hide_button()" >×</span>
