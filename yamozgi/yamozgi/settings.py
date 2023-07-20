@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "sorl.thumbnail",
-
+    "django_cleanup.apps.CleanupConfig",
     "debug_toolbar",
 
 
