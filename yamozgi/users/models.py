@@ -1,14 +1,18 @@
 from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils.safestring import mark_safe
+from django_cleanup.signals import cleanup_pre_delete
+from sorl.thumbnail import delete, get_thumbnail
 
 from questions.models import Category
 
 from .managers import CustomUserManager
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     login = models.CharField(
-        verbose_name="имя пользователя",
+        verbose_name="никнейм пользователя",
         max_length=13,
         help_text="Максимальная длина 13 символов",
         unique=True,
@@ -40,6 +44,28 @@ class CustomUser(AbstractBaseUser):
         upload_to="uploads/%Y/%m",
         verbose_name="аватар",
     )
+
+    @property
+    def get_img(self):
+        return get_thumbnail(
+            self.avatar,
+            "100x100",
+            crop="center",
+            quaslity=60,
+        )
+
+    def image_tmb(self):
+        if self.avatar:
+            return mark_safe(f"<img src={self.get_img.url}>")
+        return "Нет изображения"
+
+    def sorl_delete(**kwargs):
+        delete(kwargs["file"])
+
+    cleanup_pre_delete.connect(sorl_delete)
+
+    image_tmb.short_description = "аватар"
+    image_tmb.allow_tags = True
     gray_matter = models.IntegerField(
         verbose_name="серое вещество",
         default=0,

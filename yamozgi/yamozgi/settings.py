@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="not_so_secret")
-DEBUG = True
+DEBUG = os.getenv("DEBUG", default='False') == 'True'
 
 
 ALLOWED_HOSTS = ["*"]
@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    "sorl.thumbnail",
 
     "debug_toolbar",
 

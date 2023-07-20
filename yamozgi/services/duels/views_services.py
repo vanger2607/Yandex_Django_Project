@@ -71,9 +71,13 @@ def check_correct_user_obj_in_battle_and_return_battle_obj(
     LOGGER.debug(battle_obj)
     user_login = user.login
     LOGGER.debug(f"{user_login}: {battle_obj.player_2, battle_obj.player_1}")
-    if user_login not in (battle_obj.player_2.login, battle_obj.player_1.login):
+    if user_login not in (
+        battle_obj.player_2.login,
+        battle_obj.player_1.login,
+    ):
         raise Http404
     return battle_obj
+
 
 def can_see_answers(user_id: int, round_id: int, whos_answer: int) -> bool:
     """check that user can see another user's answer.
