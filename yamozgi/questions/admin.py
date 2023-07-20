@@ -9,14 +9,18 @@ class QuestionAdmin(admin.ModelAdmin):
         "question_text",
         "category",
         "is_approved",
-        "author_id",
+        "author",
     )
     list_filter = (
         "is_approved",
-        "author_id",
+        "author",
+        "category",
     )
     list_editable = ("is_approved",)
-    list_display_links = ("author_id",)
+    list_display_links = ("author", "question_text",)
+
+    def author_name(self, instance):
+        return instance.author.login
 
 
 admin.site.register(Category)

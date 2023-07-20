@@ -5,3 +5,5 @@ __pycache__
 *.log
 *.vscode
 media
+yamozgi/duels/views.py
+*.sqlite3
