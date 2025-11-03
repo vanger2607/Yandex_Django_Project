@@ -2,7 +2,7 @@
 
 import datetime
 from django.db import migrations, models
-from django.utils.timezone import utc
+from datetime import timezone
 
 
 class Migration(migrations.Migration):
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name="start_answering",
             field=models.TimeField(
                 default=datetime.datetime(
-                    2023, 1, 9, 19, 42, 51, 558720, tzinfo=utc
+                    2023, 1, 9, 19, 42, 51, 558720, tzinfo=timezone.utc
                 )
             ),
             preserve_default=False,

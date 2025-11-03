@@ -389,8 +389,7 @@ def handler_for_category_in_round_and_player_is_chooser(
                     pos=1,
                     user_id=user_id,
                 ),
-            ),
-            True,
+            )
         )
     else:
         return Parametrs_for_redirect(
@@ -418,7 +417,7 @@ def handler_for_category_in_round_and_player_is_not_chooser(
             ),
         )
 
-    return False, False, False
+    return Parametrs_for_redirect("", {})
 
 
 class GeneratedCategories(NamedTuple):
