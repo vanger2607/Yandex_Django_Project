@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "sorl.thumbnail",
+    "django_celery_beat",
     "django_cleanup.apps.CleanupConfig",
     "debug_toolbar",
 
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "UTC+3"
 
 USE_I18N = True
 
@@ -168,7 +169,12 @@ LOGGING = {
         }
     },
 }
+
+
+
+
 LOGIN_URL = 'users:signin'
+# EMAIL
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
 DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_TLS")
@@ -176,3 +182,11 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+# CELERY
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")  # URL brokers (Redis)
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")  # Backend for results of tasks
+CELERY_ACCEPT_CONTENT = ['application/json']  # formats of content
+CELERY_TASK_SERIALIZER = 'json' 
+CELERY_RESULT_SERIALIZER = 'json'  
+CELERY_TIMEZONE = 'UTC' 
