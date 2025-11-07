@@ -73,4 +73,14 @@ urlpatterns = [
         views.DetailBattleView.as_view(),
         name="battle_detail",
     ),
+    path(
+        "battles/find_battle",
+        views.find_battle,
+        name="battle_find",
+    ),
+    path(
+        "battles/check_match/",
+        views.check_match,
+        name="check_match",
+    ),
 ]

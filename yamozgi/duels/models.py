@@ -53,7 +53,7 @@ class Battle(models.Model):
         default=0,
         verbose_name="очки второго игрока",
     )
-
+    created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name = "битва"
         verbose_name_plural = "битвы"

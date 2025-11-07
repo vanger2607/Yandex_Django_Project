@@ -10,7 +10,7 @@ function challenge(from, to, base_url) {
     method: "POST",
     headers: {
       // Добавляем необходимые заголовки
-      "Content-type": "application/json; charset=UTF-8",
+      "Content-Type": "application/json; charset=UTF-8",
       "X-CSRFToken": csrftoken,
     },
     body: JSON.stringify(f_body), // Тело запроса в JSON-формате

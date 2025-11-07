@@ -7,3 +7,4 @@ __pycache__
 media
 yamozgi/duels/views.py
 *.sqlite3
+*celerybeat*

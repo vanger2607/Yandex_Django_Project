@@ -3,12 +3,13 @@ import json
 import datetime
 from typing import Any
 
-
+from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 
@@ -35,6 +36,7 @@ from services.duels.views_services import (
     can_see_answers,
     check_correct_user_obj_in_battle_and_return_battle_obj,
 )
+from services.config import RedisClient
 from yamozgi.settings import BASE_URL, LOGGER
 
 
@@ -328,12 +330,14 @@ class RoundChooseView(TemplateView):
             params = params_for_redirect.dct_with_parametrs
             self.redirect_data = redirect(url, **params)
         elif category.category_id and user_id != chooser and not round.is_over:
-            params_for_redirect = handler_for_category_in_round_and_player_is_not_chooser()
+            params_for_redirect = handler_for_category_in_round_and_player_is_not_chooser(chooser, self.kwargs)
             url = params_for_redirect.url
-            params = params_for_redirect.params
+            params = params_for_redirect.dct_with_parametrs
+            print(url)
+            print(params)
             if url:
                 self.to_redirect = True
-                self.redirect_data(url, **params)
+                self.redirect_data = redirect(url, **params)
         elif category.category_id and round.is_over:
             LOGGER.debug("мы в конце раунда все хорошо")
             self.redirect_data = redirect(
@@ -354,6 +358,7 @@ class DetailBattleView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print("context:", context)
         user_id = check_and_return_existence_user_id(self.request)
         battle = check_correct_user_in_battle_by_obj_and_return_battle_obj(
             user_id,
@@ -595,12 +600,16 @@ def challenge_to_other_api(request):
         to_user_id = data_from_post["to_user"]
         from_user = get_object_or_404(CustomUser, pk=from_user_id)
         to_user_login = get_object_or_404(CustomUser, pk=to_user_id)
+        print(to_user_id)
+        print(from_user_id)
         is_battle_sent_by_me_exist = Battle.objects.filter(
             player_1=from_user_id, player_2=to_user_id
         ).exists()
+        print(is_battle_sent_by_me_exist)
         is_battle_sent_to_me_exist = Battle.objects.filter(
             player_1=to_user_id, player_2=from_user_id
         ).exists()
+        # Немного кривая логика возможности кинуть вызов, нужно думать о ней
         if is_battle_sent_by_me_exist and is_battle_sent_to_me_exist:
             return JsonResponse(
                 {
@@ -611,9 +620,17 @@ def challenge_to_other_api(request):
                     "error": True,
                 }
             )
+        if is_battle_sent_by_me_exist:
+            return JsonResponse(
+            {
+                "messages": f"У вас уже есть битва с {to_user_login}"
+                f"Доиграйте её"
+            }
+        )
         challenge, created = Challenge.objects.get_or_create(
             player_sent_id=from_user, player_recieved_id=to_user_login
         )
+   
         if not created and challenge:
             return JsonResponse(
                 {
@@ -621,7 +638,7 @@ def challenge_to_other_api(request):
                     f" дождитесь когда он/а его примет"
                 }
             )
-    return JsonResponse({"messages": f"{to_user_login} получил/а Ваш вызов"})
+        return JsonResponse({"messages": f"{to_user_login} получил/а Ваш вызов"})
 
 
 def decline_challenge_api(request):
@@ -667,8 +684,8 @@ def accept_challenge_api(request):
             raise Http404
         sent_user_id = data_from_post["sent_user_id"]
         obj, created = Battle.objects.get_or_create(
-            player_1_id=user_id,
-            player_2_id=sent_user_id,
+            player_1_id=sent_user_id,
+            player_2_id=user_id,
             is_over=False,
         )
         print("obj")
@@ -698,3 +715,31 @@ def accept_challenge_api(request):
         challenge.delete()
         print("all_good", obj)
         return JsonResponse({"battle_url": f"battles/{battle_id}"})
+
+
+@login_required
+def find_battle(request):
+    r = RedisClient().conn
+    if request.method == 'POST':
+        if request.user and request.user.id:
+            user_id = request.user.id
+        else:
+            raise Http404
+        r.sadd('online_users', str(user_id))  
+        r.expire(f'user:{user_id}', 3000)  # TTL 5 мин
+        return JsonResponse({'status': 'searching'})
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
+@login_required
+def check_match(request):
+    if request.user and request.user.id:
+            user_id = request.user.id
+    else:
+            raise Http404
+    r = RedisClient().conn
+    battle_id = r.get(f"pending_match:{user_id}")
+    print(battle_id)
+    if battle_id:
+        r.delete(f"pending_match:{user_id}")
+        return JsonResponse({"matched": True, "battle_id": battle_id})
+    return JsonResponse({"matched": False})

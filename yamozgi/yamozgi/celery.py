@@ -15,7 +15,7 @@ app.autodiscover_tasks()
 # Настройка расписания для периодических задач (через Celery Beat)
 app.conf.beat_schedule = {
     'match-users-every-5-seconds': {  # Имя задачи в расписании
-        'task': 'matchmaking.tasks.match_users',  # Путь к задаче скорее всего изменится
-        'schedule': 5.0,  # Запуск каждые 5 секунд
+        'task': 'duels.tasks.match_users',  # Путь к задаче скорее всего изменится
+        'schedule': 10.0,  # Запуск каждые 5 секунд
     },
 }

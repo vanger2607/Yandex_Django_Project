@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "yamozgi.urls"
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "http://localhost:8000"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ru"
 
-TIME_ZONE = "UTC+3"
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -182,6 +182,11 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+#REDIS
+
+REDIS_URL = os.environ.get("REDIS_URL", "DEFAULT_REDIS")
+
 
 # CELERY
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")  # URL brokers (Redis)
