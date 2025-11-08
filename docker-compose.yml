@@ -40,8 +40,6 @@ services:
       - ./yamozgi/:/app
     env_file:
       - ./yamozgi/.env
-    environment:
-      - REDIS_URL=redis://redis:6379/0
     depends_on:
       - redis
       - web

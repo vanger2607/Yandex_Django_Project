@@ -21,7 +21,7 @@ urlpatterns = [
         name="signup",
     ),
     path(
-        "logout",
+        "logout/",
         views.LogoutUser.as_view(),
         name="logout",
     ),

@@ -333,8 +333,6 @@ class RoundChooseView(TemplateView):
             params_for_redirect = handler_for_category_in_round_and_player_is_not_chooser(chooser, self.kwargs)
             url = params_for_redirect.url
             params = params_for_redirect.dct_with_parametrs
-            print(url)
-            print(params)
             if url:
                 self.to_redirect = True
                 self.redirect_data = redirect(url, **params)
